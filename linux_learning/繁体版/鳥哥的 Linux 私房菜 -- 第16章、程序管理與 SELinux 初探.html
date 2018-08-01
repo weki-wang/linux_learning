@@ -1,0 +1,3346 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://linux.vbird.org/linux_basic/0440processcontrol.php -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="Author" content="VBird, 鳥哥">
+	<meta name="Description" content="程序管理與 SELinux 初探">
+	<title>鳥哥的 Linux 私房菜 -- 第十六章、程序管理與 SELinux 初探</title>
+	<style>
+	</style>
+	<link href="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/style_2013.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<!--最上方的一些連結與網站介紹 -->
+<div class="toparea">
+<span style="text-shadow: 1px 1px 2px black;">鳥哥的 Linux 私房菜</span>
+<ul>
+		<li class="topareali"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#">第十六章、程序管理與 SELinux 初探</a></li>
+		<li><a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的 Linux 私房菜首頁">繁體主站</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/" title="Linux 基礎學習篇，從頭學習 Linux">基礎篇</a></li>
+	<li><a href="http://linux.vbird.org/linux_server/" title="Linux 伺服器架設篇">伺服器</a></li>
+	<li><a href="http://linux.vbird.org/linux_enterprise/" title="Linux 企業應用篇">企業應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_desktop/" title="Linux 桌面應用篇">桌面應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_security/" title="Linux 安全管理篇">安全管理</a></li>
+	<li><a href="http://linux.vbird.org/book/" title="書籍勘誤">書籍勘誤</a></li>
+	<li><a href="http://linux.vbird.org/vbird/" title="關於鳥哥的一些事情">鳥哥我</a></li>
+</ul>
+<iframe src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/index_2013.html" style="height: 29px; width: 150px; border:0; padding:0; margin: 0;
+		position: relative; float: right; overflow: hidden"></iframe>
+</div>
+
+<div class="leftarea">
+<a href="http://linux.vbird.org/linux_basic/0430cron.php">&lt;&lt;</a>
+</div>
+
+<!-- 正中央的 1000 像素的內容 -->
+<div class="tablearea">
+<!-- 左邊的連結東東 -->
+<div class="nav">
+	<div style="text-align:center; line-height:1; font-size: 9pt; font-family: &#39;Times New Roman&#39;; color: #ff6600;
+	padding: 5px; margin: 2px;">
+		<img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/Count.cgi" alt="鳥站的上線人數統計" height="26" width="110"><br>
+		since 2002/01/01
+	</div>
+<ul>
+	<li><a href="http://linux.vbird.org/new_linux.php">新手建議</a></li>
+	<li><a href="http://linux.vbird.org/howtoread.php">開始閱讀之前</a></li>
+	<li><a href="http://linux.vbird.org/aboutmysite.php">網站導覽</a></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic">Linux 基礎文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/">基礎文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0105computers.php">0.計算機概論</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php">1.Linux是什麼</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0130designlinux.php">2.主機規劃與磁碟分割</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0157installcentos7.php">3.安裝CentOS 7.x</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0160startlinux.php">4.首次登入與man page</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0210filepermission.php">5.檔案權限與目錄配置</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0220filemanager.php">6.檔案與目錄管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php">7.磁碟與檔案系統</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0240tarcompress.php">8.壓縮指令的運用</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0310vi.php">9.vim程式編輯器</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0320bash.php">10.認識與學習BASH</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0330regularex.php">11.正規表示法與文件格式化</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0340bashshell-scripts.php">12.學習shell scripts</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">13.帳號管理與ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0420quota.php">14.Quota, RAID, LVM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0430cron.php">15.at, crontab, anacron</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">16.程序管理與 SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php">17.認識系統服務(daemon)</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0570syslog.php">18.認識與分析登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0510osloader.php">19.開機流程模組管理與Loader</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php">20.基礎系統設定與備份策略</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520source_code_and_tarball.php">21.原始碼與 Tarball</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520rpm_and_srpm.php">22.RPM/YUM/SRPM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0590xwindow.php">23.X-Window 設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0540kernel.php">24.Linux 核心編譯</a></li>
+		<li>底下尚未更新</li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010index.php">27.快速索引</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_A.php">附錄 A: GPL 條文</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_B.php">附錄 B: ext2/ext3</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0140spfdisk.php">SPFDISK 範例</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0150installredhat.php">安裝 RedHat 7.2</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0155installmdk.php">安裝 Mandrake 9</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0156installfc4.php">安裝 Fedora IV</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/9999questions.php">Linux 練習題</a></li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/centos5.php">CentOS 5.x(2009-2014)</a>
+		</li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/fc4.php">Fedora-4(2005-2008)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/mandrake9.0.php">Mandrake9.0(2001-2004)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic_train">Linux 基礎訓練</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic_train/">課程章節、授課方式、評分方式</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit01.php">第 01 堂課：指令列模式初探</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit02.php">第 02 堂課：指令下達與檔案管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit03.php">第 03 堂課：檔案管理與 vim</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit04.php">第 04 堂課：檔案權限與帳號管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit05.php">第 05 堂課：權限應用與程序觀察</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit06.php">第 06 堂課：基礎檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit07.php">第 07 堂課：bash 與系統救援</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice1.php">期中練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit08.php">第 08 堂課：連續指令與資料流導向</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit09.php">第 09 堂課：正規表示法與 script</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit10.php">第 10 堂課：使用者管理與 ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit11.php">第 11 堂課：基礎設定、壓縮、排程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit12.php">第 12 堂課：管理管理與登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit13.php">第 13 堂課：服務管理與開機流程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit14.php">第 14 堂課：進階檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice2.php">期末練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit15.php">第 15 堂課：Linux系統的準備</a></li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_server/">Linux 架站文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_server/">伺服器篇文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0104mytalking.php">0. 說說笑笑談 Linux server 規劃</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0107cloudandvm.php">1. 小型雲系統與主機安全強化流程</a></li>
+
+
+
+		<li><a href="http://linux.vbird.org/linux_server/0103introduce.php">序篇</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0105beforeserver.php">1.架設伺服器前的準備工作</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0110network_basic.php">2.基礎網路概念</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0120intranet.php">3.區域網路設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0130internet_connect.php">4.連上 Internet</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0140networkcommand.php">5.Linux網路指令</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0150detect_network.php">6.Linux網路偵錯</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0210network-secure.php">7.網路安全,port限制,網路升級,SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0230router.php">8.路由概念與路由器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0250simple_firewall.php">9.防火牆與 NAT 伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0270dynamic_dns.php">10.申請合法主機名稱</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0310telnetssh.php">11.遠端連線伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0340dhcp.php">12.DHCP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0330nfs.php">13.NFS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0430nis.php">14.NIS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0440ntp.php">15.NTP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0370samba.php">16.SAMBA Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0420squid.php">17.Proxy Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0460iscsi.php">18.iSCSI Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0350dns.php">19.DNS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0360apache.php">20.WWW Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0410vsftpd.php">21.vsFTPD Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0380mail.php">22.Mail Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0450apt.php">APT/YUM Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0520openwebmail.php">OpenWebMail</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0600cluster.php">Cluster System</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/1000results.php">來做練習</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat9.php">Red Hat 9(2002-2005)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos4.php">CentOS 4(2006-2010)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos5.php">CentOS 5(2010-2011)</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_enterprise/">Linux 企業應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_enterprise/">企業應用篇彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0110network.php">1. 區域網路軟硬體設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0120installation.php">2. PXE 安裝伺服器與 kickstart</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/xen.php">Xen 虛擬機器</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/cputune.php">CPU 效能優化</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/kerberos.php">kerberos 與 NFS 加密</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_security/">Linux 安全管理</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_security/0420rkhunter.php">rkhunter 檢測</a></li>
+		<li><a href="http://linux.vbird.org/linux_security/knockd.php">knockd</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_security/old/">舊的安全文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_desktop/">Linux 桌面應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_desktop/0110linuxbasic.php">Linux 基礎概念</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/resources.php">鳥哥彙整的資料</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/resources.php">Linux 資料庫</a></li>
+		<li><a href="http://linux.vbird.org/problem">一些問題彙整</a></li>
+		<li><a href="http://linux.vbird.org/othersites">網路連結</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/solaris/">Solaris</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/apache_packages/">Apache 套件安裝</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/adsl">ADSL 相關文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/vbird/index.php">關於鳥哥</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/vbird/vbird3.php">Why 鳥哥?</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird.php">關於鳥哥</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird2.php">關於鳥哥-2</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070718-1.php">2007-07-xx</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070520.php">2007-05-20</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070328.php">2007-03-28</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060701.php">2006-07-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060122.php">2006-01-24</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050412.php">2005-04-12</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050401.php">2005-04-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20041101.php">2004-11-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040829.php">2004-08-29</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040417.php">2004-04-17</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040221.php">2004-02-21</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/somepaper">網友分享</a></li>
+	<li><a href="http://linux.vbird.org/faq.php">特殊問題解決</a></li>
+	<!--li><a href="/download">檔案下載中心</a></li-->
+	<li><a href="http://linux.vbird.org/Searching.php">網站資料搜尋</a></li>
+</ul>
+
+<p style="text-align:center; margin: 0 0 0 0 ;">
+<a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+<img style="border:0;width:66px;height:24px" src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vcss-blue" alt="Valid CSS!">
+</a>
+<a href="http://validator.w3.org/check?uri=referer" target="_blank">
+<img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/valid-html401" style="border:0;width:66px;height:24px" alt="Valid HTML 5" title="Valid HTML 5"></a>
+</p>
+<p style="text-align:center; margin: 0 0 0 0 ; line-height:1; font-size: 9pt;color: #333333; ">
+今日 <img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/Count(1).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+昨日 <img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/yestoday.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+本月 <img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/Count(2).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+上月 <img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/lastmonth.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+</p>
+</div>
+
+<a id="top"></a>
+<div class="mainarea">
+<div class="block1">
+<!-- 本文的檔頭部分 -->
+<h1>第十六章、程序管理與 SELinux 初探</h1>
+<div style="text-align:right">
+	<span class="text_history">最近更新日期：2016/10/24</span>
+</div>
+
+
+<!-- 本文的檔頭部分 -->
+<div class="abstract">
+	<p>一個程式被載入到記憶體當中運作，那麼在記憶體內的那個資料就被稱為程序(process)。程序是作業系統上非常重要的概念，
+	所有系統上面跑的資料都會以程序的型態存在。那麼系統的程序有哪些狀態？不同的狀態會如何影響系統的運作？
+	程序之間是否可以互相控管等等的，這些都是我們所必須要知道的項目。
+	另外與程序有關的還有 SELinux 這個加強檔案存取安全性的咚咚，也必須要做個瞭解呢！</p>
+</div>
+
+
+<!-- 本文的連結區部分 -->
+<div class="links">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#whatis">16.1 什麼是程序 (Process)</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#whatis_program_process">16.1.1 程序與程式 (process &amp; program)</a>： 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#parent_pid">子程序與父程序</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fork_and_exec">fork-and-exec</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#the_daemon">系統服務</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#whatis_milti_task">16.1.2 Linux 的多人多工環境</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#background">16.2 工作管理 (job control)</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#background_what">16.2.1 什麼是工作管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#background_run">16.2.2 job control 的管理</a>：<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#the_and">&amp;</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ctrl_z">[ctrl]-z</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#jobs">jobs</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fg">fg</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#bg">bg</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#killjobs">kill</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#background_term">16.2.3 離線管理問題</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#nohup">nohup</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#process">16.3 程序管理</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#process_1">16.3.1 程序的觀察</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps">ps</a> (<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps_l">ps -l</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps_aux">ps aux</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#zombie">zombie</a>), <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#topm">top</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#pstree">pstree</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#process_2">16.3.2 程序的管理</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#signal">signal</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#kill">kill</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#killall">killall</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#priority">16.3.3 關於程序的執行順序</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#pri">priority</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#nice">nice</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#renice">renice</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#process_3">16.3.4 系統資源的觀察</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#free">free</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#uname">uname</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#uptime">uptime</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#netstat">netstat</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#dmesg">dmesg</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#vmstat">vmstat</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#special">16.4 特殊檔案與程序</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#suid_sgid">16.4.1 具有 SUID/SGID 權限的指令執行狀態</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#proc">16.4.2 /proc/* 代表的意義</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ofile">16.4.3 查詢已開啟檔案或已執行程序開啟之檔案</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fuser">fuser</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#lsof">lsof</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#pidof">pidof</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux">16.5 SELinux 初探</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_what">16.5.1 什麼是 SELinux</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#history">目標</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#dac">DAC</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#mac">MAC</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_run">16.5.2 SELinux 的運作模式</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_com">元件</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#context">安全性本文</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#domain_type">domain/type</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_get">16.5.3 SELinux 三種模式的啟動、關閉與觀察</a>： <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#getenforce">getenforce</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#sestatus">sestatus</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#on_off">啟動與關閉</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#setenforce">setenforce</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_policy">16.5.4 SELinux 政策內的規則管理</a>： 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#getsebool">getsebool</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#seinfo">seinfo</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#sesearch">sesearch</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#setsebool">setsebool</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_chcon">16.5.5 SELinux 安全本文的修改</a>：
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#chcon">chcon</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#restorecon">restorecon</a>,
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#semanage">semanage</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_ftp">16.5.6 一個網路服務案例及登錄檔協助</a>：
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#setroubleshoot">所需服務</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_ftp_how">FTP 實例</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#selinux_ftp_type">匿名者範例</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ftp_home">一般用戶家目錄</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ftp_other">非正規目錄</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ftp_other">非正規 port</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#hint">16.6 重點回顧</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ex">16.7 本章習題</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#reference">16.8 參考資料與延伸閱讀</a></li>
+	<li><a href="http://phorum.vbird.org/viewtopic.php?t=23890" target="_blank">針對本文的建議：http://phorum.vbird.org/viewtopic.php?t=23890</a></li>
+
+</ul>
+</div>
+</div>
+
+
+<!-- 本文的正式部分 -->
+<a id="whatis"></a>
+<div class="block1">
+<h2>16.1 什麼是程序 (process)</h2>
+
+	<p>由前面一連幾個章節的資料看來，我們一直強調在 Linux 底下所有的指令與你能夠進行的動作都與權限有關，
+	而系統如何判定你的權限呢？當然就是<a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">第十三章帳號管理</a>當中提到的 
+	UID/GID 的相關概念，以及檔案的屬性相關性囉！再進一步來解釋，你現在大概知道，在 Linux 
+	系統當中：『<span class="text_import2">觸發任何一個事件時，系統都會將他定義成為一個程序，並且給予這個程序一個 
+	ID ，稱為 PID，同時依據啟發這個程序的使用者與相關屬性關係，給予這個 PID 一組有效的權限設定。</span>』
+	從此以後，這個 PID 能夠在系統上面進行的動作，就與這個 PID 的權限有關了！</p>
+
+	<p>看這個定義似乎沒有什麼很奇怪的地方，不過，您得要瞭解什麼叫做『觸發事件』才行啊！
+	我們在什麼情況下會觸發一個事件？而同一個事件可否被觸發多次？呵呵！來瞭解瞭解先！</p>
+
+	<a id="whatis_program_process"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.1.1 程序與程式 (process &amp; program)</h2>
+
+		<p>我們如何產生一個程序呢？其實很簡單啦，就是『執行一個程式或指令』就可以觸發一個事件而取得一個 
+		PID 囉！我們說過，系統應該是僅認識 binary file 的，那麼當我們要讓系統工作的時候，當然就是需要啟動一個 
+		binary file 囉，那個 binary file 就是程式 (program) 啦！</p>
+
+		<p>那我們知道，每個程式都有三組人馬的權限，每組人馬都具有 r/w/x 的權限，所以：『不同的使用者身份執行這個 
+		program 時，系統給予的權限也都不相同！』舉例來說，我們可以利用 touch 來建立一個空的檔案，當 root 執行這個 touch 
+		指令時，他取得的是 UID/GID = 0/0 的權限，而當 dmtsai (UID/GID=501/501) 
+		執行這個 touch 時，他的權限就跟 root 不同啦！我們將這個概念繪製成圖示來瞧瞧如下：</p>
+
+	<a id="fig16.1.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/process_1.gif" alt="程式被載入成為程序以及相關資料的示意圖" title="程式被載入成為程序以及相關資料的示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.1.1、程式被載入成為程序以及相關資料的示意圖</div>
+
+		<p>如上圖所示，程式一般是放置在實體磁碟中，然後透過使用者的執行來觸發。觸發後會載入到記憶體中成為一個個體，那就是程序。
+		為了作業系統可管理這個程序，因此程序有給予執行者的權限/屬性等參數，並包括程式所需要的指令碼與資料或檔案資料等，
+		最後再給予一個 PID 。系統就是透過這個 PID 來判斷該 process 是否具有權限進行工作的！他是很重要的哩！</p>
+
+		<p>舉個更常見的例子，我們要操作系統的時候，通常是利用連線程式或者直接在主機前面登入，然後取得我們的 
+		shell 對吧！那麼，我們的 shell  是 bash 對吧，這個 bash 在 /bin/bash 對吧，那麼同時間的每個人登入都是執行 
+		/bin/bash 對吧！不過，每個人取得的權限就是不同！也就是說，我們可以這樣看：</p>
+
+	<a id="fig16.1.2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/program_process.gif" alt="程式與程序之間的差異" title="程式與程序之間的差異" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.1.2、程式與程序之間的差異</div>
+
+		<p>也就是說，當我們登入並執行 bash 時，系統已經給我們一個 PID 了，這個 PID 就是依據登入者的 UID/GID 
+		(/etc/passwd) 來的啦～以上面的圖 16.1.2 配合圖 16.1.1 來做說明的話，我們知道 /bin/bash 是一個程式 (program)，當 dmtsai
+		登入後，他取得一個 PID 號碼為 2234 的程序，這個程序的 User/Group 都是 dmtsai
+		，而當這個程式進行其他作業時，例如上面提到的 touch 這個指令時，
+		那麼由這個程序<span class="text_import2">衍生出來的其他程序在一般狀態下，也會沿用這個程序的相關權限</span>的！</p>
+
+		<p>讓我們將程式與程序作個總結：</p>
+		<ul class="text_import2">
+		<li>程式 (program)：通常為 binary program ，放置在儲存媒體中 (如硬碟、光碟、軟碟、磁帶等)，
+		為實體檔案的型態存在；<br><br></li>
+		<li>程序 (process)：程式被觸發後，執行者的權限與屬性、程式的程式碼與所需資料等都會被載入記憶體中，
+		作業系統並給予這個記憶體內的單元一個識別碼 (PID)，可以說，程序就是一個正在運作中的程式。</li>
+		</ul>
+
+		<a id="parent_pid"></a>
+		<ul class="toplist"><li>子程序與父程序：</li></ul>
+
+		<p>在上面的說明裡面，我們有提到所謂的『衍生出來的程序』，那是個啥咚咚？這樣說好了，當我們登入系統後，會取得一個 
+		bash 的 shell ，然後，我們用這個 bash 提供的介面去執行另一個指令，例如 /usr/bin/passwd 或者是 touch 
+		等等，那些另外執行的指令也會被觸發成為 PID ，呵呵！那個後來執行指令才產生的 PID 就是『子程序』了，而在我們原本的 bash 
+		環境下，就稱為『父程序』了！借用我們在<a href="http://linux.vbird.org/linux_basic/0320bash.php#export">第十章 Bash 談到的 export</a>
+		所用的圖示好了：</p>
+
+	<a id="fig16.1.3"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/ppid.gif" alt="程序相關係之示意圖" title="程序相關係之示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.1.3、程序相關係之示意圖</div>
+
+		<p>所以你必須要知道，程式彼此之間是有相關性的！以上面的圖示來看，連續執行兩個 bash 後，第二個 bash 
+		的父程序就是前一個 bash。因為每個程序都有一個 PID ，那某個程序的父程序該如何判斷？就透過 Parent PID (PPID) 
+		來判斷即可。此外，由第十章的 export 內容我們也探討過環境變數的繼承問題，子程序可以取得父程序的環境變數啦！
+		讓我們來進行底下的練習，以瞭解什麼是子程序/父程序。</p>
+
+<table class="exam" style="width: 90%"><tbody><tr><td>
+例題：<div>
+請在目前的 bash 環境下，再觸發一次 bash ，並以『 ps -l 』這個指令觀察程序相關的輸出資訊。
+</div>
+答：<div>
+直接執行 bash ，會進入到子程序的環境中，然後輸入 ps -l 後，出現：
+<pre style="font-size: 10pt">F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000 <span style="text-decoration: underline">13928</span> 13927  0  80   0 - 29038 wait   pts/0    00:00:00 bash
+0 S  1000 13970 <span style="text-decoration: underline">13928</span>  1  80   0 - 29033 wait   pts/0    00:00:00 bash
+0 R  1000 14000 13970  0  80   0 - 30319 -      pts/0    00:00:00 ps</pre>
+有看到那個 PID 與 PPID 嗎？第一個 bash 的 PID 與第二個 bash 的 PPID 都是 13928 啊，
+因為第二個 bash 是來自於第一個所產生的嘛！另外，每部主機的程式啟動狀態都不一樣，
+所以在你的系統上面看到的 PID 與我這裡的顯示一定不同！那是正常的！詳細的 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps">ps</a> 指令我們會在本章稍後介紹，
+這裡你只要知道 ps -l 可以查閱到相關的程序資訊即可。
+</div>
+</td></tr></tbody></table>
+
+		<p>很多朋友常常會發現：『咦！明明我將有問題的程序關閉了，怎麼過一陣子他又自動的產生？
+		而且新產生的那個程序的 PID 與原先的還不一樣，這是怎麼回事呢？』不要懷疑，如果不是 <a href="http://linux.vbird.org/linux_basic/0430cron.php">crontab 工作排程</a>的影響，肯定有一支父程序存在，所以你殺掉子程序後，
+		父程序就會主動再生一支！那怎麼辦？正所謂這：『擒賊先擒王』，找出那支父程序，然後將他刪除就對啦！</p>
+
+		<a id="fork_and_exec"></a>
+		<ul class="toplist"><li>fork and exec：程序呼叫的流程</li></ul>
+
+		<p>其實子程序與父程序之間的關係還挺複雜的，最大的複雜點在於程序互相之間的呼叫。<span class="text_import2">在 Linux 的程序呼叫通常稱為 fork-and-exec 的流程
+		 (<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps1">註1</a>)！程序都會藉由父程序以複製 (fork) 的方式產生一個一模一樣的子程序，
+		然後被複製出來的子程序再以 exec 的方式來執行實際要進行的程式，最終就成為一個子程序的存在</span>。
+		整個流程有點像底下這張圖：</p>
+
+	<a id="fig16.1.4"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/fork-and-exec.gif" alt="程序使用 fork and exec 呼叫的情況示意圖" title="程序使用 fork and exec 呼叫的情況示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.1.4、程序使用 fork and exec 呼叫的情況示意圖</div>
+
+		<p>(1)系統先以 fork 的方式複製一個與父程序相同的暫存程序，這個程序與父程序唯一的差別就是 PID 不同！
+		但是這個暫存程序還會多一個 PPID 的參數，PPID 如前所述，就是父程序的程序識別碼啦！然後(2)暫存程序開始以 exec
+		的方式載入實際要執行的程式，以上述圖示來講，新的程式名稱為 qqq ，最終子程序的程式碼就會變成 qqq 了！
+		這樣瞭解乎！</p>
+
+		<a id="the_daemon"></a>
+		<ul class="toplist"><li>系統或網路服務：常駐在記憶體的程序</li></ul>
+
+		<p>如果就我們之前學到的一些指令資料來看，其實我們下達的指令都很簡單，包括用 ls 顯示檔案啊、用 touch 
+		建立檔案啊、rm/mkdir/cp/mv 等指令管理檔案啊、chmod/chown/passwd 等等的指令來管理權限等等的，不過，
+		這些指令都是執行完就結束了。也就是說，該項指令被觸發後所產生的 PID 很快就會終止呢！
+		那有沒有一直在執行的程序啊？當然有啊！而且多的是呢！</p>
+
+		<p>舉個簡單的例子來說好了，我們知道系統每分鐘都會去掃瞄 /etc/crontab 以及相關的設定檔，
+		來進行工作排程吧？那麼那個工作排程是誰負責的？當然不是鳥哥啊！
+		呵呵！是 crond 這個程式所管理的，<span class="text_import2">我們將他啟動在背景當中一直持續不斷的運作，
+		套句鳥哥以前 DOS 年代常常說的一句話，那就是『常駐在記憶體當中的程序』啦！</span></p>
+
+		<p>常駐在記憶體當中的程序通常都是負責一些系統所提供的功能以服務使用者各項任務，因此<span class="text_import2">這些常駐程式就會被我們稱為：服務 (daemon)</span>。系統的服務非常的多，
+		不過主要大致分成系統本身所需要的服務，例如剛剛提到的 crond 及 
+		atd ，還有 rsyslogd 等等的。還有一些則是負責網路連線的服務，例如 Apache, named, postfix, 
+		vsftpd... 等等的。這些網路服務比較有趣的地方，在於這些程式被執行後，他會啟動一個可以負責網路監聽的埠口 
+		(port) ，以提供外部用戶端 (client) 的連線要求。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		以 crontab 來說，他的主要執行程式名稱應該是 cron 或 at 才對，為啥要加個 d 在後面？而成為 crond, atd 呢？就是因為 Linux 希望我們可以簡單的判斷該程式是否為 daemon，
+		所以，一般 daemon 類型的程式都會加上 d 在檔名後頭～包括伺服器篇我們會看到的 httpd, vsftpd 等等都是 ^_^。
+		</fieldset><br>	</div><br>
+
+	<a id="whatis_milti_task"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.1.2 Linux 的多人多工環境</h2>
+
+		<p>我們現在知道了，其實在 Linux 底下執行一個指令時，系統會將相關的權限、屬性、程式碼與資料等均載入記憶體，
+		並給予這個單元一個程序識別碼 (PID)，最終該指令可以進行的任務則與這個 PID 
+		的權限有關。根據這個說明，我們就可以簡單的瞭解，為什麼 Linux 這麼多用戶，但是卻每個人都可以擁有自己的環境了吧！^_^
+		！底下我們來談談 Linux 多人多工環境的特色：</p>
+
+		<ul class="toplist"><li>多人環境：</li></ul>
+
+		<p>Linux 最棒的地方就在於他的多人多工環境了！那麼什麼是『多人多工』？在 Linux 系統上面具有多種不同的帳號，
+		每種帳號都有都有其特殊的權限，只有一個人具有至高無上的權力，那就是
+		root (系統管理員)。除了 root 之外，其他人都必須要受一些限制的！而每個人進入
+		Linux 的環境設定都可以隨著每個人的喜好來設定 (還記得我們在<a href="http://linux.vbird.org/linux_basic/0320bash.php">第十章 BASH</a> 
+		提過的 ~/.bashrc 吧？對了！就是那個光！)！現在知道為什麼了吧？因為每個人登入後取得的 shell 的 PID 
+		不同嘛！</p>
+
+		<ul class="toplist"><li>多工行為：</li></ul>
+
+		<p>我們在<a href="http://linux.vbird.org/linux_basic/0105computers.php">第零章</a>談到 CPU 的速度，目前的 CPU 速度可高達幾個 GHz。
+		這代表 CPU 每秒鐘可以運作 10<sup>9</sup> 這麼多次指令。我們的 Linux 可以讓 CPU 在各個工作間進行切換，
+		也就是說，其實每個工作都僅佔去 CPU 的幾個指令次數，所以 CPU 每秒就能夠在各個程序之間進行切換啦！
+		誰叫 CPU 可以在一秒鐘進行這麼多次的指令運作。</p>
+
+		<p>CPU 切換程序的工作，與這些工作進入到 CPU 運作的排程 (CPU 排程，非 crontab 排程) 會影響到系統的整體效能！
+		目前 Linux 使用的多工切換行為是非常棒的一個機制，幾乎可以將 PC 的性能整個壓榨出來！
+		由於效能非常好，因此當多人同時登入系統時，其實會感受到整部主機好像就為了你存在一般！
+		這就是多人多工的環境啦！(<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps2">註2</a>)</p>
+
+		<ul class="toplist"><li>多重登入環境的七個基本終端視窗：</li></ul>
+
+		<p>在 Linux 當中，預設提供了六個文字界面登入視窗，以及一個圖形界面，你可以使用
+		[Alt]+[F1].....[F7] 來切換不同的終端機界面，而且每個終端機界面的登入者還可以不同人！
+		很炫吧！這個東西可就很有用啦！尤其是在某個程序死掉的時候！</p>
+
+		<p>其實，這也是多工環境下所產生的一個情況啦！我們的 Linux 
+		預設會啟動六個終端機登入環境的程式，所以我們就會有六個終端機介面。
+		您也可以減少啊！就是減少啟動的終端機程式就好了。
+		未來我們在<a href="http://linux.vbird.org/linux_basic/0510osloader.php">開機管理流程 (第十九章)</a> 會再仔細的介紹的！</p>
+
+		<ul class="toplist"><li>特殊的程序管理行為：</li></ul>
+
+		<p>以前的鳥哥笨笨的，總是以為使用 Windows 98 就可以啦！後來，因為工作的關係，需要使用 Unix 
+		系統，想說我只要在工作機前面就好，才不要跑來跑去的到 Unix 工作站前面去呢！所以就使用 Windows 連到我的 
+		Unix 工作站工作！好死不死，我一個程序跑下來要 2~3 天，唉～偏偏常常到了第 2.5 天的時候， Windows 98 
+		就給他掛點去！當初真的是給他怕死了～</p>
+
+		<p>後來因為換了新電腦，用了隨機版的 Windows 2000 ，呵呵，這東西真不錯 (指對單人而言) ，在當機的時候，
+		他可以僅將錯誤的程序踢掉，而不干擾其他的程序進行，呵呵！
+		從此以後，就不用擔心會當機連連囉！不過，2000 畢竟還不夠好，因為有的時候還是會死當！</p>
+
+		<p>那麼 Linux 會有這樣的問題嗎？老實說， Linux 幾乎可以說絕對不會當機的！因為他可以在任何時候，
+		將某個被困住的程序殺掉，然後再重新執行該程序而不用重新開機！夠炫吧！那麼如果我在
+		Linux 下以文字界面登入，在螢幕當中顯示錯誤訊息後就掛了～動都不能動，該如何是好！？
+		這個時候那預設的七個視窗就幫上忙啦！你可以隨意的再按
+		[Alt]+[F1].....[F7] 來切換到其他的終端機界面，然後以 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps">ps -aux</a> 找出剛剛的錯誤程序，然後給他
+		<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#kill">kill</a> 一下，哈哈，回到剛剛的終端機界面！恩～棒！又回復正常囉！</p>
+
+		<p>為什麼可以這樣做呢？我們剛剛不是提過嗎？每個程序之間可能是獨立的，也可能有相依性，
+		只要到獨立的程序當中，刪除有問題的那個程序，當然他就可以被系統移除掉啦！^_^</p>
+
+		<ul class="toplist"><li>bash 環境下的工作管理 (job control)</li></ul>
+
+		<p>我們在上一個小節有提到所謂的『父程序、子程序』的關係，那我們登入 bash 之後，
+		就是取得一個名為 bash 的 PID 了，而在這個環境底下所執行的其他指令，
+		就幾乎都是所謂的子程序了。那麼，在這個單一的 bash 介面下，我可不可以進行多個工作啊？
+		當然可以啦！可以『同時』進行喔！舉例來說，我可以這樣做：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cp file1 file2 &amp;</span>
+</pre></td></tr></tbody></table>
+
+		<p>在這一串指令中，重點在那個 &amp; 的功能，他表示將 file1 這個檔案複製為 file2 ，且放置於背景中執行，
+		也就是說執行這一個命令之後，在這一個終端介面仍然可以做其他的工作！而當這一個指令 (cp file1 file2)
+		執行完畢之後，系統將會在你的終端介面顯示完成的消息！很便利喔！</p>
+
+		<ul class="toplist"><li>多人多工的系統資源分配問題考慮：</li></ul>
+
+		<p>多人多工確實有很多的好處，但其實也有管理上的困擾，因為使用者越來越多，
+		將導致你管理上的困擾哩！另外，由於使用者日盛，當使用者達到一定的人數後，
+		通常你的機器便需要升級了，因為 CPU 的運算與 RAM 的大小可能就會不敷使用！</p>
+
+		<p>舉個例子來說，鳥哥之前的網站管理的有點不太好，因為使用了一個很複雜的人數統計程式，
+		這個程式會一直去取用 MySQL 資料庫的資料，偏偏因為流量大，造成 MySQL 很忙碌。
+		在這樣的情況下，當鳥哥要登入去寫網頁資料，或者要去使用討論區的資源時，
+		哇！慢的很！簡直就是『龜速』啊！後來終於將這個程式停止不用了，
+		以自己寫的一個小程式來取代，呵呵！這樣才讓 CPU 的負載 (loading)  整個降下來～
+		用起來順暢多了！ ^_^</p>
+	<br></div><br>
+</div>
+
+
+<a id="background"></a>
+<div class="block1">
+<h2>16.2 工作管理 (job control)</h2>
+
+	<p>這個工作管理 (job control) 是用在 bash 環境下的，也就是說：『<span class="text_import2">當我們登入系統取得 bash shell
+	之後，在<span style="text-decoration: underline">單一終端機介面</span>下同時進行多個工作的行為管理</span> 』。舉例來說，我們在登入 bash 後，
+	想要一邊複製檔案、一邊進行資料搜尋、一邊進行編譯，還可以一邊進行 vim 程式撰寫！
+	當然我們可以重複登入那六個文字介面的終端機環境中，不過，能不能在一個 bash 內達成？
+	當然可以啊！就是使用 job control 啦！ ^_^</p>
+
+	<a id="background_what"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.2.1 什麼是工作管理？</h2>
+
+		<p>從上面的說明當中，你應該要瞭解的是：『<span class="text_import2">進行工作管理的行為中，
+		其實每個工作都是目前 bash 的子程序，亦即彼此之間是有相關性的。
+		我們無法以 job control 的方式由 tty1 的環境去管理 tty2 的 bash ！</span>』
+		這個概念請你得先建立起來，後續的範例介紹之後，你就會清楚的瞭解囉！</p>
+
+		<p>或許你會覺得很奇怪啊，既然我可以在六個終端介面登入，那何必使用 job control 呢？
+		真是脫褲子放屁，多此一舉啊！不要忘記了呢，我們可以在 <a href="http://linux.vbird.org/linux_basic/0410accountmanager.php#limits">/etc/security/limits.conf (第十三章)</a>
+		裡面設定使用者同時可以登入的連線數，在這樣的情況下，某些使用者可能僅能以一個連線來工作呢！
+		所以囉，你就得要瞭解一下這種工作管理的模式了！此外，這個章節內容也會牽涉到很多的資料流重導向，所以，如果忘記的話，
+		務必回到<a href="http://linux.vbird.org/linux_basic/0320bash.php">第十章 BASH Shell</a> 看一看喔！</p>
+
+		<p>由於假設我們只有一個終端介面，因此在<span class="text_import2">可以出現提示字元讓你操作的環境就稱為前景 
+		(foreground)，至於其他工作就可以讓你放入背景 (background) 去暫停或運作。</span>要注意的是，放入背景的工作想要運作時，
+		他必須不能夠與使用者互動。舉例來說， vim 絕對不可能在背景裡面執行 (running) 的！因為你沒有輸入資料他就不會跑啊！
+		而且<span class="text_import2">放入背景的工作是不可以使用 [ctrl]+c 來終止的</span>！</p>
+
+		<p>總之，要進行 bash  的 job control 必須要注意到的限制是：</p>
+
+		<ul class="text_import2">
+		<li>這些工作所觸發的程序必須來自於你 shell 的子程序(只管理自己的 bash)；</li>
+		<li>前景：你可以控制與下達指令的這個環境稱為前景的工作 (foreground)；</li>
+		<li>背景：可以自行運作的工作，你無法使用 [ctrl]+c 終止他，可使用 bg/fg 呼叫該工作；</li>
+		<li>背景中『執行』的程序不能等待 terminal/shell 的輸入(input)</li></ul>
+
+		<p>接下來讓我們實際來管理這些工作吧！</p>
+	<br></div><br>
+
+	<a id="background_run"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.2.2 job control 的管理</h2>
+
+		<p>如前所述，bash 只能夠管理自己的工作而不能管理其他 bash 的工作，所以即使你是 root 也不能夠將別人的 bash
+		底下的 job 給他拿過來執行。此外，又分前景與背景，然後在背景裡面的工作狀態又可以分為『暫停 (stop)』與『運作中
+		(running)』。那實際進行 job 控制的指令有哪些？底下就來談談。</p>
+
+		<a id="the_and"></a>
+		<ul class="toplist"><li>直接將指令丟到背景中『執行』的 &amp;</li></ul>
+
+		<p>如同前面提到的，我們在只有一個 bash 的環境下，如果想要同時進行多個工作，
+		那麼可以將某些工作直接丟到背景環境當中，讓我們可以繼續操作前景的工作！那麼如何將工作丟到背景中？
+		最簡單的方法就是利用『 &amp; 』這個玩意兒了！舉個簡單的例子，我們要將 /etc/ 整個備份成為 
+		/tmp/etc.tar.gz 且不想要等待，那麼可以這樣做：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">tar -zpcf /tmp/etc.tar.gz /etc &amp;</span>
+[1] 14432  <span class="term_note">&lt;== [job number] PID </span>
+[root@study ~]# tar: Removing leading `/' from member names 
+<span class="term_say"># 在中括號內的號碼為工作號碼 (job number)，該號碼與 bash 的控制有關。
+# 後續的 14432 則是這個工作在系統中的 PID。至於後續出現的資料是 tar 執行的資料流，
+# 由於我們沒有加上資料流重導向，所以會影響畫面！不過不會影響前景的操作喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>仔細的瞧一瞧，我在輸入一個指令後，在該指令的最後面加上一個『 &amp; 』代表將該指令丟到背景中，
+		此時 bash 會給予這個指令一個『工作號碼(job number)』，就是那個 [1] 啦！至於後面那個 14432
+		則是該指令所觸發的『 PID 』了！而且，有趣的是，我們可以繼續操作 bash 呢！很不賴吧！
+		不過，那麼丟到背景中的工作什麼時候完成？完成的時候會顯示什麼？如果你輸入幾個指令後，突然出現這個資料：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[1]+  Done                    tar -zpcf /tmp/etc.tar.gz /etc
+</pre></td></tr></tbody></table>
+
+		<p>就代表 [1] 這個工作已經完成 (Done) ，該工作的指令則是接在後面那一串指令列。
+		這樣瞭解了吧！另外，這個 &amp; 代表：『將工作丟到背景中去執行』喔！
+		注意到那個『執行』的字眼！此外，這樣的情況最大的好處是： 
+		<span class="text_import2">不怕被 [ctrl]+c 中斷</span>的啦！
+		此外，將工作丟到背景當中要特別注意資料的流向喔！包括上面的訊息就有出現錯誤訊息，導致我的前景被影響。
+		雖然只要按下 [enter] 就會出現提示字元。但如果我將剛剛那個指令改成：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">tar -zpcvf /tmp/etc.tar.gz /etc &amp;</span>
+</pre></td></tr></tbody></table>
+
+		<p>情況會怎樣？在背景當中執行的指令，如果有 stdout 及 stderr 時，他的資料依舊是輸出到螢幕上面的，
+		所以，我們會無法看到提示字元，當然也就無法完好的掌握前景工作。同時由於是背景工作的 tar ，
+		此時你怎麼按下 [ctrl]+c 也無法停止螢幕被搞的花花綠綠的！所以囉，最佳的狀況就是利用資料流重導向，
+		將輸出資料傳送至某個檔案中。舉例來說，我可以這樣做：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">tar -zpcvf /tmp/etc.tar.gz /etc &gt; /tmp/log.txt 2&gt;&amp;1 &amp;</span>
+[1] 14547
+[root@study ~]# 
+</pre></td></tr></tbody></table>
+
+		<p>呵呵！如此一來，輸出的資訊都給他傳送到 /tmp/log.txt 當中，當然就不會影響到我們前景的作業了。
+		這樣說，您應該可以更清楚資料流重導向的重要性了吧！^_^</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		工作號碼 (job number) 只與你這個 bash 環境有關，但是他既然是個指令觸發的咚咚，所以當然一定是一個程序，
+		因此你會觀察到有 job number 也搭配一個 PID ！
+		</fieldset><br>
+		<a id="ctrl_z"></a>
+		<ul class="toplist"><li>將『目前』的工作丟到背景中『暫停』：[ctrl]-z</li></ul>
+
+		<p>想個情況：如果我正在使用 vim ，卻發現我有個檔案不知道放在哪裡，需要到 bash
+		環境下進行搜尋，此時是否要結束 vim 呢？呵呵！當然不需要啊！只要暫時將 vim 給他丟到背景當中等待即可。
+		例如以下的案例：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vim  ~/.bashrc</span>
+<span class="term_say"># 在 vim 的一般模式下，按下 [ctrl]-z 這兩個按鍵</span>
+[1]+  Stopped                 vim ~/.bashrc
+[root@study ~]#   <span class="term_note">&lt;==順利取得了前景的操控權！</span>
+[root@study ~]# <span class="term_command">find / -print</span>
+<span class="term_say">....(輸出省略)....
+# 此時螢幕會非常的忙碌！因為螢幕上會顯示所有的檔名。請按下 [ctrl]-z 暫停</span>
+[2]+  Stopped                 find / -print
+</pre></td></tr></tbody></table>
+
+		<p>在 vim 的一般模式下，按下 [ctrl] 及 z 這兩個按鍵，螢幕上會出現 [1] ，表示這是第一個工作，
+		而<span class="text_import2">那個 + 代表最近一個被丟進背景的工作，且目前在背景下預設會被取用的那個工作 
+		(與 fg 這個指令有關 )！而那個 Stopped 則代表目前這個工作的狀態。在預設的情況下，使用 [ctrl]-z 
+		丟到背景當中的工作都是『暫停』的狀態喔！</span></p>
+
+		<a id="jobs"></a>
+		<ul class="toplist"><li>觀察目前的背景工作狀態： jobs</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">jobs [-lrs]</span>
+<span class="term_say">選項與參數：
+-l  ：除了列出 job number 與指令串之外，同時列出 PID 的號碼；
+-r  ：僅列出正在背景 run 的工作；
+-s  ：僅列出正在背景當中暫停 (stop) 的工作。</span>
+
+<span class="term_hd">範例一：觀察目前的 bash 當中，所有的工作，與對應的 PID</span>
+[root@study ~]# <span class="term_command">jobs -l</span>
+[1]- 14566 Stopped                 vim ~/.bashrc
+[2]+ 14567 Stopped                 find / -print
+</pre></td></tr></tbody></table>
+
+		<p>如果想要知道目前有多少的工作在背景當中，就用 jobs 這個指令吧！一般來說，直接下達 jobs 即可！
+		不過，如果你還想要知道該 job number 的 PID 號碼，可以加上 -l  這個參數啦！
+		在輸出的資訊當中，例如上表，仔細看到那個 + - 號喔！那個 + 代表預設的取用工作。
+		所以說：『<span class="text_import2">目前我有兩個工作在背景當中，兩個工作都是暫停的，
+		而如果我僅輸入 fg 時，那麼那個 [2] 會被拿到前景當中來處理</span>』！</p>
+
+		<p><span class="text_import2">其實 + 代表最近被放到背景的工作號碼， - 代表最近最後第二個被放置到背景中的工作號碼。</span>
+		而超過最後第三個以後的工作，就不會有 +/- 符號存在了！</p>
+
+		<a id="fg"></a>
+		<ul class="toplist"><li>將背景工作拿到前景來處理：fg</li></ul>
+
+		<p>剛剛提到的都是將工作丟到背景當中去執行的，那麼有沒有可以將背景工作拿到前景來處理的？
+		有啊！就是那個 fg (foreground) 啦！舉例來說，我們想要將上頭範例當中的工作拿出來處理時：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">fg %jobnumber</span>
+<span class="term_say">選項與參數：
+%jobnumber ：jobnumber 為工作號碼(數字)。注意，那個 % 是可有可無的！</span>
+
+<span class="term_hd">範例一：先以 jobs 觀察工作，再將工作取出：</span>
+[root@study ~]# <span class="term_command">jobs -l</span>
+[1]- 14566 Stopped                 vim ~/.bashrc
+[2]+ 14567 Stopped                 find / -print
+[root@study ~]# <span class="term_command">fg   </span>   <span class="term_note">&lt;==預設取出那個 + 的工作，亦即 [2]。立即按下[ctrl]-z</span>
+[root@study ~]# <span class="term_command">fg %1</span>   <span class="term_note">&lt;==直接規定取出的那個工作號碼！再按下[ctrl]-z</span>
+[root@study ~]# <span class="term_command">jobs -l</span>
+[1]<span class="term_write">+</span> 14566 Stopped                 vim ~/.bashrc
+[2]- 14567 Stopped                 find / -print
+</pre></td></tr></tbody></table>
+
+		<p>經過 fg 指令就能夠將背景工作拿到前景來處理囉！不過比較有趣的是最後一個顯示的結果，我們會發現 + 出現在第一個工作後！
+		怎麼會這樣啊？這是因為你剛剛利用 fg %1 將第一號工作捉到前景後又放回背景，此時最後一個被放入背景的將變成 vi 那個指令動作，
+		所以當然 [1] 後面就會出現 + 了！瞭解乎！另外，如果輸入『<span class="text_import2"> fg - </span>』
+		則代表將 - 號的那個工作號碼拿出來，上面就是 [2]- 那個工作號碼啦！</p>
+
+		<a id="bg"></a>
+		<ul class="toplist"><li>讓工作在背景下的狀態變成運作中： bg</li></ul>
+
+		<p>我們剛剛提到，那個 [ctrl]-z 可以將目前的工作丟到背景底下去『暫停』，
+		那麼如何讓一個工作在背景底下『 Run 』呢？我們可以在底下這個案例當中來測試！
+		注意喔！底下的測試要進行的快一點！^_^</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例一：一執行 find / -perm /7000 &gt; /tmp/text.txt 後，立刻丟到背景去暫停！</span>
+[root@study ~]# <span class="term_command">find / -perm /7000 &gt; /tmp/text.txt</span>
+<span class="term_say"># 此時，請立刻按下 [ctrl]-z 暫停！</span>
+[3]+  Stopped                 find / -perm /7000 &gt; /tmp/text.txt
+
+<span class="term_hd">範例二：讓該工作在背景下進行，並且觀察他！！</span>
+[root@study ~]# <span class="term_command">jobs ; bg %3 ; jobs</span>
+[1]   Stopped                 vim ~/.bashrc
+[2]-  Stopped                 find / -print
+[3]+  <span class="term_write">Stopped</span>                 find / -perm /7000 &gt; /tmp/text.txt
+[3]+ find / -perm /7000 &gt; /tmp/text.txt &amp;
+[1]-  Stopped                 vim ~/.bashrc
+[2]+  Stopped                 find / -print
+[3]   <span class="term_write">Running</span>                 find / -perm /7000 &gt; /tmp/text.txt &amp;
+</pre></td></tr></tbody></table>
+
+		<p>看到哪裡有差異嗎？呼呼！沒錯！就是那個狀態列～以經由 Stopping 變成了 Running 囉！
+		看到差異點，嘿嘿！指令列最後方多了一個 &amp; 的符號囉！
+		代表該工作被啟動在背景當中了啦！ ^_^</p>
+
+		<a id="killjobs"></a>
+		<ul class="toplist"><li>管理背景當中的工作： kill</li></ul>
+
+		<p>剛剛我們可以讓一個已經在背景當中的工作繼續工作，也可以讓該工作以 fg 拿到前景來，
+		那麼，如果想要將該工作直接移除呢？或者是將該工作重新啟動呢？這個時候就得需要給予該工作一個訊號 
+		(signal) ，讓他知道該怎麼作才好啊！此時， kill 這個指令就派上用場啦！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">kill -signal %jobnumber</span>
+[root@study ~]# <span class="term_command">kill -l</span>
+<span class="term_say">選項與參數：
+-l  ：這個是 L 的小寫，列出目前 kill 能夠使用的訊號 (signal) 有哪些？
+signal ：代表給予後面接的那個工作什麼樣的指示囉！用 man 7 signal 可知：
+  -1 ：重新讀取一次參數的設定檔 (類似 reload)；
+  -2 ：代表與由鍵盤輸入 [ctrl]-c 同樣的動作；
+  -9 ：立刻強制刪除一個工作；
+  -15：以正常的程序方式終止一項工作。與 -9 是不一樣的。</span>
+
+<span class="term_hd">範例一：找出目前的 bash 環境下的背景工作，並將該工作『強制刪除』。</span>
+[root@study ~]# <span class="term_command">jobs</span>
+[1]+  Stopped                 vim ~/.bashrc
+[2]   Stopped                 find / -print
+[root@study ~]# <span class="term_command">kill -9 %2; jobs</span>
+[1]+  Stopped                 vim ~/.bashrc
+[2]   <span class="term_write">Killed</span>                  find / -print
+<span class="term_say"># 再過幾秒你再下達 jobs 一次，就會發現 2 號工作不見了！因為被移除了！</span>
+
+<span class="term_hd">範例二：找出目前的 bash 環境下的背景工作，並將該工作『正常終止』掉。</span>
+[root@study ~]# <span class="term_command">jobs</span>
+[1]+  Stopped                 vim ~/.bashrc
+[root@study ~]# <span class="term_command">kill -SIGTERM %1</span>
+<span class="term_say"># -SIGTERM 與 -15 是一樣的！您可以使用 kill -l 來查閱！
+# 不過在這個案例中， vim 的工作無法被結束喔！因為他無法透過 kill 正常終止的意思！</span>
+</pre></td></tr></tbody></table>
+
+		<p>特別留意一下， <span class="text_import2">-9 這個 signal 通常是用在『強制刪除一個不正常的工作』時所使用的，
+		-15 則是以正常步驟結束一項工作(15也是預設值)</span>，兩者之間並不相同呦！舉上面的例子來說，
+		我用 vim 的時候，不是會產生一個 .filename.swp 的檔案嗎？
+		那麼，當使用 -15 這個 signal 時， vim 會嘗試以正常的步驟來結束掉該 vi 的工作，
+		所以 .filename.swp 會主動的被移除。但若是使用 -9 這個 signal 時，由於該 vim 工作會被強制移除掉，因此， 
+		.filename.swp 就會繼續存在檔案系統當中。這樣您應該可以稍微分辨一下了吧？</p>
+
+		<p>不過，畢竟正常的作法中，你應該先使用 fg 來取回前景控制權，然後再離開 vim 才對～因此，以上面的範例二為例，其實 kill 
+		確實無法使用 -15 正常的結束掉 vim 的動作喔！此時還是不建議使用 -9 啦！因為你知道如何正常結束該程序不是嗎？
+		通常使用 -9 是因為某些程式你真的不知道怎麼透過正常手段去終止他，這才用到 -9 的！</p>
+
+		<p>其實， kill 的妙用是很無窮的啦！他搭配 signal 所詳列的資訊 (用 man 7 signal 去查閱相關資料)
+		可以讓您有效的管理工作與程序 (Process)，此外，那個 killall 也是同樣的用法！
+		至於常用的 signal 您至少需要瞭解 1, 9, 15 這三個 signal 的意義才好。
+		此外， signal 除了以數值來表示之外，也可以使用訊號名稱喔！
+		舉例來說，上面的範例二就是一個例子啦！至於 signal number 與名稱的對應，
+		呵呵，使用 kill -l 就知道啦(L的小寫)！</p>
+
+		<p>另外， kill 後面接的數字預設會是 PID ，如果想要管理 bash 的工作控制，就得要加上 %數字 了，
+		這點也得特別留意才行喔！</p>
+	<br></div><br>
+
+	<a id="background_term"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.2.3 離線管理問題</h2>
+
+		<p>要注意的是，我們在工作管理當中提到的『背景』指的是在終端機模式下可以避免 [ctrl]-c 中斷的一個情境，
+		你可以說那個是 bash 的背景，並不是放到系統的背景去喔！所以，<span class="text_import2">工作管理的背景依舊與終端機有關</span>啦！
+		在這樣的情況下，如果你是以遠端連線方式連接到你的 Linux 主機，並且將工作以 &amp; 的方式放到背景去，
+		請問，在工作尚未結束的情況下你離線了，該工作還會繼續進行嗎？答案是『否』！不會繼續進行，而是會被中斷掉。</p>
+
+		<a id="nohup"></a>
+		<p>那怎麼辦？如果我的工作需要進行一大段時間，我又不能放置在背景底下，那該如何處理呢？
+		首先，你可以參考前一章的 <a href="http://linux.vbird.org/linux_basic/0430cron.php#at">at</a> 來處理即可！因為 at 是將工作放置到系統背景，
+		而與終端機無關。如果不想要使用 at 的話，那你也可以嘗試使用 nohup 這個指令來處理喔！這個 nohup 
+		可以讓你在離線或登出系統後，還能夠讓工作繼續進行。他的語法有點像這樣：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">nohup [指令與參數]  </span> <span class="term_note">&lt;==在終端機前景中工作</span>
+[root@study ~]# <span class="term_command">nohup [指令與參數] &amp;</span> <span class="term_note">&lt;==在終端機背景中工作</span>
+</pre></td></tr></tbody></table>
+
+		<p>有夠好簡單的指令吧！上述指令需要注意的是， nohup 並不支援 bash 內建的指令，因此你的指令必須要是外部指令才行。
+		我們來嘗試玩一下底下的任務吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先編輯一支會『睡著 500 秒』的程式：</span>
+[root@study ~]# <span class="term_command">vim sleep500.sh</span>
+#!/bin/bash
+/bin/sleep 500s
+/bin/echo "I have slept 500 seconds."
+
+<span class="term_hd"># 2. 丟到背景中去執行，並且立刻登出系統：</span>
+[root@study ~]# <span class="term_command">chmod a+x sleep500.sh</span>
+[root@study ~]# <span class="term_command">nohup ./sleep500.sh &amp;</span>
+[2] 14812
+[root@study ~]#  nohup: ignoring input and appending output to `nohup.out' <span class="term_note">&lt;==會告知這個訊息！</span>
+[root@study ~]# <span class="term_command">exit</span>
+</pre></td></tr></tbody></table>
+
+		<p>如果你再次登入的話，再使用 pstree 去查閱你的程序，會發現 sleep500.sh 還在執行中喔！並不會被中斷掉！
+		這樣瞭解意思了嗎？由於我們的程式最後會輸出一個訊息，但是 nohup 與終端機其實無關了，
+		因此這個訊息的輸出就會被導向『 ~/nohup.out 』，所以你才會看到上述指令中，當你輸入 nohup 後，
+		會出現那個提示訊息囉。</p>
+
+		<p>如果你想要讓在背景的工作在你登出後還能夠繼續的執行，那麼使用 nohup 搭配 &amp; 是不錯的運作情境喔！
+		可以參考看看！</p>
+	<br></div>
+</div>
+
+
+<a id="process"></a>
+<div class="block1">
+<h2>16.3 程序管理</h2>
+
+	<p>本章一開始就提到所謂的『程序』的概念，包括程序的觸發、子程序與父程序的相關性等等，
+	此外，還有那個『程序的相依性』以及所謂的『殭屍程序』等等需要說明的呢！為什麼程序管理這麼重要呢？這是因為：</p>
+
+	<ul>
+	<li>首先，本章一開始就談到的，我們在操作系統時的各項工作其實都是經過某個 PID 來達成的 (包括你的 bash 環境)，
+	因此，能不能進行某項工作，就與該程序的權限有關了。</li>
+	<li>再來，如果您的 Linux 系統是個很忙碌的系統，那麼當整個系統資源快要被使用光時，
+	您是否能夠找出最耗系統的那個程序，然後刪除該程序，讓系統恢復正常呢？</li>
+	<li>此外，如果由於某個程式寫的不好，導致產生一個有問題的程序在記憶體當中，您又該如何找出他，然後將他移除呢？</li>
+	<li>如果同時有五六項工作在您的系統當中運作，但其中有一項工作才是最重要的，
+	該如何讓那一項重要的工作被最優先執行呢？</li>
+	</ul>
+
+	<p>所以囉，一個稱職的系統管理員，必須要熟悉程序的管理流程才行，否則當系統發生問題時，還真是很難解決問題呢！
+	底下我們會先介紹如何觀察程序與程序的狀態，然後再加以程序控制囉！</p>
+
+	<a id="process_1"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.3.1 程序的觀察</h2>
+
+		<p>既然程序這麼重要，那麼我們如何查閱系統上面正在運作當中的程序呢？很簡單啊！
+		利用靜態的 ps 或者是動態的 top，還能以 pstree 來查閱程序樹之間的關係喔！</p>
+
+		<a id="ps"></a>
+		<ul class="toplist"><li>ps ：將某個時間點的程序運作情況擷取下來</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ps aux </span> <span class="term_note">&lt;==觀察系統所有的程序資料</span>
+[root@study ~]# <span class="term_command">ps -lA </span> <span class="term_note">&lt;==也是能夠觀察所有系統的資料</span>
+[root@study ~]# <span class="term_command">ps axjf</span> <span class="term_note">&lt;==連同部分程序樹狀態</span>
+<span class="term_say">選項與參數：
+-A  ：所有的 process 均顯示出來，與 -e 具有同樣的效用；
+-a  ：不與 terminal 有關的所有 process ；
+-u  ：有效使用者 (effective user) 相關的 process ；
+x   ：通常與 a 這個參數一起使用，可列出較完整資訊。
+輸出格式規劃：
+l   ：較長、較詳細的將該 PID 的的資訊列出；
+j   ：工作的格式 (jobs format)
+-f  ：做一個更為完整的輸出。</span>
+</pre></td></tr></tbody></table>
+
+
+		<p>鳥哥個人認為 ps 這個指令的 man page 不是很好查閱，因為很多不同的 Unix 都使用這個 ps 來查閱程序狀態，
+		為了要符合不同版本的需求，所以這個 man page 寫的非常的龐大！因此，通常鳥哥都會建議你，直接背兩個比較不同的選項，
+		<span class="text_import2">一個是只能查閱自己 bash 程序的『 ps -l 』一個則是可以查閱所有系統運作的程序『 
+		ps aux 』</span>！注意，你沒看錯，是『 ps aux 』沒有那個減號 (-) ！先來看看關於自己 bash 程序狀態的觀察：</p>
+
+		<div class="illus">
+
+		<a id="ps_l"></a>
+		<ul><li>僅觀察自己的 bash 相關程序： ps -l</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例一：將目前屬於您自己這次登入的 PID 與相關資訊列示出來(只與自己的 bash 有關)</span>
+[root@study ~]# <span class="term_command">ps -l</span>
+<span style="text-decoration: underline">F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD</span>
+4 S     0 14830 13970  0  80   0 - 52686 poll_s pts/0    00:00:00 sudo
+4 S     0 14835 14830  0  80   0 - 50511 wait   pts/0    00:00:00 su
+<span style="text-decoration: underline">4 S     0 14836 14835  0  80   0 - 29035 wait   pts/0    00:00:00 bash</span>
+0 R     0 15011 14836  0  80   0 - 30319 -      pts/0    00:00:00 ps
+<span class="term_say"># 還記得鳥哥說過，非必要不要使用 root 直接登入吧？從這個 ps -l 的分析，你也可以發現，
+# 鳥哥其實是使用 sudo 才轉成 root 的身份～否則連測試機，鳥哥都是使用一般帳號登入的！</span>
+</pre></td></tr></tbody></table>
+
+		<p>系統整體的程序運作是非常多的，但如果使用 ps -l 則僅列出與你的操作環境 (bash) 有關的程序而已，
+		亦即最上層的父程序會是你自己的 bash 而沒有延伸到 systemd (後續會交待！) 這支程序去！那麼 ps -l 秀出來的資料有哪些呢？
+		我們就來觀察看看：</p>
+
+		<ul style="margin-left: 30px; list-style-type: square; color: #000000;">
+		<li style="color: #252525;">F：代表這個程序旗標 (process flags)，說明這個程序的總結權限，常見號碼有：<br>
+			<ul>
+			<li>若為 4 表示此程序的權限為 root ；</li>
+			<li>若為 1 則表示此子程序僅進行<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fork_and_exec">複製(fork)而沒有實際執行(exec)</a>。</li>
+			</ul><br></li>
+		<li style="color: #252525;">S：代表這個程序的狀態 (STAT)，主要的狀態有：<br>
+			<ul class="text_import2">
+			<li>R (Running)：該程式正在運作中；</li>
+			<li>S (Sleep)：該程式目前正在睡眠狀態(idle)，但可以被喚醒(signal)。</li>
+			<li>D ：不可被喚醒的睡眠狀態，通常這支程式可能在等待 I/O 的情況(ex&gt;列印)</li>
+			<li>T ：停止狀態(stop)，可能是在工作控制(背景暫停)或除錯 (traced) 狀態；</li>
+			<li>Z (Zombie)：僵屍狀態，程序已經終止但卻無法被移除至記憶體外。</li>
+			</ul><br></li>
+
+		<li style="color: #252525;">UID/PID/PPID：代表『此程序被該 UID 所擁有/程序的 PID 號碼/此程序的父程序 PID 號碼』<br><br></li>
+
+		<li style="color: #252525;">C：代表 CPU 使用率，單位為百分比；<br><br></li>
+
+		<li style="color: #252525;">PRI/NI：Priority/Nice 的縮寫，代表此程序被 CPU 所執行的優先順序，數值越小代表該程序越快被 
+			CPU 執行。詳細的 PRI 與 NI 將在<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#priority">下一小節</a>說明。<br><br></li>
+
+		<li style="color: #252525;">ADDR/SZ/WCHAN：都與記憶體有關，ADDR 是 kernel function，指出該程序在記憶體的哪個部分，如果是個 running
+		的程序，一般就會顯示『 - 』 / SZ 代表此程序用掉多少記憶體 / WCHAN 表示目前程序是否運作中，同樣的，
+		若為 - 表示正在運作中。<br><br></li>
+
+		<li style="color: #252525;">TTY：登入者的終端機位置，若為遠端登入則使用動態終端介面 (pts/n)；<br><br></li>
+
+		<li style="color: #252525;">TIME：使用掉的 CPU 時間，注意，是此程序實際花費 CPU 運作的時間，而不是系統時間；<br><br></li>
+
+		<li style="color: #252525;">CMD：就是 command 的縮寫，造成此程序的觸發程式之指令為何。</li>
+		</ul>
+
+		<p>所以你看到的 ps -l 輸出訊息中，他說明的是：『bash 的程式屬於 UID 為 0 的使用者，狀態為睡眠 (sleep)，
+		之所以為睡眠因為他觸發了 ps (狀態為 run) 之故。此程序的 PID 為 14836，優先執行順序為 80 ，
+		下達 bash 所取得的終端介面為 pts/0 ，運作狀態為等待 (wait) 。』這樣已經夠清楚了吧？
+		您自己嘗試解析一下那麼 ps 那一行代表的意義為何呢？ ^_^</p>
+
+		<p>接下來讓我們使用 ps 來觀察一下系統內所有的程序狀態吧！</p>
+
+		<a id="ps_aux"></a>
+		<ul><li>觀察系統所有程序： ps aux</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例二：列出目前所有的正在記憶體當中的程序：</span>
+[root@study ~]# <span class="term_command">ps aux</span>
+<span style="text-decoration: underline">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span>
+root         1  0.0  0.2  60636  7948 ?        Ss   Aug04   0:01 /usr/lib/systemd/systemd ...
+root         2  0.0  0.0      0     0 ?        S    Aug04   0:00 [kthreadd]
+<span class="term_say">.....(中間省略).....</span>
+root     14830  0.0  0.1 210744  3988 pts/0    S    Aug04   0:00 sudo su -
+root     14835  0.0  0.1 202044  2996 pts/0    S    Aug04   0:00 su -
+<span style="text-decoration: underline">root     14836  0.0  0.1 116140  2960 pts/0    S    Aug04   0:00 -bash</span>
+<span class="term_say">.....(中間省略).....</span>
+root     18459  0.0  0.0 123372  1380 pts/0    R+   00:25   0:00 ps aux
+</pre></td></tr></tbody></table>
+
+		<p>你會發現 ps -l 與 ps aux 顯示的項目並不相同！在 ps aux 顯示的項目中，各欄位的意義為：</p>
+
+		<ul style="margin-left: 30px; list-style-type: square; color: #000000; font-family: &#39;細明體&#39;; ">
+		<li style="color: #252525;">USER：該 process 屬於那個使用者帳號的？</li>
+		<li style="color: #252525;">PID ：該 process 的程序識別碼。</li>
+		<li style="color: #252525;">%CPU：該 process 使用掉的 CPU 資源百分比；</li>
+		<li style="color: #252525;">%MEM：該 process 所佔用的實體記憶體百分比；</li>
+		<li style="color: #252525;">VSZ ：該 process 使用掉的虛擬記憶體量 (Kbytes)</li>
+		<li style="color: #252525;">RSS ：該 process 佔用的固定的記憶體量 (Kbytes)</li>
+		<li style="color: #252525;">TTY ：該 process 是在那個終端機上面運作，若與終端機無關則顯示 ?，另外， tty1-tty6
+			是本機上面的登入者程序，若為 pts/0 等等的，則表示為由網路連接進主機的程序。</li>
+		<li style="color: #252525;">STAT：該程序目前的狀態，狀態顯示與 ps -l 的 S 旗標相同 (R/S/T/Z)</li>
+		<li style="color: #252525;">START：該 process 被觸發啟動的時間；</li>
+		<li style="color: #252525;">TIME ：該 process 實際使用 CPU 運作的時間。</li>
+		<li style="color: #252525;">COMMAND：該程序的實際指令為何？</li>
+		</ul>
+
+		<p>一般來說，ps aux 會依照 PID 的順序來排序顯示，我們還是以 14836 那個 PID 那行來說明！該行的意義為『
+		root 執行的 bash PID 為 14836，佔用了 0.1% 的記憶體容量百分比，狀態為休眠 (S)，該程序啟動的時間為 8 月 4 號，因此啟動太久了，
+		所以沒有列出實際的時間點。且取得的終端機環境為 pts/0 。』與 ps aux 看到的其實是同一個程序啦！這樣可以理解嗎？
+		讓我們繼續使用 ps 來觀察一下其他的資訊吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例三：以範例一的顯示內容，顯示出所有的程序：</span>
+[root@study ~]# <span class="term_command">ps -lA</span>
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0     1     0  0  80   0 - 15159 ep_pol ?        00:00:01 systemd
+1 S     0     2     0  0  80   0 -     0 kthrea ?        00:00:00 kthreadd
+1 S     0     3     2  0  80   0 -     0 smpboo ?        00:00:00 ksoftirqd/0
+<span class="term_say">....(以下省略)....
+# 你會發現每個欄位與 ps -l 的輸出情況相同，但顯示的程序則包括系統所有的程序。</span>
+
+<span class="term_hd">範例四：列出類似程序樹的程序顯示：</span>
+[root@study ~]# <span class="term_command">ps axjf</span>
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+    0     2     0     0 ?           -1 S        0   0:00 [kthreadd]
+    2     3     0     0 ?           -1 S        0   0:00  \_ [ksoftirqd/0]
+<span class="term_say">.....(中間省略).....</span>
+    1  1326  1326  1326 ?           -1 Ss       0   0:00 /usr/sbin/sshd -D
+ 1326 13923 13923 13923 ?           -1 Ss       0   0:00  \_ sshd: dmtsai [priv]
+13923 13927 13923 13923 ?           -1 S     1000   0:00      \_ sshd: dmtsai@pts/0
+13927 13928 13928 13928 pts/0    18703 Ss    1000   0:00          \_ -bash
+13928 13970 13970 13928 pts/0    18703 S     1000   0:00              \_ bash
+13970 14830 14830 13928 pts/0    18703 S        0   0:00                  \_ sudo su -
+14830 14835 14830 13928 pts/0    18703 S        0   0:00                      \_ su -
+14835 14836 14836 13928 pts/0    18703 S        0   0:00                          \_ -bash
+14836 18703 18703 13928 pts/0    18703 R+       0   0:00                              \_ ps axjf
+<span class="term_say">.....(後面省略).....</span>
+</pre></td></tr></tbody></table>
+
+		<p>看出來了吧？其實鳥哥在進行一些測試時，都是以網路連線進虛擬機來測試的，所以囉，你會發現其實程序之間是有相關性的啦！
+		不過，其實還可以使用 pstree 來達成這個程序樹喔！以上面的例子來看，鳥哥是透過 sshd 提供的網路服務取得一個程序，
+		該程序提供 bash 給我使用，而我透過 bash 再去執行 ps axjf ！這樣可以看的懂了嗎？其他各欄位的意義請 man ps 
+		(雖然真的很難 man 的出來！) 囉！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例五：找出與 cron 與 rsyslog 這兩個服務有關的 PID 號碼？</span>
+[root@study ~]# <span class="term_command">ps aux | egrep '(cron|rsyslog)'</span>
+root       742  0.0  0.1 208012  4088 ?        Ssl  Aug04   0:00 /usr/sbin/rsyslogd -n
+root      1338  0.0  0.0 126304  1704 ?        Ss   Aug04   0:00 /usr/sbin/crond -n
+root     18740  0.0  0.0 112644   980 pts/0    S+   00:49   0:00 grep -E --color=auto (cron|rsyslog)
+<span class="term_say"># 所以號碼是 742 及 1338 這兩個囉！就是這樣找的啦！</span>
+</pre></td></tr></tbody></table>
+
+		<a id="zombie"></a>
+		<p>除此之外，我們必須要知道的是『僵屍 (zombie) 』程序是什麼？
+		通常，造成僵屍程序的成因是因為該程序應該已經執行完畢，或者是因故應該要終止了，
+		但是該程序的父程序卻無法完整的將該程序結束掉，而造成那個程序一直存在記憶體當中。
+		如果你發現在某個程序的 CMD 後面還接上 &lt;defunct&gt; 時，就代表該程序是僵屍程序啦，例如：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>apache  8683  0.0  0.9 83384 9992 ?   Z  14:33   0:00 /usr/sbin/httpd &lt;defunct&gt;
+</pre></td></tr></tbody></table>
+
+		<p>當系統不穩定的時候就容易造成所謂的僵屍程序，可能是因為程式寫的不好啦，或者是使用者的操作習慣不良等等所造成。
+		如果你發現系統中很多僵屍程序時，記得啊！要找出該程序的父程序，然後好好的做個追蹤，好好的進行主機的環境最佳化啊！
+		看看有什麼地方需要改善的，不要只是直接將他 kill 掉而已呢！不然的話，萬一他一直產生，那可就麻煩了！ @_@</p>
+
+		<p>事實上，通常僵屍程序都已經無法控管，而直接是交給 systemd 這支程式來負責了，偏偏 systemd 是系統第一支執行的程式，
+		他是所有程式的父程式！我們無法殺掉該程式的 (殺掉他，系統就死掉了！)，所以囉，如果產生僵屍程序，
+		而系統過一陣子還沒有辦法透過核心非經常性的特殊處理來將該程序刪除時，那你只好透過 reboot 
+		的方式來將該程序抹去了！</p>
+
+		</div>
+
+		<a id="topm"></a>
+		<ul class="toplist"><li>top：動態觀察程序的變化</li></ul>
+
+		<p>相對於 ps 是擷取一個時間點的程序狀態， top 則可以持續偵測程序運作的狀態！使用方式如下：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">top [-d 數字] | top [-bnp]</span>
+<span class="term_say">選項與參數：
+-d  ：後面可以接秒數，就是整個程序畫面更新的秒數。預設是 5 秒；
+-b  ：以批次的方式執行 top ，還有更多的參數可以使用喔！
+      通常會搭配資料流重導向來將批次的結果輸出成為檔案。
+-n  ：與 -b 搭配，意義是，需要進行幾次 top 的輸出結果。
+-p  ：指定某些個 PID 來進行觀察監測而已。
+在 top 執行過程當中可以使用的按鍵指令：
+	? ：顯示在 top 當中可以輸入的按鍵指令；
+	P ：以 CPU 的使用資源排序顯示；
+	M ：以 Memory 的使用資源排序顯示；
+	N ：以 PID 來排序喔！
+	T ：由該 Process 使用的 CPU 時間累積 (TIME+) 排序。
+	k ：給予某個 PID 一個訊號  (signal)
+	r ：給予某個 PID 重新制訂一個 nice 值。
+	q ：離開 top 軟體的按鍵。</span>
+</pre></td></tr></tbody></table>
+
+		<p>其實 top 的功能非常多！可以用的按鍵也非常的多！可以參考 man top 的內部說明文件！
+		鳥哥這裡僅是列出一些鳥哥自己常用的選項而已。接下來讓我們實際觀察一下如何使用 top 與 top 的畫面吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例一：每兩秒鐘更新一次 top ，觀察整體資訊：</span>
+[root@study ~]# <span class="term_command">top -d 2</span>
+top - 00:53:59 up  6:07,  3 users,  <span style="text-decoration: underline">load average: 0.00, 0.01, 0.05</span>
+Tasks: 179 total,   2 running, 177 sleeping,   0 stopped,   <span style="text-decoration: underline">0 zombie</span>
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  <span style="text-decoration: underline">0.0 wa</span>,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  2916388 total,  1839140 free,   353712 used,   723536 buff/cache
+KiB Swap:  1048572 total,  1048572 free,   <span style="text-decoration: underline">     0 used</span>.  2318680 avail Mem
+    <span class="term_note">&lt;==如果加入 k 或 r 時，就會有相關的字樣出現在這裡喔！</span>
+<span style="background-color:white; color:black">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND    </span>
+18804 root      20   0  130028   1872   1276 R   0.5  0.1   0:00.02 top
+    1 root      20   0   60636   7948   2656 S   0.0  0.3   0:01.70 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:00.01 kthreadd
+    3 root      20   0       0      0      0 S   0.0  0.0   0:00.00 ksoftirqd/0
+</pre></td></tr></tbody></table>
+
+		<p>top 也是個挺不錯的程序觀察工具！但不同於 ps 是靜態的結果輸出， top 這個程式可以持續的監測整個系統的程序工作狀態。
+		在預設的情況下，每次更新程序資源的時間為 5 秒，不過，可以使用 -d 來進行修改。
+		top 主要分為兩個畫面，上面的畫面為整個系統的資源使用狀態，基本上總共有六行，顯示的內容依序是：</p>
+
+		<ul>
+		<li>第一行(top...)：這一行顯示的資訊分別為：
+			<ul>
+			<li>目前的時間，亦即是 00:53:59 那個項目；</li>
+			<li>開機到目前為止所經過的時間，亦即是 up  6:07, 那個項目；</li>
+			<li>已經登入系統的使用者人數，亦即是 3 users, 項目；</li>
+			<li>系統在 1, 5, 15 分鐘的平均工作負載。我們在<a href="http://linux.vbird.org/linux_basic/0430cron.php#batch">第十五章談到的 batch</a> 
+			工作方式為負載小於 0.8 就是這個負載囉！代表的是 1, 5, 15 分鐘，系統平均要負責運作幾個程序(工作)的意思。
+			越小代表系統越閒置，若高於 1 得要注意你的系統程序是否太過繁複了！</li>
+			</ul><br></li>
+
+		<li>第二行(Tasks...)：顯示的是目前程序的總量與個別程序在什麼狀態(running, sleeping, stopped, zombie)。
+		比較需要注意的是最後的 zombie 那個數值，如果不是 0 ！好好看看到底是那個 process 變成僵屍了吧？<br><br></li>
+
+		<li>第三行(%Cpus...)：顯示的是 CPU 的整體負載，每個項目可使用 ? 查閱。需要特別注意的是 wa 項目，那個項目代表的是 I/O wait，
+		通常你的系統會變慢都是 I/O 產生的問題比較大！因此這裡得要注意這個項目耗用 CPU 的資源喔！
+		另外，如果是多核心的設備，可以按下數字鍵『1』來切換成不同 CPU 的負載率。<br><br></li>
+
+		<li>第四行與第五行：表示目前的實體記憶體與虛擬記憶體 (Mem/Swap) 的使用情況。
+		再次重申，要注意的是 swap 的使用量要盡量的少！如果 swap 被用的很大量，表示系統的實體記憶體實在不足！<br><br></li>
+
+		<li>第六行：這個是當在 top 程式當中輸入指令時，顯示狀態的地方。</li>
+		</ul>
+
+		<p>至於 top 下半部分的畫面，則是每個 process 使用的資源情況。比較需要注意的是：</p>
+
+		<ul style="font-family: &#39;細明體&#39;">
+		<li>PID ：每個 process 的 ID 啦！</li>
+		<li>USER：該 process 所屬的使用者；</li>
+		<li>PR  ：Priority 的簡寫，程序的優先執行順序，越小越早被執行；</li>
+		<li>NI  ：Nice 的簡寫，與 Priority 有關，也是越小越早被執行；</li>
+		<li>%CPU：CPU 的使用率；</li>
+		<li>%MEM：記憶體的使用率；</li>
+		<li>TIME+：CPU 使用時間的累加；</li>
+		</ul>
+
+		<p>top 預設使用 CPU 使用率 (%CPU) 作為排序的重點，如果你想要使用記憶體使用率排序，則可以按下『M』，
+		若要回復則按下『P』即可。如果想要離開 top 則按下『 q 』吧！如果你想要將 top 的結果輸出成為檔案時，
+		可以這樣做：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例二：將 top 的資訊進行 2 次，然後將結果輸出到 /tmp/top.txt</span>
+[root@study ~]# <span class="term_command">top -b -n 2 &gt; /tmp/top.txt</span>
+<span class="term_say"># 這樣一來，嘿嘿！就可以將 top 的資訊存到 /tmp/top.txt 檔案中了。</span>
+</pre></td></tr></tbody></table>
+
+		<p>這玩意兒很有趣！可以幫助你將某個時段 top 觀察到的結果存成檔案，可以用在你想要在系統背景底下執行。
+		由於是背景底下執行，與終端機的螢幕大小無關，因此可以得到全部的程序畫面！那如果你想要觀察的程序 CPU
+		與記憶體使用率都很低，結果老是無法在第一行顯示時，該怎辦？我們可以僅觀察單一程序喔！如下所示：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例三：我們自己的 bash PID 可由 $$ 變數取得，請使用 top 持續觀察該 PID</span>
+[root@study ~]# <span class="term_command">echo $$</span>
+14836  <span class="term_note">&lt;==就是這個數字！他是我們 bash 的 PID</span>
+[root@study ~]# <span class="term_command">top -d 2 -p 14836</span>
+top - 01:00:53 up  6:14,  3 users,  load average: 0.00, 0.01, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.1 sy,  0.0 ni, 99.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  2916388 total,  1839264 free,   353424 used,   723700 buff/cache
+KiB Swap:  1048572 total,  1048572 free,        0 used.  2318848 avail Mem
+
+<span style="background-color:white; color:black">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span>
+<span style="text-decoration: underline">14836</span> root      20   0  116272   3136   1848 S   0.0  0.1   0:00.07 bash
+</pre></td></tr></tbody></table>
+
+		<p>看到沒！就只會有一支程序給你看！很容易觀察吧！好，那麼如果我想要在 top 底下進行一些動作呢？
+		比方說，修改 NI 這個數值呢？可以這樣做：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例四：承上題，上面的 NI 值是 0 ，想要改成 10 的話？</span>
+<span class="term_say"># 在範例三的 top 畫面當中直接按下 r 之後，會出現如下的圖樣！</span>
+top - 01:02:01 up  6:15,  3 users,  load average: 0.00, 0.01, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.1 us,  0.0 sy,  0.0 ni, 99.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  2916388 total,  1839140 free,   353576 used,   723672 buff/cache
+KiB Swap:  1048572 total,  1048572 free,        0 used.  2318724 avail Mem
+PID to renice [default pid = 14836] <span class="term_command">14836</span>
+<span style="background-color:white; color:black">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span>
+14836 root      20   0  116272   3136   1848 S   0.0  0.1   0:00.07 bash
+</pre></td></tr></tbody></table>
+
+		<p>在你完成上面的動作後，在狀態列會出現如下的資訊：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>Renice PID 14836 to value <span class="term_command">10</span>   <span class="term_note">&lt;==這是 nice 值</span>
+<span style="background-color:white; color:black">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span>
+</pre></td></tr></tbody></table>
+
+		<p>接下來你就會看到如下的顯示畫面！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>top - 01:04:13 up  6:17,  3 users,  load average: 0.00, 0.01, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  2916388 total,  1838676 free,   354020 used,   723692 buff/cache
+KiB Swap:  1048572 total,  1048572 free,        0 used.  2318256 avail Mem
+
+<span style="background-color:white; color:black">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span>
+14836 root      <span style="text-decoration: underline">30  10</span>  116272   3136   1848 S   0.0  0.1   0:00.07 bash
+</pre></td></tr></tbody></table>
+
+		<p>看到不同處了吧？底線的地方就是修改了之後所產生的效果！一般來說，如果鳥哥想要找出最損耗 CPU 
+		資源的那個程序時，大多使用的就是 top 這支程式啦！然後強制以 CPU 使用資源來排序 (在 top 當中按下 P 即可)，
+		就可以很快的知道啦！ ^_^。多多愛用這個好用的東西喔！</p>
+
+		<a id="pstree"></a>
+		<ul class="toplist"><li>pstree</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">pstree [-A|U] [-up]</span>
+<span class="term_say">選項與參數：
+-A  ：各程序樹之間的連接以 ASCII 字元來連接；
+-U  ：各程序樹之間的連接以萬國碼的字元來連接。在某些終端介面下可能會有錯誤；
+-p  ：並同時列出每個 process 的 PID；
+-u  ：並同時列出每個 process 的所屬帳號名稱。</span>
+
+<span class="term_hd">範例一：列出目前系統上面所有的程序樹的相關性：</span>
+[root@study ~]# <span class="term_command">pstree -A</span>
+systemd-+-ModemManager---2*[{ModemManager}]       <span class="term_note"># 這行是 ModenManager 與其子程序</span>
+        |-NetworkManager---3*[{NetworkManager}]   <span class="term_note"># 前面有數字，代表子程序的數量！</span>
+<span class="term_say">....(中間省略)....</span>
+        |-sshd---sshd---sshd---bash---bash---sudo---su---bash---pstree <span class="term_note">&lt;==我們指令執行的相依性</span>
+<span class="term_say">....(底下省略)....</span>
+<span class="term_say"># 注意一下，為了節省版面，所以鳥哥已經刪去很多程序了！</span>
+
+<span class="term_hd">範例二：承上題，同時秀出 PID 與 users </span>
+[root@study ~]# <span class="term_command">pstree -Aup</span>
+systemd(1)-+-ModemManager(745)-+-{ModemManager}(785)
+           |                   `-{ModemManager}(790)
+           |-NetworkManager(870)-+-{NetworkManager}(907)
+           |                     |-{NetworkManager}(911)
+           |                     `-{NetworkManager}(914)
+<span class="term_say">....(中間省略)....</span>
+           |-sshd(1326)---sshd(13923)---sshd(13927,<span class="term_write">dmtsai</span>)---bash(13928)---bash(13970)---
+<span class="term_say">....(底下省略)....</span>
+<span class="term_say"># 在括號 () 內的即是 PID 以及該程序的 owner 喔！一般來說，如果該程序的所有人與父程序同，
+# 就不會列出，但是如果與父程序不一樣，那就會列出該程序的擁有者！看上面 13927 就轉變成 dmtsai 了</span>
+</pre></td></tr></tbody></table>
+
+		<p>如果要找程序之間的相關性，這個 pstree 真是好用到不行！直接輸入 pstree 
+		可以查到程序相關性，如上表所示，還會使用線段將相關性程序連結起來哩！
+		一般連結符號可以使用 ASCII 碼即可，但有時因為語系問題會主動的以 Unicode 的符號來連結，
+		但因為可能終端機無法支援該編碼，或許會造成亂碼問題。因此可以加上 -A 選項來克服此類線段亂碼問題。</p>
+
+		<p>由 pstree 的輸出我們也可以很清楚的知道，<span class="text_import2">所有的程序都是依附在 systemd 這支程序底下的！
+		仔細看一下，這支程序的 PID 是一號喔！因為他是由 Linux 核心所主動呼叫的第一支程式！所以 PID 就是一號了</span>。
+		這也是我們剛剛提到<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#zombie">僵屍程序</a>時有提到，為啥發生僵屍程序需要重新開機？
+		因為 systemd 要重新啟動，而重新啟動 systemd 就是 reboot 囉！</p>
+
+		<p>如果還想要知道 PID 與所屬使用者，加上 -u 及 -p 兩個參數即可。我們前面不是一直提到，
+		如果子程序掛點或者是老是砍不掉子程序時，該如何找到父程序嗎？呵呵！用這個 pstree 就對了！ ^_^</p>
+	<br></div><br>
+
+	<a id="process_2"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.3.2 程序的管理</h2>
+
+		<p>程序之間是可以互相控制的！舉例來說，你可以關閉、重新啟動伺服器軟體，伺服器軟體本身是個程序，
+		你既然可以讓她關閉或啟動，當然就是可以控制該程序啦！<span class="text_import2">那麼程序是如何互相管理的呢？其實是透過給予該程序一個訊號 (signal)
+		去告知該程序你想要讓她作什麼！</span>因此這個訊號就很重要啦！</p>
+
+		<a id="signal"></a>
+		<p>我們也在本章之前的 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#background">bash 工作管理</a>當中提到過，
+		要給予某個已經存在背景中的工作某些動作時，是直接給予一個訊號給該工作號碼即可。那麼到底有多少 signal 呢？
+		你可以使用 kill -l (小寫的 L ) 或者是 man 7 signal 都可以查詢到！主要的訊號代號與名稱對應及內容是：</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td style="width: 40px">代號</td><td style="width: 50px">名稱</td><td>內容</td></tr>
+<tr><td class="tcenter">1</td><td class="tcenter">SIGHUP</td><td>啟動被終止的程序，可讓該 PID 重新讀取自己的設定檔，類似重新啟動</td></tr>
+<tr><td class="tcenter">2</td><td class="tcenter">SIGINT</td><td>相當於用鍵盤輸入 [ctrl]-c 來中斷一個程序的進行</td></tr>
+<tr><td class="tcenter">9</td><td class="tcenter">SIGKILL</td><td>代表強制中斷一個程序的進行，如果該程序進行到一半，
+	那麼尚未完成的部分可能會有『半產品』產生，類似 vim會有 .filename.swp 保留下來。</td></tr>
+<tr><td class="tcenter">15</td><td class="tcenter">SIGTERM</td><td>以正常的結束程序來終止該程序。由於是正常的終止，
+	所以後續的動作會將他完成。不過，如果該程序已經發生問題，就是無法使用正常的方法終止時，
+	輸入這個 signal 也是沒有用的。</td></tr>
+<tr><td class="tcenter"><a id="20130802"></a>19</td><td class="tcenter">SIGSTOP</td><td>相當於用鍵盤輸入 [ctrl]-z 來暫停一個程序的進行</td></tr>
+</tbody></table>
+
+		<p>上面僅是常見的 signal 而已，更多的訊號資訊請自行 man 7 signal 吧！一般來說，你只要記得『1, 9, 
+		15』這三個號碼的意義即可。那麼我們如何傳送一個訊號給某個程序呢？就透過 kill 或 killall 吧！底下分別來看看：</p>
+
+		<a id="kill"></a>
+		<ul class="toplist"><li>kill -signal PID</li></ul>
+
+		<p>kill 可以幫我們將這個 signal 傳送給某個工作 (%jobnumber) 或者是某個 PID (直接輸入數字)。
+		要再次強調的是： <span class="text_import2">kill 後面直接加數字與加上 %number 的情況是不同的</span>！
+		這個很重要喔！因為工作控制中有 1 號工作，但是 PID 1 號則是專指『 systemd 』這支程式！你怎麼可以將 systemd 關閉呢？
+		關閉 systemd ，你的系統就當掉了啊！所以記得那個 % 是專門用在工作控制的喔！
+		我們就活用一下 kill 與剛剛上面提到的 ps 來做個簡單的練習吧！</p>
+
+<table class="exam" style="width: 95%"><tbody><tr><td>
+例題：<div>
+以 ps 找出 rsyslogd 這個程序的 PID 後，再使用 kill 傳送訊息，使得 rsyslogd 可以重新讀取設定檔。
+</div>
+答：<div>
+由於需要重新讀取設定檔，因此 signal 是 1 號。至於找出 rsyslogd 的 PID 可以是這樣做：
+<blockquote style="font-family: &#39;細明體&#39;; font-size:10pt; color: #000088">ps aux | grep 'rsyslogd' | grep -v 'grep'| awk '{print $2}'</blockquote>
+接下來則是實際使用 kill -1 PID，因此，整串指令會是這樣：
+<blockquote style="font-family: &#39;細明體&#39;; font-size:9pt; color: #000088">kill -SIGHUP $(ps aux | grep 'rsyslogd' | grep -v 'grep'| awk '{print $2}')</blockquote>
+如果要確認有沒有重新啟動 syslog ，可以參考登錄檔的內容，使用如下指令查閱：
+<blockquote style="font-family: &#39;細明體&#39;; font-size:10pt; color: #000088">tail -5 /var/log/messages</blockquote>
+如果你有看到類似『Aug  5 01:25:02 study rsyslogd: [origin software="rsyslogd" swVersion="7.4.7" x-pid="742" x-info="http://www.rsyslog.com"] rsyslogd 
+was HUPed』之類的字樣，就是表示 rsyslogd 在 8/5 有重新啟動 (restart) 過了！
+</div>
+</td></tr></tbody></table>
+
+		<p>瞭解了這個用法以後，如果未來你想要將某個莫名其妙的登入者的連線刪除的話，就可以透過使用 pstree -p 找到相關程序，
+		然後再以 kill -9 將該程序刪除，該條連線就會被踢掉了！這樣很簡單吧！</p>
+
+		<a id="killall"></a>
+		<ul class="toplist"><li>killall -signal 指令名稱</li></ul>
+
+		<p>由於 kill 後面必須要加上 PID (或者是 job number)，所以，通常 kill 都會配合
+		<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps">ps</a>, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#pstree">pstree</a> 等指令，因為我們必須要找到相對應的那個程序的 
+		ID 嘛！但是，如此一來，很麻煩～有沒有可以利用『下達指令的名稱』來給予訊號的？舉例來說，能不能直接將 rsyslogd
+		這個程序給予一個 SIGHUP 的訊號呢？可以的！用 killall 吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">killall [-iIe] [command name]</span>
+<span class="term_say">選項與參數：
+-i  ：interactive 的意思，互動式的，若需要刪除時，會出現提示字元給使用者；
+-e  ：exact 的意思，表示『後面接的 command name 要一致』，但整個完整的指令
+      不能超過 15 個字元。
+-I  ：指令名稱(可能含參數)忽略大小寫。</span>
+
+<span class="term_hd">範例一：給予 rsyslogd 這個指令啟動的 PID 一個 SIGHUP 的訊號</span>
+[root@study ~]# <span class="term_command">killall -1 rsyslogd</span>
+<span class="term_say"># 如果用 ps aux 仔細看一下，若包含所有參數，則 /usr/sbin/rsyslogd -n 才是最完整的！</span>
+
+<span class="term_hd">範例二：強制終止所有以 httpd 啟動的程序 (其實並沒有此程序在系統內)</span>
+[root@study ~]# <span class="term_command">killall -9 httpd</span>
+
+<span class="term_hd">範例三：依次詢問每個 bash 程式是否需要被終止運作！</span>
+[root@study ~]# <span class="term_command">killall -i -9 bash</span>
+Signal bash(13888) ? (y/N) <span class="term_command">n</span> <span class="term_note">&lt;==這個不殺！</span>
+Signal bash(13928) ? (y/N) <span class="term_command">n</span> <span class="term_note">&lt;==這個不殺！</span>
+Signal bash(13970) ? (y/N) <span class="term_command">n</span> <span class="term_note">&lt;==這個不殺！</span>
+Signal bash(14836) ? (y/N) <span class="term_command">y</span> <span class="term_note">&lt;==這個殺掉！</span>
+<span class="term_say"># 具有互動的功能！可以詢問你是否要刪除 bash 這個程式。要注意，若沒有 -i 的參數，
+# 所有的 bash 都會被這個 root 給殺掉！包括 root 自己的 bash 喔！ ^_^</span>
+</pre></td></tr></tbody></table>
+
+		<p>總之，要刪除某個程序，我們可以使用 PID 或者是啟動該程序的指令名稱，
+		而如果要刪除某個服務呢？呵呵！最簡單的方法就是利用 killall ，
+		因為他可以將系統當中所有以某個指令名稱啟動的程序全部刪除。
+		舉例來說，上面的範例二當中，系統內所有以 httpd 啟動的程序，就會通通的被刪除啦！ ^_^</p>
+	<br></div><br>
+
+	<a id="priority"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.3.3 關於程序的執行順序</h2>
+
+		<p>我們知道 Linux 是多人多工的環境，由 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#topm">top</a> 的輸出結果我們也發現，
+		系統同時間有非常多的程序在運行中，只是絕大部分的程序都在休眠 (sleeping) 狀態而已。
+		想一想，如果所有的程序同時被喚醒，那麼 CPU 應該要先處理那個程序呢？也就是說，那個程序被執行的優先序比較高？
+		這就得要考慮到程序的優先執行序 (Priority) 與 CPU 排程囉！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		CPU 排程與前一章的例行性工作排程並不一樣。 CPU 排程指的是每支程序被 CPU 運作的演算規則，
+		而例行性工作排程則是將某支程式安排在某個時間再交由系統執行。 CPU 排程與作業系統較具有相關性！
+		</fieldset><br>
+		<a id="pri"></a>
+		<ul class="toplist"><li>Priority 與 Nice 值</li></ul>
+
+		<p>我們知道 CPU 一秒鐘可以運作多達數 G 的微指令次數，透過核心的 CPU 排程可以讓各程序被 CPU 所切換運作，
+		因此每個程序在一秒鐘內或多或少都會被 CPU 執行部分的指令碼。如果程序都是集中在一個佇列中等待 CPU 的運作，
+		而不具有優先順序之分，也就是像我們去遊樂場玩熱門遊戲需要排隊一樣，每個人都是照順序來！
+		你玩過一遍後還想再玩 (沒有執行完畢)，請到後面繼續排隊等待。情況有點像底下這樣：</p>
+
+	<a id="fig16.3.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/pri_cpu_no.gif" alt="並沒有優先順序的程序佇列示意圖" title="並沒有優先順序的程序佇列示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.3.1、並沒有優先順序的程序佇列示意圖</div>
+
+		<p>上圖中假設 pro1, pro2 是緊急的程序， pro3, pro4 是一般的程序，在這樣的環境中，由於不具有優先順序，
+		唉啊！pro1, pro2 還是得要繼續等待而沒有優待呢！如果 pro3, pro4 的工作又臭又長！那麼緊急的 pro1, pro2 
+		就得要等待個老半天才能夠完成！真麻煩啊！所以囉，我們想要將程序分優先順序啦！如果優先序較高則運作次數可以較多次，
+		而不需要與較慢優先的程序搶位置！我們可以將程序的優先順序與 CPU 排程進行如下圖的解釋：</p>
+
+	<a id="fig16.3.2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/pri_cpu_yes.gif" alt="具有優先順序的程序佇列示意圖" title="具有優先順序的程序佇列示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.3.2、具有優先順序的程序佇列示意圖</div>
+
+		<p>如上圖所示，具高優先權的 pro1, pro2 可以被取用兩次，而較不重要的 pro3, pro4 則運作次數較少。
+		如此一來 pro1, pro2 就可以較快被完成啦！要注意，上圖僅是示意圖，並非較優先者一定會被運作兩次啦！
+		為了要達到上述的功能，我們 Linux 給予程序一個所謂的『優先執行序 (priority, PRI)』，
+		這個 <span class="text_import2">PRI 值越低代表越優先的意思。不過這個 PRI 值是由核心動態調整的，
+		使用者無法直接調整 PRI 值的。</span>先來瞧瞧 PRI 曾在哪裡出現？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ps -l</span>
+F S   UID   PID  PPID  C <span class="term_write">PRI  NI</span> ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0 14836 14835  0  <span class="term_write">90  10</span> - 29068 wait   pts/0    00:00:00 bash
+0 R     0 19848 14836  0  <span class="term_write">90  10</span> - 30319 -      pts/0    00:00:00 ps
+<span class="term_say"># 你應該要好奇，怎麼我的 NI 已經是 10 了？還記得剛剛 top 的測試嗎？我們在那邊就有改過一次喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>由於 PRI 是核心動態調整的，我們使用者也無權去干涉 PRI ！那如果你想要調整程序的優先執行序時，就得要透過 Nice
+		值了！Nice 值就是上表的 NI 啦！一般來說， PRI 與 NI 的相關性如下：</p>
+
+		<blockquote class="text_import2">PRI(new) = PRI(old) + nice</blockquote>
+
+		<p>不過你要特別留意到，如果原本的 PRI 是 50 ，並不是我們給予一個 nice = 5 ，就會讓 PRI 變成 55  喔！
+		因為 PRI 是系統『動態』決定的，所以，雖然 nice 值是可以影響 PRI ，不過，
+		最終的 PRI 仍是要經過系統分析後才會決定的。另外， nice 值是有正負的喔，而既然 PRI 越小越早被執行，
+		所以，<span class="text_import2">當 nice 值為負值時，那麼該程序就會降低 PRI 
+		值，亦即會變的較優先被處理。</span>此外，你必須要留意到：</p>
+
+		<ul>
+		<li>nice 值可調整的範圍為 -20 ~ 19 ；</li>
+		<li>root 可隨意調整自己或他人程序的 Nice 值，且範圍為 -20 ~ 19 ；</li>
+		<li>一般使用者僅可調整自己程序的 Nice 值，且範圍僅為 0 ~ 19 (避免一般用戶搶佔系統資源)；</li>
+		<li>一般使用者僅可將 nice 值越調越高，例如本來 nice 為 5 ，則未來僅能調整到大於 5；</li>
+		</ul>
+
+		<p>這也就是說，要調整某個程序的優先執行序，就是『調整該程序的 nice 值』啦！那麼如何給予某個程序 nice
+		值呢？有兩種方式，分別是：</p>
+
+		<ul class="text_import2">
+		<li>一開始執行程式就立即給予一個特定的 nice 值：用 nice 指令；</li>
+		<li>調整某個已經存在的 PID 的 nice 值：用 renice 指令。</li></ul>
+
+		<a id="nice"></a>
+		<ul class="toplist"><li>nice ：新執行的指令即給予新的 nice 值</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">nice [-n 數字] command</span>
+<span class="term_say">選項與參數：
+-n  ：後面接一個數值，讓原本的 nice 加上這個新的數值之意。修改後的最終數值的範圍則為 -20 ~ 19。</span>
+
+<span class="term_hd">範例一：用 root 讓原本的 nice 再減少 5 (-5)，用於執行 vim ，並觀察該程序！</span>
+[root@study ~]# <span class="term_command">nice -n -5 vim &amp;</span>
+[1] 19865
+[root@study ~]# <span class="term_command">ps -l</span>
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0 14836 14835  0  90  10 - 29068 wait   pts/0    00:00:00 bash
+4 T     0 19865 14836  0  <span class="term_write">85   5</span> - 37757 signal pts/0    00:00:00 vim
+0 R     0 19866 14836  0  90  10 - 30319 -      pts/0    00:00:00 ps
+<span class="term_say"># 原本的 bash PRI 為 90  ，所以 vim 預設應為 90。不過由於給予 nice  為 -5 ，
+# 因此 vim 的 PRI 降低了！RPI 與 NI 各減 5 ！但不一定每次都是正好相同喔！因為核心會動態調整</span>
+
+[root@study ~]# <span class="term_command">kill -9 %1</span> <span class="term_note">&lt;==測試完畢將 vim 關閉</span>
+</pre></td></tr></tbody></table>
+
+		<p>就如同前面說的， nice 是用來調整程序的執行優先順序！這裡只是一個執行的範例罷了！
+		通常什麼時候要將 nice 值調大呢？舉例來說，系統的背景工作中，
+		某些比較不重要的程序之進行：例如備份工作！由於備份工作相當的耗系統資源，
+		這個時候就可以將備份的指令之 nice 值調大一些，可以使系統的資源分配的更為公平！</p>
+
+		<p>另外，『 nice -n N command 』那個 N 指的是『在原本的 nice 值底下，再加上的一個值，變成新的 nice 值』之意。
+		所以在上面的範例中，原本的 nice 為 10，使用了 nice -n -5 之後，就會變成 (10+(-5))，最終結果就是 5 囉！
+		並不是直接指定 nice 值喔！</p>
+
+		<a id="renice"></a>
+		<ul class="toplist"><li>renice ：已存在程序的 nice 重新調整</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">renice [number] PID</span>
+<span class="term_say">選項與參數：
+PID ：某個程序的 ID 啊！</span>
+
+<span class="term_hd">範例一：找出自己的 bash PID ，並將該 PID 的 nice 調整到 -5</span>
+[root@study ~]# <span class="term_command">ps -l</span>
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0 <span class="term_write">14836</span> 14835  0  <span class="term_write">90  10</span> - 29068 wait   pts/0    00:00:00 bash
+0 R     0 19900 14836  0  90  10 - 30319 -      pts/0    00:00:00 ps
+
+[root@study ~]# <span class="term_command">renice -5 14836</span>
+14836 (process ID) old priority 10, new priority -5
+
+[root@study ~]# <span class="term_command">ps -l</span>
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0 14836 14835  0  <span class="term_write">75  -5</span> - 29068 wait   pts/0    00:00:00 bash
+0 R     0 19910 14836  0  <span class="term_write">75  -5</span> - 30319 -      pts/0    00:00:00 ps
+</pre></td></tr></tbody></table>
+
+		<p>如果要調整的是已經存在的某個程序的話，那麼就得要使用 renice 了。使用的方法很簡單，
+		renice 後面接上數值及 PID 即可。因為後面接的是 PID ，所以你務必要以 ps 
+		或者其他程序觀察的指令去找出 PID 才行啊！</p>
+
+		<p>由上面這個範例當中我們也看的出來，雖然修改的是 bash 那個程序，但是該程序所觸發的 ps 
+		指令當中的 nice 也會繼承而為 -5 喔！瞭解了吧！整個 nice 值是可以在父程序 --&gt; 子程序之間傳遞的呢！
+		另外，除了 renice 之外，其實那個 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#topm">top</a> 同樣的也是可以調整 nice 值的！</p>
+	<br></div><br>
+
+	<a id="process_3"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.3.4 系統資源的觀察</h2>
+
+		<p>除了系統的程序之外，我們還必須就系統的一些資源進行檢查啊！舉例來說，我們使用 top 
+		可以看到很多系統的資源對吧！那麼，還有沒有其他的工具可以查閱的？
+		當然有啊！底下這些工具指令可以玩一玩！</p>
+
+		<a id="free"></a>
+		<ul class="toplist"><li>free ：觀察記憶體使用情況</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">free [-b|-k|-m|-g|-h] [-t] [-s N -c N]</span>
+<span class="term_say">選項與參數：
+-b  ：直接輸入 free 時，顯示的單位是 Kbytes，我們可以使用 b(bytes), m(Mbytes)
+      k(Kbytes), 及 g(Gbytes) 來顯示單位喔！也可以直接讓系統自己指定單位 (-h)
+-t  ：在輸出的最終結果，顯示實體記憶體與 swap 的總量。
+-s  ：可以讓系統每幾秒鐘輸出一次，不間斷的一直輸出的意思！對於系統觀察挺有效！
+-c  ：與 -s 同時處理～讓 free 列出幾次的意思～</span>
+
+<span class="term_hd">範例一：顯示目前系統的記憶體容量</span>
+[root@study ~]# <span class="term_command">free -m</span>
+              total        used        free      shared  buff/cache   available
+Mem:           2848         346        1794           8         706        2263
+Swap:          1023           0        1023
+</pre></td></tr></tbody></table>
+
+		<p>仔細看看，我的系統當中有 2848MB 左右的實體記憶體，我的 swap 有 1GB 左右，
+		那我使用 free -m 以 MBytes 來顯示時，就會出現上面的資訊。Mem 那一行顯示的是實體記憶體的量，
+		Swap 則是記憶體置換空間的量。 total 是總量， used 是已被使用的量， free 則是剩餘可用的量。
+		後面的 shared/buffers/cached 則是在已被使用的量當中，用來作為緩衝及快取的量，這些 shared/buffers/cached 的用量中，在系統比較忙碌時，
+		可以被釋出而繼續利用！因此後面就有一個 available (可用的) 數值！ 。</p>
+
+		<p>請看上頭範例一的輸出，我們可以發現這部測試機根本沒有什麼特別的服務，但是竟然有 706MB 左右的 cache 耶！
+		因為鳥哥在測試過程中還是有讀/寫/執行很多的檔案嘛！這些檔案就會被系統暫時快取下來，等待下次運作時可以更快速的取出之意！
+		也就是說，系統是『很有效率的將所有的記憶體用光光』，目的是為了讓系統的存取效能加速啦！</p>
+
+		<p>很多朋友都會問到這個問題『我的系統明明很輕鬆，為何記憶體會被用光光？』現在瞭了吧？
+		被用光是正常的！而需要注意的反而是 swap 的量。一般來說， swap 最好不要被使用，尤其 swap 最好不要被使用超過 20% 以上，
+		如果您發現 swap 的用量超過 20% ，那麼，最好還是買實體記憶體來插吧！
+		因為， Swap 的效能跟實體記憶體實在差很多，而系統會使用到 swap ，
+		絕對是因為實體記憶體不足了才會這樣做的！如此，瞭解吧！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		Linux 系統為了要加速系統效能，所以會將最常使用到的或者是最近使用到的檔案資料快取 (cache) 下來，
+		這樣未來系統要使用該檔案時，就直接由記憶體中搜尋取出，而不需要重新讀取硬碟，速度上面當然就加快了！
+		因此，實體記憶體被用光是正常的喔！
+		</fieldset><br>
+		<a id="uname"></a>
+		<ul class="toplist"><li>uname：查閱系統與核心相關資訊</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">uname [-asrmpi]</span>
+<span class="term_say">選項與參數：
+-a  ：所有系統相關的資訊，包括底下的資料都會被列出來；
+-s  ：系統核心名稱
+-r  ：核心的版本
+-m  ：本系統的硬體名稱，例如 i686 或 x86_64 等；
+-p  ：CPU 的類型，與 -m 類似，只是顯示的是 CPU 的類型！
+-i  ：硬體的平台 (ix86)</span>
+
+<span class="term_hd">範例一：輸出系統的基本資訊</span>
+[root@study ~]# <span class="term_command">uname -a</span>
+Linux study.centos.vbird 3.10.0-229.el7.x86_64 #1 SMP Fri Mar 6 11:36:42 UTC 2015 
+x86_64 x86_64 x86_64 GNU/Linux
+</pre></td></tr></tbody></table>
+
+		<p>這個咚咚我們前面使用過很多次了喔！uname 可以列出目前系統的核心版本、
+		主要硬體平台以及 CPU 類型等等的資訊。以上面範例一的狀態來說，我的 Linux 
+		主機使用的核心名稱為 Linux，而主機名稱為 study.centos.vbird，核心的版本為
+		3.10.0-229.el7.x86_64 ，該核心版本建立的日期為 2015-3-6，適用的硬體平台為 x86_64 以上等級的硬體平台喔。</p>
+
+		<a id="uptime"></a>
+		<ul class="toplist"><li>uptime：觀察系統啟動時間與工作負載</li></ul>
+
+		<p>這個指令很單純呢！就是顯示出目前系統已經開機多久的時間，以及 1, 5, 15 
+		分鐘的平均負載就是了。還記得 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#topm">top</a> 吧？沒錯啦！這個 uptime 可以顯示出 top 畫面的最上面一行！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">uptime</span>
+ 02:35:27 up  7:48,  3 users,  load average: 0.00, 0.01, 0.05
+<span class="term_say"># <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top" style="color: white">top</a> 這個指令已經談過相關資訊，不再聊！</span>
+</pre></td></tr></tbody></table>
+
+		<a id="netstat"></a>
+		<ul class="toplist"><li>netstat ：追蹤網路或插槽檔</li></ul>
+
+		<p>這個 netstat 也是挺好玩的，其實這個指令比較常被用在網路的監控方面，不過，在程序管理方面也是需要瞭解的啦！
+		這個指令的執行如下所示：基本上， netstat 的輸出分為兩大部分，分別是網路與系統自己的程序相關性部分：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">netstat -[atunlp]</span>
+<span class="term_say">選項與參數：
+-a  ：將目前系統上所有的連線、監聽、Socket 資料都列出來
+-t  ：列出 tcp 網路封包的資料
+-u  ：列出 udp 網路封包的資料
+-n  ：不以程序的服務名稱，以埠號 (port number) 來顯示；
+-l  ：列出目前正在網路監聽 (listen) 的服務；
+-p  ：列出該網路服務的程序 PID </span>
+
+<span class="term_hd">範例一：列出目前系統已經建立的網路連線與 unix socket 狀態</span>
+[root@study ~]# <span class="term_command">netstat</span>
+<span style="text-decoration: underline">Active Internet connections (w/o servers)</span> <span class="term_note">&lt;==與網路較相關的部分</span>
+Proto Recv-Q Send-Q Local Address           Foreign Address         State
+tcp        0      0 172.16.15.100:ssh       172.16.220.234:48300    ESTABLISHED
+<span style="text-decoration: underline">Active UNIX domain sockets (w/o servers)</span>  <span class="term_note">&lt;==與本機的程序自己的相關性(非網路)</span>
+Proto RefCnt Flags       Type       State         I-Node   Path
+unix  2      [ ]         DGRAM                    1902     @/org/freedesktop/systemd1/notify
+unix  2      [ ]         DGRAM                    1944     /run/systemd/shutdownd
+<span class="term_say">....(中間省略)....</span>
+unix  3      [ ]         STREAM     CONNECTED     25425    @/tmp/.X11-unix/X0
+unix  3      [ ]         STREAM     CONNECTED     28893
+unix  3      [ ]         STREAM     CONNECTED     21262
+</pre></td></tr></tbody></table>
+
+		<p>在上面的結果當中，顯示了兩個部分，分別是網路的連線以及 linux 上面的 socket 程序相關性部分。
+		我們先來看看網際網路連線情況的部分：</p>
+
+		<ul>
+		<li>Proto ：網路的封包協定，主要分為 TCP 與 UDP 封包，相關資料請參考<a href="http://linux.vbird.org/linux_server">伺服器篇</a>；</li>
+		<li>Recv-Q：非由使用者程式連結到此 socket 的複製的總 bytes 數；</li>
+		<li>Send-Q：非由遠端主機傳送過來的 acknowledged 總 bytes 數；</li>
+		<li>Local Address  ：本地端的 IP:port 情況</li>
+		<li>Foreign Address：遠端主機的 IP:port 情況</li>
+		<li>State ：連線狀態，主要有建立(ESTABLISED)及監聽(LISTEN)；</li>
+		</ul>
+
+		<p>我們看上面僅有一條連線的資料，他的意義是：『透過 TCP 封包的連線，遠端的 172.16.220.234:48300 連線到本地端的
+		172.16.15.100:ssh ，這條連線狀態是建立 (ESTABLISHED) 的狀態！』至於更多的網路環境說明，
+		就得到<a href="http://linux.vbird.org/linux_server">鳥哥的另一本伺服器篇</a>查閱囉！</p>
+
+		<p>除了網路上的連線之外，其實 Linux 系統上面的程序是可以接收不同程序所發送來的資訊，那就是 Linux 上頭的插槽檔 
+		(socket file)。我們在<a href="http://linux.vbird.org/linux_basic/0210filepermission.php#filepermission_type">第五章的檔案種類</a>有稍微提到 socket 檔案，
+		但當時未談到程序的概念，所以沒有深入談論。socket file 可以溝通兩個程序之間的資訊，因此程序可以取得對方傳送過來的資料。
+		由於有 socket file，因此類似 X Window 這種需要透過網路連接的軟體，目前新版的 distributions 就以 socket 
+		來進行視窗介面的連線溝通了。上表中 socket file 的輸出欄位有：</p>
+
+		<ul>
+		<li>Proto ：一般就是 unix 啦；</li>
+		<li>RefCnt：連接到此 socket 的程序數量；</li>
+		<li>Flags ：連線的旗標；</li>
+		<li>Type  ：socket 存取的類型。主要有確認連線的 STREAM 與不需確認的 DGRAM 兩種；</li>
+		<li>State ：若為 CONNECTED 表示多個程序之間已經連線建立。</li>
+		<li>Path  ：連接到此 socket 的相關程式的路徑！或者是相關資料輸出的路徑。</li>
+		</ul>
+
+		<p>以上表的輸出為例，最後那三行在 /tmp/.xx 底下的資料，就是 X Window 視窗介面的相關程序啦！
+		而 PATH 指向的就是這些程序要交換資料的插槽檔案囉！好！那麼 netstat 可以幫我們進行什麼任務呢？
+		很多喔！我們先來看看，利用 netstat 去看看我們的哪些程序有啟動哪些網路的『後門』呢？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例二：找出目前系統上已在監聽的網路連線及其 PID</span>
+[root@study ~]# <span class="term_command">netstat -tulnp</span>
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1326/sshd
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      2349/master
+tcp6       0      0 :::22                   :::*                    LISTEN      <span class="term_write">1326/sshd</span>
+tcp6       0      0 ::1:25                  :::*                    LISTEN      2349/master
+udp        0      0 0.0.0.0:123             0.0.0.0:*                           751/chronyd
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           751/chronyd
+udp        0      0 0.0.0.0:57808           0.0.0.0:*                           743/avahi-daemon: r
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           743/avahi-daemon: r
+udp6       0      0 :::123                  :::*                                751/chronyd
+udp6       0      0 ::1:323                 :::*                                751/chronyd
+<span class="term_say"># 除了可以列出監聽網路的介面與狀態之外，最後一個欄位還能夠顯示此服務的
+# PID 號碼以及程序的指令名稱喔！例如上頭的 1326 就是該 PID</span>
+
+<span class="term_hd">範例三：將上述的 0.0.0.0:57808 那個網路服務關閉的話？</span>
+[root@study ~]# <span class="term_command">kill -9 743</span>
+[root@study ~]# <span class="term_command">killall -9 avahi-daemon</span>
+</pre></td></tr></tbody></table>
+
+		<p>很多朋友常常有疑問，那就是，我的主機目前到底開了幾個門(ports)！其實，不論主機提供什麼樣的服務，
+		一定必須要有相對應的 program 在主機上面執行才行啊！舉例來說，我們鳥園的 Linux 主機提供的就是 WWW 
+		服務，那麼我的主機當然有一個程式在提供 WWW 的服務啊！那就是 Apache 這個軟體所提供的啦！ ^_^。
+		所以，當我執行了這個程式之後，我的系統自然就可以提供 WWW 的服務了。那如何關閉啊？
+		就關掉該程式所觸發的那個程序就好了！例如上面的範例三所提供的例子啊！不過，這個是非正規的作法喔！
+		正規的作法，請查閱下一章的說明呦！</p>
+
+		<a id="dmesg"></a>
+		<ul class="toplist"><li>dmesg ：分析核心產生的訊息</li></ul>
+
+		<p>系統在開機的時候，核心會去偵測系統的硬體，你的某些硬體到底有沒有被捉到，那就與這個時候的偵測有關。
+		但是這些偵測的過程要不是沒有顯示在螢幕上，就是很飛快的在螢幕上一閃而逝！能不能把核心偵測的訊息捉出來瞧瞧？
+		可以的，那就使用 dmesg 吧！</p>
+
+		<p>所有核心偵測的訊息，不管是開機時候還是系統運作過程中，反正只要是核心產生的訊息，都會被記錄到記憶體中的某個保護區段。
+		dmesg 這個指令就能夠將該區段的訊息讀出來的！因為訊息實在太多了，所以執行時可以加入這個管線指令『 
+		| more 』來使畫面暫停！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例一：輸出所有的核心開機時的資訊</span>
+[root@study ~]# <span class="term_command">dmesg | more</span>
+
+<span class="term_hd">範例二：搜尋開機的時候，硬碟的相關資訊為何？</span>
+[root@study ~]# <span class="term_command">dmesg | grep -i vda</span>
+[    0.758551]  vda: vda1 vda2 vda3 vda4 vda5 vda6 vda7 vda8 vda9
+[    3.964134] XFS (vda2): Mounting V4 Filesystem
+<span class="term_say">....(底下省略)....</span>
+</pre></td></tr></tbody></table>
+
+		<p>由範例二就知道我這部主機的硬碟的格式是什麼了吧！</p>
+
+		<a id="vmstat"></a>
+		<ul class="toplist"><li>vmstat ：偵測系統資源變化</li></ul>
+
+		<p>如果你想要動態的瞭解一下系統資源的運作，那麼這個 vmstat 確實可以玩一玩！vmstat 可以偵測『 CPU /
+		記憶體 / 磁碟輸入輸出狀態 』等等，如果你想要瞭解一部繁忙的系統到底是哪個環節最累人，
+		可以使用 vmstat 分析看看。底下是常見的選項與參數說明：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vmstat [-a] [延遲 [總計偵測次數]]</span> <span class="term_note">&lt;==CPU/記憶體等資訊</span>
+[root@study ~]# <span class="term_command">vmstat [-fs]                     </span> <span class="term_note">&lt;==記憶體相關</span>
+[root@study ~]# <span class="term_command">vmstat [-S 單位]                 </span> <span class="term_note">&lt;==設定顯示數據的單位</span>
+[root@study ~]# <span class="term_command">vmstat [-d]                      </span> <span class="term_note">&lt;==與磁碟有關</span>
+[root@study ~]# <span class="term_command">vmstat [-p 分割槽]               </span> <span class="term_note">&lt;==與磁碟有關</span>
+<span class="term_say">選項與參數：
+-a  ：使用 inactive/active(活躍與否) 取代 buffer/cache 的記憶體輸出資訊；
+-f  ：開機到目前為止，系統複製 (fork) 的程序數；
+-s  ：將一些事件 (開機至目前為止) 導致的記憶體變化情況列表說明；
+-S  ：後面可以接單位，讓顯示的資料有單位。例如 K/M 取代 bytes 的容量；
+-d  ：列出磁碟的讀寫總量統計表
+-p  ：後面列出分割槽，可顯示該分割槽的讀寫總量統計表</span>
+
+<span class="term_hd">範例一：統計目前主機 CPU 狀態，每秒一次，共計三次！</span>
+[root@study ~]# <span class="term_command">vmstat 1 3</span>
+procs ------------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd    free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 1  0      0 1838092   1504 722216    0    0     4     1    6    9  0  0 100  0  0
+ 0  0      0 1838092   1504 722200    0    0     0     0   13   23  0  0 100  0  0
+ 0  0      0 1838092   1504 722200    0    0     0     0   25   46  0  0 100  0  0
+</pre></td></tr></tbody></table>
+
+		<p>利用 vmstat 甚至可以進行追蹤喔！你可以使用類似『 vmstat 5 』代表每五秒鐘更新一次，且無窮的更新！直到你按下 
+		[ctrl]-c 為止。如果你想要即時的知道系統資源的運作狀態，這個指令就不能不知道！那麼上面的表格各項欄位的意義為何？
+		基本說明如下：</p>
+
+		<ul>
+		<li><a id="20120614"></a>程序欄位 (procs) 的項目分別為：<br>
+		r ：等待運作中的程序數量；b：不可被喚醒的程序數量。這兩個項目越多，代表系統越忙碌 
+		(因為系統太忙，所以很多程序就無法被執行或一直在等待而無法被喚醒之故)。<br><br></li>
+
+		<li>記憶體欄位 (memory) 項目分別為：<br>
+		swpd：虛擬記憶體被使用的容量； free：未被使用的記憶體容量； buff：用於緩衝記憶體； cache：用於快取記憶體。
+		這部份則與 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#free">free</a> 是相同的。<br><br></li>
+
+		<li>記憶體置換空間 (swap) 的項目分別為：<br>
+		si：由磁碟中將程序取出的量； so：由於記憶體不足而將沒用到的程序寫入到磁碟的 swap 的容量。
+		如果 si/so 的數值太大，表示記憶體內的資料常常得在磁碟與主記憶體之間傳來傳去，系統效能會很差！<br><br></li>
+
+		<li>磁碟讀寫 (io) 的項目分別為：<br>
+		bi：由磁碟讀入的區塊數量； bo：寫入到磁碟去的區塊數量。如果這部份的值越高，代表系統的 I/O 非常忙碌！<br><br></li>
+
+		<li>系統 (system) 的項目分別為：<br>
+		in：每秒被中斷的程序次數； cs：每秒鐘進行的事件切換次數；這兩個數值越大，代表系統與周邊設備的溝通非常頻繁！
+		這些周邊設備當然包括磁碟、網路卡、時間鐘等。<br><br></li>
+
+		<li>CPU 的項目分別為：<br>
+		us：非核心層的 CPU 使用狀態； sy：核心層所使用的 CPU 狀態； id：閒置的狀態； wa：等待 I/O 所耗費的 CPU 狀態；
+		st：被虛擬機器 (virtual machine) 所盜用的 CPU 使用狀態 (2.6.11 以後才支援)。</li>
+		</ul>
+
+		<p>由於鳥哥的機器是測試機，所以並沒有什麼 I/O 或者是 CPU 忙碌的情況。如果改天你的伺服器非常忙碌時，
+		記得使用 vmstat 去看看，到底是哪個部分的資源被使用的最為頻繁！一般來說，如果 I/O 部分很忙碌的話，你的系統會變的非常慢！
+		讓我們再來看看，那麼磁碟的部分該如何觀察：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例二：系統上面所有的磁碟的讀寫狀態</span>
+[root@study ~]# <span class="term_command">vmstat -d</span>
+disk- ------------reads------------ ------------writes----------- -----IO------
+       total merged sectors      ms  total merged sectors      ms    cur    sec
+vda    21928      0  992587   47490   7239   2225  258449   13331      0     26
+sda      395      1    3168     213      0      0       0       0      0      0
+sr0        0      0       0       0      0      0       0       0      0      0
+dm-0   19139      0  949575   44608   7672      0  202251   16264      0     25
+dm-1     336      0    2688     327      0      0       0       0      0      0
+md0      212      0    1221       0     14      0    4306       0      0      0
+dm-2     218      0    9922     565     54      0    4672     128      0      0
+dm-3     179      0     957     182     11      0    4306      68      0      0
+</pre></td></tr></tbody></table>
+
+		<p>詳細的各欄位就請諸位大德查閱一下 man vmstat 囉！反正與讀寫有關啦！這樣瞭解乎！</p>
+	<br></div>
+</div>
+
+
+<a id="special"></a>
+<div class="block1">
+<h2>16.4 特殊檔案與程序</h2>
+
+	<p>我們在<a href="http://linux.vbird.org/linux_basic/0220filemanager.php#suid_sgid_sbit">第六章曾經談到特殊權限的 SUID/SGID/SBIT</a>
+	，雖然第六章已經將這三種特殊權限作了詳細的解釋，不過，我們依舊要來探討的是，那麼到底這些權限對於你的『程序』是如何影響的？
+	此外，程序可能會使用到系統資源，舉例來說，磁碟就是其中一項資源。哪天你在 umount 磁碟時，系統老是出現『 device is 
+	busy 』的字樣～到底是怎麼回事啊？我們底下就來談一談這些和程序有關係的細節部分：</p>
+
+	<a id="suid_sgid"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.4.1 具有 SUID/SGID 權限的指令執行狀態</h2>
+
+		<p>SUID 的權限其實與程序的相關性非常的大！為什麼呢？先來看看 SUID 的程式是如何被一般使用者執行，且具有什麼特色呢？</p>
+		<ul class="text_import2">
+		<li>SUID 權限僅對二進位程式(binary program)有效；</li>
+		<li>執行者對於該程式需要具有 x 的可執行權限；</li>
+		<li>本權限僅在執行該程式的過程中有效 (run-time)；</li>
+		<li>執行者將具有該程式擁有者 (owner) 的權限。</li>
+		</ul>
+
+		<p>所以說，整個 SUID 的權限會生效是由於『具有該權限的程式被觸發』，而我們知道一個程式被觸發會變成程序，
+		所以囉，執行者可以具有程式擁有者的權限就是在該程式變成程序的那個時候啦！第六章我們還沒談到程序的概念，
+		所以你或許那時候會覺得很奇怪，為啥執行了 passwd 後你就具有 root 的權限呢？不都是一般使用者執行的嗎？
+		這是因為你在觸發 passwd 後，會取得一個新的程序與 PID，該 PID 產生時透過 SUID 來給予該 PID 特殊的權限設定啦！
+		我們使用 dmtsai 登入系統且執行 passwd 後，透過<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#background">工作控制</a>來理解一下！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[dmtsai@study ~]$ <span class="term_command">passwd</span>
+Changing password for user dmtsai.
+Changing password for dmtsai
+(current) UNIX password: <span class="term_note">&lt;==這裡按下 [ctrl]-z 並且按下 [enter]</span>
+[1]+  Stopped                 passwd
+
+[dmtsai@study ~]$ <span class="term_command">pstree -uA</span>
+systemd-+-ModemManager---2*[{ModemManager}]
+<span class="term_say">....(中間省略)....</span>
+        |-sshd---sshd---<span style="text-decoration: underline">sshd(dmtsai)---bash</span>-+-<span class="term_write">passwd(root)</span>
+        |                                   <span style="text-decoration: underline">`-pstree</span>
+<span class="term_say">....(底下省略)....</span>
+</pre></td></tr></tbody></table>
+
+		<p>從上表的結果我們可以發現，底線的部分是屬於 dmtsai 這個一般帳號的權限，特殊字體的則是 root 的權限！
+		但你看到了， passwd 確實是由 bash 衍生出來的！不過就是權限不一樣！透過這樣的解析，
+		你也會比較清楚為何不同程式所產生的權限不同了吧！這是由於『SUID 程式運作過程中產生的程序』的關係啦！</p>
+
+		<p>那麼既然 SUID/SGID 的權限是比較可怕的，您該如何查詢整個系統的 SUID/SGID 的檔案呢？
+		應該是還不會忘記吧？使用 <a href="http://linux.vbird.org/linux_basic/0220filemanager.php#find">find</a> 即可啊！</p>
+
+		<blockquote class="text_import2" style="font-family: &#39;細明體&#39;">find / -perm /6000</blockquote>
+	<br></div><br>
+
+	<a id="proc"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.4.2 /proc/* 代表的意義</h2>
+
+		<p>其實，我們之前提到的所謂的程序都是在記憶體當中嘛！而記憶體當中的資料又都是寫入到
+		/proc/* 這個目錄下的，所以囉，我們當然可以直接觀察 /proc 這個目錄當中的檔案啊！
+		如果你觀察過 /proc 這個目錄的話，應該會發現他有點像這樣：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ll /proc</span>
+dr-xr-xr-x.  8 root           root               0 Aug  4 18:46 1
+dr-xr-xr-x.  8 root           root               0 Aug  4 18:46 10
+dr-xr-xr-x.  8 root           root               0 Aug  4 18:47 10548
+<span class="term_say">....(中間省略)....</span>
+-r--r--r--.  1 root           root               0 Aug  5 17:48 uptime
+-r--r--r--.  1 root           root               0 Aug  5 17:48 version
+-r--------.  1 root           root               0 Aug  5 17:48 vmallocinfo
+-r--r--r--.  1 root           root               0 Aug  5 17:48 vmstat
+-r--r--r--.  1 root           root               0 Aug  5 17:48 zoneinfo
+</pre></td></tr></tbody></table>
+
+		<p>基本上，目前主機上面的各個程序的 PID 都是以目錄的型態存在於 /proc 當中。
+		舉例來說，我們開機所執行的第一支程式 systemd 他的 PID 是 1 ，
+		這個 PID 的所有相關資訊都寫入在 /proc/1/* 當中！若我們直接觀察 PID 為 1 的資料好了，他有點像這樣：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ll /proc/1</span>
+dr-xr-xr-x. 2 root root 0 Aug  4 19:25 attr
+-rw-r--r--. 1 root root 0 Aug  4 19:25 autogroup
+-r--------. 1 root root 0 Aug  4 19:25 auxv
+-r--r--r--. 1 root root 0 Aug  4 18:46 cgroup
+--w-------. 1 root root 0 Aug  4 19:25 clear_refs
+<span class="term_write">-r--r--r--. 1 root root 0 Aug  4 18:46 cmdline</span>  <span class="term_note">&lt;==就是指令串</span>
+<span class="term_write">-r--------. 1 root root 0 Aug  4 18:46 environ</span>  <span class="term_note">&lt;==一些環境變數</span>
+lrwxrwxrwx. 1 root root 0 Aug  4 18:46 exe
+<span class="term_say">....(以下省略)....</span>
+</pre></td></tr></tbody></table>
+
+		<p>裡面的資料還挺多的，不過，比較有趣的其實是兩個檔案，分別是：</p>
+		<ul>
+		<li>cmdline：這個程序被啟動的指令串；</li>
+		<li>environ：這個程序的環境變數內容。</li>
+		</ul>
+		<p>很有趣吧！如果你查閱一下 cmdline 的話，就會發現：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cat /proc/1/cmdline</span>
+/usr/lib/systemd/systemd--switched-root--system--deserialize24
+</pre></td></tr></tbody></table>
+
+		<p>就是這個指令、選項與參數啟動 systemd 的啦！這還是跟某個特定的 PID 有關的內容呢，如果是針對整個 
+		Linux 系統相關的參數呢？那就是在 /proc 目錄底下的檔案啦！相關的檔案與對應的內容是這樣的：
+		(<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps3">註3</a>)</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td style="width: 100px">檔名</td><td>檔案內容</td></tr>
+<tr><td>/proc/cmdline</td><td>載入 kernel 時所下達的相關指令與參數！查閱此檔案，可瞭解指令是如何啟動的！</td></tr>
+<tr><td>/proc/cpuinfo</td><td>本機的 CPU 的相關資訊，包含時脈、類型與運算功能等</td></tr>
+<tr><td>/proc/devices</td><td>這個檔案記錄了系統各個主要裝置的主要裝置代號，與 
+	<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#mknod">mknod</a> 有關呢！</td></tr>
+<tr><td>/proc/filesystems</td><td>目前系統已經載入的檔案系統囉！</td></tr>
+<tr><td>/proc/interrupts</td><td>目前系統上面的 IRQ 分配狀態。</td></tr>
+<tr><td>/proc/ioports</td><td>目前系統上面各個裝置所配置的 I/O 位址。</td></tr>
+<tr><td>/proc/kcore</td><td>這個就是記憶體的大小啦！好大對吧！但是不要讀他啦！</td></tr>
+<tr><td>/proc/loadavg</td><td>還記得 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#topm">top</a> 以及 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#uptime">uptime</a>
+	 吧？沒錯！上頭的三個平均數值就是記錄在此！</td></tr>
+<tr><td>/proc/meminfo</td><td>使用 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#free">free</a> 列出的記憶體資訊，嘿嘿！在這裡也能夠查閱到！</td></tr>
+<tr><td>/proc/modules</td><td>目前我們的 Linux 已經載入的模組列表，也可以想成是驅動程式啦！</td></tr>
+<tr><td>/proc/mounts</td><td>系統已經掛載的資料，就是用 mount 這個指令呼叫出來的資料啦！</td></tr>
+<tr><td>/proc/swaps</td><td>到底系統掛載入的記憶體在哪裡？呵呵！使用掉的 partition 就記錄在此啦！</td></tr>
+<tr><td>/proc/partitions</td><td>使用 fdisk -l 會出現目前所有的 partition 
+	吧？在這個檔案當中也有紀錄喔！</td></tr>
+<tr><td>/proc/uptime</td><td>就是用 uptime 的時候，會出現的資訊啦！</td></tr>
+<tr><td>/proc/version</td><td>核心的版本，就是用 uname -a 顯示的內容啦！</td></tr>
+<tr><td>/proc/bus/*</td><td>一些匯流排的裝置，還有 USB 的裝置也記錄在此喔！</td></tr>
+</tbody></table>
+
+		<p>其實，上面這些檔案鳥哥在此建議您可以使用 cat 去查閱看看，不必深入瞭解，
+		不過，觀看過檔案內容後，畢竟會比較有感覺啦！如果未來您想要自行撰寫某些工具軟體，
+		那麼這個目錄底下的相關檔案可能會對您有點幫助的喔！</p>
+	<br></div><br>
+
+	<a id="ofile"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.4.3. 查詢已開啟檔案或已執行程序開啟之檔案</h2>
+
+		<p>其實還有一些與程序相關的指令可以值得參考與應用的，我們來談一談：</p>
+
+		<a id="fuser"></a>
+		<ul class="toplist"><li>fuser：藉由檔案(或檔案系統)找出正在使用該檔案的程序</li></ul>
+
+		<p>有的時候我想要知道我的程序到底在這次啟動過程中開啟了多少檔案，可以利用 fuser 來觀察啦！
+		舉例來說，你如果卸載時發現系統通知：『 device is busy 』，那表示這個檔案系統正在忙碌中，
+		表示有某支程序有利用到該檔案系統啦！那麼你就可以利用 fuser 來追蹤囉！fuser 語法有點像這樣：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">fuser [-umv] [-k [i] [-signal]] file/dir</span>
+<span class="term_say">選項與參數：
+-u  ：除了程序的 PID 之外，同時列出該程序的擁有者；
+-m  ：後面接的那個檔名會主動的上提到該檔案系統的最頂層，對 umount 不成功很有效！
+-v  ：可以列出每個檔案與程序還有指令的完整相關性！
+-k  ：找出使用該檔案/目錄的 PID ，並試圖以 SIGKILL 這個訊號給予該 PID；
+-i  ：必須與 -k 配合，在刪除 PID 之前會先詢問使用者意願！
+-signal：例如 -1 -15 等等，若不加的話，預設是 SIGKILL (-9) 囉！</span>
+
+<span class="term_hd">範例一：找出目前所在目錄的使用 PID/所屬帳號/權限 為何？</span>
+[root@study ~]# <span class="term_command">fuser -uv .</span>
+                     USER        PID ACCESS COMMAND
+/root:               root      13888 ..c.. (root)bash
+                     root      31743 ..c.. (root)bash
+</pre></td></tr></tbody></table>
+
+		<p>看到輸出的結果沒？他說『.』底下有兩個 PID 分別為 13888, 31743 的程序，該程序屬於 root 且指令為 bash 。
+		比較有趣的是那個 ACCESS 的項目，那個項目代表的意義為：</p>
+		<ul style="font-family: &#39;細明體&#39;">
+		<li>c ：此程序在當前的目錄下(非次目錄)；</li>
+		<li>e ：可被觸發為執行狀態；</li>
+		<li>f ：是一個被開啟的檔案；</li>
+		<li>r ：代表頂層目錄 (root directory)；</li>
+		<li>F ：該檔案被開啟了，不過在等待回應中；</li>
+		<li>m ：可能為分享的動態函式庫；</li>
+		</ul>
+
+		<p>那如果你想要查閱某個檔案系統底下有多少程序正在佔用該檔案系統時，那個 -m 的選項就很有幫助了！
+		讓我們來做幾個簡單的測試，包括實體的檔案系統掛載與 /proc 這個虛擬檔案系統的內容，
+		看看有多少的程序對這些掛載點或其他目錄的使用狀態吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例二：找到所有使用到 /proc 這個檔案系統的程序吧！</span>
+[root@study ~]# <span class="term_command">fuser -uv /proc</span>
+/proc:               root     kernel mount (root)/proc
+                     rtkit       768 .rc.. (rtkit)rtkit-daemon
+<span class="term_say"># 資料量還不會很多，雖然這個目錄很繁忙～沒關係！我們可以繼續這樣作，看看其他的程序！</span>
+
+[root@study ~]# <span class="term_command">fuser -mvu /proc</span>
+                     USER        PID ACCESS COMMAND
+/proc:               root     kernel mount (root)/proc
+                     root          1 f.... (root)systemd
+                     root          2 ...e. (root)kthreadd
+<span class="term_say">.....(底下省略).....</span>
+<span class="term_say"># 有這幾支程序在進行 /proc 檔案系統的存取喔！這樣清楚了嗎？</span>
+
+<span class="term_hd">範例三：找到所有使用到 /home 這個檔案系統的程序吧！</span>
+[root@study ~]# <span class="term_command">echo $$</span>
+31743  <span class="term_note"># 先確認一下，自己的 bash PID 號碼吧！</span>
+[root@study ~]# <span class="term_command">cd /home</span>
+[root@study home]# <span class="term_command">fuser -muv .</span>
+                     USER        PID ACCESS COMMAND
+/home:               root     kernel mount (root)/home
+                     dmtsai    31535 ..c.. (dmtsai)bash
+                     root      31571 ..c.. (root)passwd
+                     root      31737 ..c.. (root)sudo
+                     root      <span class="term_write">31743</span> ..c.. (root)bash    <span class="term_note"># 果然，自己的 PID 在啊！</span>
+[root@study home]# <span class="term_command">cd ~</span>
+[root@study ~]# <span class="term_command">umount /home</span>
+umount: /home: target is busy.
+        (In some cases useful info about processes that use
+         the device is found by lsof(8) or fuser(1))
+<span class="term_say"># 從 fuser 的結果可以知道，總共有五隻 process 在該目錄下運作，那即使 root 離開了 /home，
+# 當然還是無法 umount 的！那要怎辦？哈哈！可以透過如下方法一個一個刪除～</span>
+[root@study ~]# <span class="term_command">fuser -mki /home</span>
+/home:               31535c 31571c 31737c  <span class="term_note"># 你會發現， PID 跟上面查到的相同！</span>
+Kill process 31535 ? (y/N) <span class="term_note"># 這裡會問你要不要刪除！當然不要亂刪除啦！通通取消！</span>
+
+</pre></td></tr></tbody></table>
+
+		<p>既然可以針對整個檔案系統，那麼能不能僅針對單一檔案啊？當然可以囉！看一下底下的案例先：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd">範例四：找到 /run 底下屬於 FIFO 類型的檔案，並且找出存取該檔案的程序</span>
+[root@study ~]# <span class="term_command">find /run -type p</span>
+<span class="term_say">.....(前面省略).....</span>
+/run/systemd/sessions/165.ref
+/run/systemd/sessions/1.ref
+/run/systemd/sessions/c1.ref   <span class="term_note"># 隨便抓個項目！就是這個好了！來測試一下！</span>
+
+[root@study ~]# <span class="term_command">fuser -uv /run/systemd/sessions/c1.ref</span>
+                     USER        PID ACCESS COMMAND
+/run/systemd/sessions/c1.ref:
+                     root        763 f.... (root)systemd-logind
+                     root       5450 F.... (root)gdm-session-wor
+<span class="term_say"># 通常系統的 FIFO 檔案都會放置到 /run 底下，透過這個方式來追蹤該檔案被存取的 process！
+# 也能夠曉得系統有多忙碌啊！呵呵！</span>
+</pre></td></tr></tbody></table>
+
+		<p>如何？很有趣的一個指令吧！透過這個 fuser 我們可以找出使用該檔案、目錄的程序，藉以觀察的啦！
+		他的重點與 ps, pstree 不同。 fuser 可以讓我們瞭解到某個檔案 (或檔案系統) 目前正在被哪些程序所利用！</p>
+
+		<a id="lsof"></a>
+		<ul class="toplist"><li>lsof ：列出被程序所開啟的檔案檔名</li></ul>
+
+		<p>相對於 fuser 是由檔案或者裝置去找出使用該檔案或裝置的程序，反過來說，如何查出某個程序開啟或者使用的檔案與裝置呢？呼呼！那就是使用 lsof 囉～</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">lsof [-aUu] [+d]</span>
+<span class="term_say">選項與參數：
+-a  ：多項資料需要『同時成立』才顯示出結果時！
+-U  ：僅列出 Unix like 系統的 socket 檔案類型；
+-u  ：後面接 username，列出該使用者相關程序所開啟的檔案；
++d  ：後面接目錄，亦即找出某個目錄底下已經被開啟的檔案！</span>
+
+<span class="term_hd">範例一：列出目前系統上面所有已經被開啟的檔案與裝置：</span>
+[root@study ~]# <span class="term_command">lsof</span>
+COMMAND   PID   TID    USER   FD   TYPE    DEVICE  SIZE/OFF       NODE NAME
+systemd     1          root  cwd    DIR     253,0      4096        128 /
+systemd     1          root  rtd    DIR     253,0      4096        128 /
+systemd     1          root  txt    REG     253,0   1230920     967763 /usr/lib/systemd/systemd
+<span class="term_say">....(底下省略)....</span>
+<span class="term_say"># 注意到了嗎？是的，在預設的情況下， lsof 會將目前系統上面已經開啟的
+# 檔案全部列出來～所以，畫面多的嚇人啊！您可以注意到，第一個檔案 systemd 執行的
+# 地方就在根目錄，而根目錄，嘿嘿！所在的 inode 也有顯示出來喔！</span>
+
+<span class="term_hd">範例二：僅列出關於 root 的所有程序開啟的 socket 檔案</span>
+[root@study ~]# <span class="term_command">lsof -u root -a -U</span>
+COMMAND     PID USER   FD   TYPE             DEVICE SIZE/OFF   NODE NAME
+systemd       1 root    3u  unix 0xffff8800b7756580      0t0  13715 socket
+systemd       1 root    7u  unix 0xffff8800b7755a40      0t0   1902 @/org/freedesktop/systemd1/notify
+systemd       1 root    9u  unix 0xffff8800b7756d00      0t0   1903 /run/systemd/private
+<span class="term_say">.....(中間省略).....</span>
+Xorg       4496 root    1u  unix 0xffff8800ab107480      0t0  25981 @/tmp/.X11-unix/X0
+Xorg       4496 root    3u  unix 0xffff8800ab107840      0t0  25982 /tmp/.X11-unix/X0
+Xorg       4496 root   16u  unix 0xffff8800b7754f00      0t0  25174 @/tmp/.X11-unix/X0
+<span class="term_say">.....(底下省略).....</span>
+<span class="term_say"># 注意到那個 -a 吧！如果你分別輸入 lsof -u root 及 lsof -U ，會有啥資訊？
+# 使用 lsof -u root -U 及 lsof -u root -a -U ，呵呵！都不同啦！
+# -a 的用途就是在解決同時需要兩個項目都成立時啊！ ^_^</span>
+
+<span class="term_hd">範例三：請列出目前系統上面所有的被啟動的周邊裝置</span>
+[root@study ~]# <span class="term_command">lsof +d /dev</span>
+COMMAND     PID           USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+systemd       1           root    0u   CHR                1,3      0t0 1028 /dev/null
+systemd       1           root    1u   CHR                1,3      0t0 1028 /dev/null
+<span class="term_say"># 看吧！因為裝置都在 /dev 裡面嘛！所以囉，使用搜尋目錄即可啊！</span>
+
+<span class="term_hd">範例四：秀出屬於 root 的 bash 這支程式所開啟的檔案</span>
+[root@study ~]# <span class="term_command">lsof -u root | grep bash</span>
+ksmtuned    781 root  txt    REG    253,0    960384   33867220 /usr/bin/bash
+bash      13888 root  cwd    DIR    253,0      4096   50331777 /root
+bash      13888 root  rtd    DIR    253,0      4096        128 /
+bash      13888 root  txt    REG    253,0    960384   33867220 /usr/bin/bash
+bash      13888 root  mem    REG    253,0 106065056   17331169 /usr/lib/locale/locale-archive
+<span class="term_say">....(底下省略)....</span>
+</pre></td></tr></tbody></table>
+
+		<p>這個指令可以找出您想要知道的某個程序是否有啟用哪些資訊？例如上頭提到的範例四的執行結果呢！ ^_^</p>
+
+		<a id="pidof"></a>
+		<ul class="toplist"><li>pidof ：找出某支正在執行的程式的 PID</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">pidof [-sx] program_name</span>
+<span class="term_say">選項與參數：
+-s  ：僅列出一個 PID 而不列出所有的 PID
+-x  ：同時列出該 program name 可能的 PPID 那個程序的 PID</span>
+
+<span class="term_hd">範例一：列出目前系統上面 systemd 以及 rsyslogd 這兩個程式的 PID</span>
+[root@study ~]# <span class="term_command">pidof systemd rsyslogd</span>
+1 742
+<span class="term_say"># 理論上，應該會有兩個 PID 才對。上面的顯示也是出現了兩個 PID 喔。
+# 分別是 systemd 及 rsyslogd 這兩支程式的 PID 啦。</span>
+</pre></td></tr></tbody></table>
+
+		<p>很簡單的用法吧，透過這個 pidof 指令，並且配合 ps aux 與正規表示法，就可以很輕易的找到您所想要的程序內容了呢。
+		如果要找的是 bash ，那就 pidof bash ，立刻列出一堆 PID 號碼了～</p>
+	<br></div>
+</div>
+
+
+<a id="selinux"></a>
+<div class="block1">
+<h2>16.5 SELinux 初探</h2>
+
+	<p>從進入了 CentOS 5.x 之後的 CentOS 版本中 (當然包括 CentOS 7)，SELinux 已經是個非常完備的核心模組了！尤其 CentOS 提供了很多管理 SELinux 的指令與機制，
+	因此在整體架構上面是單純且容易操作管理的！所以，在沒有自行開發網路服務軟體以及使用其他第三方協力軟體的情況下，
+	也就是全部使用 CentOS 官方提供的軟體來使用我們伺服器的情況下，建議大家不要關閉 SELinux 了喔！
+	讓我們來仔細的玩玩這傢伙吧！</p>
+
+	<a id="selinux_what"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.5.1 什麼是 SELinux</h2>
+
+		<p>什麼是 SELinux 呢？<span class="text_import2">其實他是『 Security Enhanced Linux 
+		』的縮寫，字面上的意義就是安全強化的 Linux 之意</span>！那麼所謂的『安全強化』是強化哪個部分？
+		是網路資安還是權限管理？底下就讓我們來談談吧！</p>
+
+		<a id="history"></a>
+		<ul class="toplist"><li>當初設計的目標：避免資源的誤用</li></ul>
+
+		<p>SELinux 是由美國國家安全局 (NSA) 開發的，當初開發這玩意兒的目的是因為<span class="text_import2">很多企業界發現，
+		通常系統出現問題的原因大部分都在於『內部員工的資源誤用』所導致的，實際由外部發動的攻擊反而沒有這麼嚴重</span>。
+		那麼什麼是『員工資源誤用』呢？舉例來說，如果有個不是很懂系統的系統管理員為了自己設定的方便，將網頁所在目錄 
+		/var/www/html/ 的權限設定為 drwxrwxrwx 時，你覺得會有什麼事情發生？</p>
+
+		<p>現在我們知道所有的系統資源都是透過程序來進行存取的，那麼 /var/www/html/ 如果設定為 777 ，
+		代表所有程序均可對該目錄存取，萬一你真的有啟動 WWW 伺服器軟體，那麼該軟體所觸發的程序將可以寫入該目錄，
+		而該程序卻是對整個 Internet 提供服務的！只要有心人接觸到這支程序，而且該程序剛好又有提供使用者進行寫入的功能，
+		那麼外部的人很可能就會對你的系統寫入些莫名其妙的東西！那可真是不得了！一個小小的 777 問題可是大大的！</p>
+
+		<p>為了控管這方面的權限與程序的問題，所以美國國家安全局就著手處理作業系統這方面的控管。
+		由於 Linux 是自由軟體，程式碼都是公開的，因此她們便使用 Linux 來作為研究的目標，
+		最後更將研究的結果整合到 Linux 核心裡面去，那就是 SELinux 啦！所以說， SELinux 是整合到核心的一個模組喔！
+		更多的 SELinux 相關說明可以參考：</p>
+		<ul><li><a href="http://www.nsa.gov/research/selinux/" target="_blank">http://www.nsa.gov/research/selinux/</a></li></ul>
+
+		<p>這也就是說：<span class="text_import2">其實 SELinux 是在進行程序、檔案等細部權限設定依據的一個核心模組！
+		由於啟動網路服務的也是程序，因此剛好也能夠控制網路服務能否存取系統資源的一道關卡！</span>
+		所以，在講到 SELinux 對系統的存取控制之前，我們得先來回顧一下之前談到的系統檔案權限與使用者之間的關係。
+		因為先談完這個你才會知道為何需要 SELinux 的啦！</p>
+
+		<a id="dac"></a>
+		<ul class="toplist"><li>傳統的檔案權限與帳號關係：自主式存取控制, DAC</li></ul>
+
+		<p>我們<a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">第十三章</a>的內容，知道系統的帳號主要分為系統管理員 
+		(root) 與一般用戶，而這兩種身份能否使用系統上面的檔案資源則與 rwx 的權限設定有關。
+		不過你要注意的是，各種權限設定對 root 是無效的。因此，當某個程序想要對檔案進行存取時，
+		系統就會根據該程序的擁有者/群組，並比對檔案的權限，若通過權限檢查，就可以存取該檔案了。</p>
+
+		<p><span class="text_import2">這種存取檔案系統的方式被稱為『自主式存取控制 (Discretionary Access Control, 
+		DAC)』，基本上，就是依據程序的擁有者與檔案資源的 rwx 權限來決定有無存取的能力。</span>
+		不過這種 DAC 的存取控制有幾個困擾，那就是：</p>
+
+		<ul>
+		<li><span class="text_import2">root 具有最高的權限</span>：如果不小心某支程序被有心人士取得，
+		且該程序屬於 root 的權限，那麼這支程序就可以在系統上進行任何資源的存取！真是要命！<br><br></li>
+
+		<li><span class="text_import2">使用者可以取得程序來變更檔案資源的存取權限</span>：如果你不小心將某個目錄的權限設定為 
+		777 ，由於對任何人的權限會變成 rwx ，因此該目錄就會被任何人所任意存取！</li>
+		</ul>
+
+		<p>這些問題是非常嚴重的！尤其是當你的系統是被某些漫不經心的系統管理員所掌控時！她們甚至覺得目錄權限調為 777 
+		也沒有什麼了不起的危險哩...</p>
+
+		<a id="mac"></a>
+		<ul class="toplist"><li>以政策規則訂定特定程序讀取特定檔案：委任式存取控制, MAC</li></ul>
+
+		<p>現在我們知道 DAC 的困擾就是當使用者取得程序後，他可以藉由這支程序與自己預設的權限來處理他自己的檔案資源。
+		萬一這個使用者對 Linux 系統不熟，那就很可能會有資源誤用的問題產生。為了避免 DAC 容易發生的問題，因此 
+		SELinux 導入了委任式存取控制 (Mandatory Access Control, MAC) 的方法！</p>
+
+		<p>委任式存取控制 (MAC) 有趣啦！他可以針對特定的程序與特定的檔案資源來進行權限的控管！
+		也就是說，即使你是 root ，那麼在使用不同的程序時，你所能取得的權限並不一定是 root ，
+		而得要看當時該程序的設定而定。如此一來，我們針對控制的『主體』變成了『程序』而不是使用者喔！
+		此外，這個主體程序也不能任意使用系統檔案資源，因為每個檔案資源也有針對該主體程序設定可取用的權限！
+		如此一來，控制項目就細的多了！但整個系統程序那麼多、檔案那麼多，一項一項控制可就沒完沒了！
+		所以 SELinux 也提供一些預設的政策 (Policy) ，並在該政策內提供多個規則 (rule) ，讓你可以選擇是否啟用該控制規則！</p>
+
+		<p>在委任式存取控制的設定下，我們的程序能夠活動的空間就變小了！舉例來說， WWW 伺服器軟體的達成程序為 httpd 這支程式，
+		而預設情況下， httpd 僅能在 /var/www/ 這個目錄底下存取檔案，如果 httpd 這個程序想要到其他目錄去存取資料時，
+		除了規則設定要開放外，目標目錄也得要設定成 httpd 可讀取的模式 (type) 才行喔！限制非常多！
+		所以，即使不小心 httpd 被 cracker 取得了控制權，他也無權瀏覽 /etc/shadow 等重要的設定檔喔！</p>
+
+		<p>簡單的來說，針對 Apache 這個 WWW 網路服務使用 DAC 或 MAC 的結果來說，兩者間的關係可以使用下圖來說明。
+		底下這個圖示取自 Red Hat 訓練教材，真的是很不錯～所以被鳥哥借用來說明一下！</p>
+
+	<a id="fig16.5.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/dac_mac.jpg" alt="使用 DAC/MAC 產生的不同結果，以 Apache 為例說明" title="使用 DAC/MAC 產生的不同結果，以 Apache 為例說明" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.5.1、使用 DAC/MAC 產生的不同結果，以 Apache 為例說明</div>
+
+		<p>左圖是沒有 SELinux 的 DAC 存取結果，apache 這隻 root 所主導的程序，可以在這三個目錄內作任何檔案的新建與修改～
+		相當麻煩～右邊則是加上 SELinux 的 MAC 管理的結果，SELinux 僅會針對 Apache 這個『 process 』放行部份的目錄，
+		其他的非正規目錄就不會放行給 Apache 使用！因此不管你是誰，就是不能穿透 MAC 的框框！這樣有比較了解乎？</p>
+
+	<br></div><br>
+
+	<a id="selinux_run"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.5.2 SELinux 的運作模式</h2>
+
+		<p>再次的重複說明一下，SELinux 是透過 MAC 的方式來控管程序，他控制的主體是程序，
+		而目標則是該程序能否讀取的『檔案資源』！所以先來說明一下這些咚咚的相關性啦！(<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#ps4">註4</a>)</p>
+
+		<a id="selinux_com"></a>
+		<ul>
+		<li><span class="text_import1">主體 (Subject)：</span><br>
+		SELinux 主要想要管理的就是程序，因此你可以將『主體』跟本章談到的 process 劃上等號；</li>
+
+		<li style="margin-top: 10px;"><span class="text_import1">目標 (Object)：</span><br>
+		主體程序能否存取的『目標資源』一般就是檔案系統。因此這個目標項目可以等檔案系統劃上等號；</li>
+
+		<li style="margin-top: 10px;"><span class="text_import1">政策 (Policy)：</span><br>
+		由於程序與檔案數量龐大，因此 SELinux 會依據某些服務來制訂基本的存取安全性政策。這些政策內還會有詳細的規則 (rule)
+		來指定不同的服務開放某些資源的存取與否。在目前的 CentOS 7.x 裡面僅有提供三個主要的政策，分別是：
+		<ul class="text_import2" style="margin-top: 10px; margin-bottom: 10px">
+		<li>targeted：針對網路服務限制較多，針對本機限制較少，是預設的政策；</li>
+		<li>minimum：由 target 修訂而來，僅針對選擇的程序來保護！</li>
+		<li>mls：完整的 SELinux 限制，限制方面較為嚴格。</li>
+		</ul>
+		建議使用預設的 targeted 政策即可。</li>
+
+		<li style="margin-top: 10px;"><span class="text_import1">安全性本文 (security context)：</span><br>
+		我們剛剛談到了主體、目標與政策面，但是主體能不能存取目標除了政策指定之外，<span class="text_import2">主體與目標的安全性本文必須一致才能夠順利存取。</span>
+		這個安全性本文 (security context) 有點類似檔案系統的 rwx 啦！安全性本文的內容與設定是非常重要的！
+		如果設定錯誤，你的某些服務(主體程序)就無法存取檔案系統(目標資源)，當然就會一直出現『權限不符』的錯誤訊息了！</li>
+		</ul>
+
+		<p>由於 SELinux 重點在保護程序讀取檔案系統的權限，因此我們將上述的幾個說明搭配起來，繪製成底下的流程圖，比較好理解：</p>
+
+	<a id="fig16.5.2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/selinux_1.gif" alt="SELinux 運作的各元件之相關性" title="SELinux 運作的各元件之相關性" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.5.2、SELinux 運作的各元件之相關性(本圖參考小州老師的上課講義)</div>
+
+		<p><span class="text_import2">上圖的重點在『主體』如何取得『目標』的資源存取權限！
+		由上圖我們可以發現，(1)主體程序必須要通過 SELinux 政策內的規則放行後，就可以與目標資源進行安全性本文的比對，
+		(2)若比對失敗則無法存取目標，若比對成功則可以開始存取目標</span>。問題是，最終能否存取目標還是與檔案系統的 rwx 
+		權限設定有關喔！如此一來，加入了 SELinux 之後，出現權限不符的情況時，你就得要一步一步的分析可能的問題了！</p>
+
+		<a id="context"></a>
+		<ul class="toplist"><li>安全性本文 (Security Context)</li></ul>
+
+		<p>CentOS 7.x 的 target 政策已經幫我們制訂好非常多的規則了，因此你只要知道如何開啟/關閉某項規則的放行與否即可。
+		那個安全性本文比較麻煩！因為你可能需要自行設定檔案的安全性本文呢！為何需要自行設定啊？
+		舉例來說，你不也常常進行檔案的 rwx 的重新設定嗎？這個<span class="text_import2">安全性本文你就將他想成 
+		SELinux 內必備的 rwx 就是了</span>！這樣比較好理解啦。</p>
+
+		<p>安全性本文存在於主體程序中與目標檔案資源中。程序在記憶體內，所以安全性本文可以存入是沒問題。
+		那檔案的安全性本文是記錄在哪裡呢？事實上，<span class="text_import2">安全性本文是放置到檔案的 inode
+		內的</span>，因此主體程序想要讀取目標檔案資源時，同樣需要讀取 inode ，
+		在 inode 內就可以比對安全性本文以及 rwx 等權限值是否正確，而給予適當的讀取權限依據。</p>
+
+		<p>那麼安全性本文到底是什麼樣的存在呢？我們先來看看 /root 底下的檔案的安全性本文好了。
+		觀察安全性本文可使用『 ls -Z 』去觀察如下：(注意：你必須已經啟動了 SELinux 
+		才行！若尚未啟動，這部份請稍微看過一遍即可。底下會介紹如何啟動 SELinux 喔！)</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 先來觀察一下 root 家目錄底下的『檔案的 SELinux 相關資訊』</span>
+[root@study ~]# <span class="term_command">ls -Z</span>
+-rw-------. root root <span class="term_write">system_u:object_r:admin_home_t:s0</span>     anaconda-ks.cfg
+-rw-r--r--. root root <span class="term_write">system_u:object_r:admin_home_t:s0</span>     initial-setup-ks.cfg
+-rw-r--r--. root root <span class="term_write">unconfined_u:object_r:admin_home_t:s0</span> regular_express.txt
+<span class="term_say"># 上述特殊字體的部分，就是安全性本文的內容！鳥哥僅列出數個預設的檔案而已，
+# 本書學習過程中所寫下的檔案則沒有列在上頭喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>如上所示，安全性本文主要用冒號分為三個欄位，這三個欄位的意義為：</p>
+<table class="term"><tbody><tr><td class="term"><pre>Identify:role:type
+身份識別:角色:類型
+</pre></td></tr></tbody></table>
+
+		<p>這三個欄位的意義仔細的說明一下吧：</p>
+
+		<ul style="margin-bottom: 0"><li class="text_import1">身份識別 (Identify)：</li></ul>
+		<p style="margin: 10px 0 10px 40px; padding: 0;">相當於帳號方面的身份識別！主要的身份識別常見有底下幾種常見的類型：</p>
+		<ul style="margin: 10px 0 10px 40px; list-style-type: circle;">
+		<li><span class="text_import2">unconfined_u</span>：不受限的用戶，也就是說，該檔案來自於不受限的程序所產生的！一般來說，我們使用可登入帳號來取得 bash 之後，
+			預設的 bash 環境是不受 SELinux 管制的～因為 bash 並不是什麼特別的網路服務！因此，在這個不受 SELinux 所限制的 bash 程序所產生的檔案，
+			其身份識別大多就是 unconfined_u 這個『不受限』用戶囉！</li>
+		<li style="margin-top: 10px;"><span class="text_import2">system_u</span>：系統用戶，大部分就是系統自己產生的檔案囉！</li>
+		</ul>
+		<p style="margin: 10px 0 10px 40px; padding: 0;">基本上，如果是系統或軟體本身所提供的檔案，大多就是 system_u 這個身份名稱，而如果是我們用戶透過 bash 
+			自己建立的檔案，大多則是不受限的 unconfined_u 身份～如果是網路服務所產生的檔案，或者是系統服務運作過程產生的檔案，則大部分的識別就會是 system_u 囉！</p>
+
+		<p style="margin: 10px 0 10px 40px; padding: 0;">因為鳥哥這邊教大家使用文字界面來產生許多的資料，因此你看上面的三個檔案中，系統安裝主動產生的 
+			anaconda-ks.cfs 及 initial-setup-ks.cfg 就會是 system_u，而我們自己從網路上面抓下來的 regular_express.txt 就會是 unconfined_u 這個識別啊！</p>
+
+		<ul style="margin-bottom: 0"><li class="text_import1">角色 (Role)：</li></ul>
+		<p style="margin: 10px 0 10px 40px; padding: 0;">透過角色欄位，我們可以知道這個資料是屬於程序、檔案資源還是代表使用者。一般的角色有：</p>
+		<ul style="margin: 10px 0 10px 40px; list-style-type: circle;">
+		<li><span class="text_import2">object_r</span>：代表的是檔案或目錄等檔案資源，這應該是最常見的囉；</li>
+		<li><span class="text_import2">system_r</span>：代表的就是程序啦！不過，一般使用者也會被指定成為 system_r 喔！</li>
+		</ul>
+		<p style="margin: 10px 0 10px 40px; padding: 0;">你也會發現角色的欄位最後面使用『 _r 』來結尾！因為是 role 的意思嘛！</p>
+
+		<ul style="margin-bottom: 0"><li class="text_import1">類型 (Type) (最重要！)：</li></ul>
+		<p style="margin: 10px 0 10px 40px; padding: 0;">在預設的 targeted 政策中， Identify 與 Role 欄位基本上是不重要的！重要的在於這個類型 (type) 欄位！
+			基本上，一個主體程序能不能讀取到這個檔案資源，與類型欄位有關！而類型欄位在檔案與程序的定義不太相同，分別是：</p>
+		<ul style="margin: 10px 0 10px 40px; list-style-type: circle;">
+		<li>type：在檔案資源 (Object) 上面稱為類型 (Type)；</li>
+		<li>domain：在主體程序 (Subject) 則稱為領域 (domain) 了！</li>
+		</ul>
+		<p style="margin: 10px 0 10px 40px; padding: 0;">domain 需要與 type 搭配，則該程序才能夠順利的讀取檔案資源啦！</p>
+
+		<a id="domain_type"></a>
+		<ul class="toplist"><li>程序與檔案 SELinux type 欄位的相關性</li></ul>
+
+		<p>那麼這三個欄位如何利用呢？首先我們來瞧瞧主體程序在這三個欄位的意義為何！透過身份識別與角色欄位的定義，
+		我們可以約略知道某個程序所代表的意義喔！先來動手瞧一瞧目前系統中的程序在 SELinux 底下的安全本文為何？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 再來觀察一下系統『程序的 SELinux 相關資訊』</span>
+[root@study ~]# <span class="term_command">ps -eZ</span>
+LABEL                             PID TTY          TIME CMD
+system_u:system_r:init_t:s0         1 ?        00:00:03 systemd
+system_u:system_r:kernel_t:s0       2 ?        00:00:00 kthreadd
+<span class="term_write">system_u:system_r</span>:kernel_t:s0       3 ?        00:00:00 ksoftirqd/0
+<span class="term_say">.....(中間省略).....</span>
+unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 31513 ? 00:00:00 sshd
+<span class="term_write">unconfined_u:unconfined_r</span>:unconfined_t:s0-s0:c0.c1023 31535 pts/0 00:00:00 bash
+<span class="term_say"># 基本上程序主要就分為兩大類，一種是系統有受限的 system_u:system_r，另一種則可能是用戶自己的，
+# 比較不受限的程序 (通常是本機用戶自己執行的程式)，亦即是 unconfined_u:unconfined_r 這兩種！</span>
+</pre></td></tr></tbody></table>
+
+		<p>基本上，這些對應資料在 targeted 政策下的對應如下：</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td>身份識別</td><td>角色</td><td>該對應在 targeted 的意義</td></tr>
+<tr><td>unconfined_u</td><td>unconfined_r</td><td>一般可登入使用者的程序囉！比較沒有受限的程序之意！大多數都是用戶已經順利登入系統 (不論是網路還是本機登入來取得可用的 shell) 後，
+	所用來操作系統的程序！如 bash, X window 相關軟體等。</td></tr>
+<tr><td>system_u</td><td>system_r</td><td>由於為系統帳號，因此是非交談式的系統運作程序，大多數的系統程序均是這種類型！</td></tr>
+</tbody></table>
+
+		<p>但就如上所述，在預設的 target 政策下，<span class="text_import2">其實最重要的欄位是類型欄位 (type)，
+		主體與目標之間是否具有可以讀寫的權限，與程序的 domain 及檔案的 type 有關</span>！這兩者的關係我們可以使用 crond 以及他的設定檔來說明！
+		亦即是 /usr/sbin/crond, /etc/crontab, /etc/cron.d 等檔案來說明。
+		首先，看看這幾個咚咚的安全性本文內容先：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先看看 crond 這個『程序』的安全本文內容：</span>
+[root@study ~]# <span class="term_command">ps -eZ | grep cron</span>
+system_u:system_r:<span class="term_write">crond_t</span>:s0-s0:c0.c1023 1338 ? 00:00:01 crond
+system_u:system_r:crond_t:s0-s0:c0.c1023 1340 ? 00:00:00 atd
+<span class="term_say"># 這個安全本文的類型名稱為 crond_t 格式！</span>
+
+<span class="term_hd"># 2. 再來瞧瞧執行檔、設定檔等等的安全本文內容為何！</span>
+[root@study ~]# <span class="term_command">ll -Zd /usr/sbin/crond /etc/crontab /etc/cron.d</span>
+drwxr-xr-x. root root system_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0 /etc/cron.d
+-rw-r--r--. root root system_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0 /etc/crontab
+-rwxr-xr-x. root root system_u:object_r:<span class="term_write">crond_exec_t</span>:s0 /usr/sbin/crond
+</pre></td></tr></tbody></table>
+
+		<p>當我們執行 /usr/sbin/crond 之後，這個程式變成的程序的 domain 類型會是 crond_t 這一個～而這個 crond_t 能夠讀取的設定檔則為 system_cron_spool_t 
+		這種的類型。因此不論 /etc/crontab, /etc/cron.d 以及 /var/spool/cron 都會是相關的 SELinux 類型 (/var/spool/cron 為 user_cron_spool_t)。
+		文字看起來不太容易了解，我們使用圖示來說明這幾個東西的關係！</p>
+
+	<a id="fig16.5.3"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/centos7_selinux_2.jpg" alt="主體程序取得的 domain 與目標檔案資源的 type 相互關係" title="主體程序取得的 domain 與目標檔案資源的 type 相互關係" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.5.3、主體程序取得的 domain 與目標檔案資源的 type 相互關係以 crond 為例</div>
+
+		<p>上圖的意義我們可以這樣看的：</p>
+
+		<ol class="text_import2">
+		<li>首先，我們觸發一個可執行的目標檔案，那就是具有 crond_exec_t 這個類型的 /usr/sbin/crond 檔案；</li>
+		<li>該檔案的類型會讓這個檔案所造成的主體程序 (Subject) 具有 crond 這個領域 (domain)，
+		我們的政策針對這個領域已經制定了許多規則，其中包括這個領域可以讀取的目標資源類型；</li>
+		<li>由於 crond domain 被設定為可以讀取 system_cron_spool_t 這個類型的目標檔案 (Object)，
+		因此你的設定檔放到 /etc/cron.d/ 目錄下，就能夠被 crond 那支程序所讀取了；</li>
+		<li>但最終能不能讀到正確的資料，還得要看 rwx 是否符合 Linux 權限的規範！</li>
+		</ol>
+
+		<p>上述的流程告訴我們幾個重點，第一個是政策內需要制訂詳細的 domain/type 相關性；第二個是若檔案的 type 設定錯誤，
+		那麼即使權限設定為 rwx 全開的 777 ，該主體程序也無法讀取目標檔案資源的啦！不過如此一來，
+		也就可以避免使用者將他的家目錄設定為 777 時所造成的權限困擾。</p>
+
+		<p>真的是這樣嗎？沒關係～讓我們來做個測試練習吧！就是，萬一你的 crond 設定檔的 SELinux 並不是 system_cron_spool_t 時，
+		該設定檔真的可以順利的被讀取運作嗎？來看看底下的範例！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先假設你因為不熟的緣故，因此是在『root 家目錄』建立一個如下的 cron 設定：</span>
+[root@study ~]# <span class="term_command">vim checktime</span>
+<span class="term_write">10 * * * * root sleep 60s</span>
+
+<span class="term_hd"># 2. 檢查後才發現檔案放錯目錄了，又不想要保留副本，因此使用 mv 移動到正確目錄：</span>
+[root@study ~]# <span class="term_command">mv checktime /etc/cron.d</span>
+[root@study ~]# <span class="term_command">ll /etc/cron.d/checktime</span>
+-rw-r--r--. 1 root root 27 Aug  7 18:41 /etc/cron.d/checktime
+<span class="term_say"># 仔細看喔，權限是 644 ，確定沒有問題！任何程序都能夠讀取喔！</span>
+
+<span class="term_hd"># 3. 強制重新啟動 crond ，然後偷看一下登錄檔，看看有沒有問題發生！</span>
+[root@study ~]# <span class="term_command">systemctl restart crond</span>
+[root@study ~]# <span class="term_command">tail /var/log/cron</span>
+Aug  7 18:46:01 study crond[28174]: ((null)) Unauthorized SELinux <span class="term_write">context=system_u:system_r:
+system_cronjob_t</span>:s0-s0:c0.c1023 <span class="term_write">file_context=unconfined_u:object_r:admin_home_t</span>:s0 
+(/etc/cron.d/checktime)
+Aug  7 18:46:01 study crond[28174]: (root) FAILED (loading cron table)
+<span class="term_say"># 上面的意思是，有錯誤！因為原本的安全本文與檔案的實際安全本文無法搭配的緣故！</span>
+</pre></td></tr></tbody></table>
+
+		<p>您瞧瞧～從上面的測試案例來看，我們的設定檔確實沒有辦法被 crond 這個服務所讀取喔！而原因在登錄檔內就有說明，
+		主要就是來自 SELinux 安全本文 (context) type 的不同所致喔！沒辦法讀就沒辦法讀，先放著～後面再來學怎麼處理這問題吧！</p>
+
+	<br></div><br>
+
+	<a id="selinux_get"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.5.3 SELinux 三種模式的啟動、關閉與觀察</h2>
+
+		<p>並非所有的 Linux distributions 都支援 SELinux 的，所以你必須要先觀察一下你的系統版本為何！
+		鳥哥這裡介紹的 CentOS 7.x 本身就有支援 SELinux 啦！所以你不需要自行編譯 SELinux 到你的 Linux 核心中！
+		目前 SELinux 依據啟動與否，共有三種模式，分別如下：</p>
+
+		<ul>
+		<li><span class="text_import2">enforcing</span>：強制模式，代表 SELinux 運作中，且已經正確的開始限制 domain/type 了；</li>
+		<li><span class="text_import2">permissive</span>：寬容模式：代表 SELinux 運作中，不過僅會有警告訊息並不會實際限制 
+		domain/type 的存取。這種模式可以運來作為 SELinux 的 debug 之用；</li>
+		<li><span class="text_import2">disabled</span>：關閉，SELinux 並沒有實際運作。</li>
+		</ul>
+
+		<p>這三種模式跟<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fig16.5.2">圖16.5.2</a>之間的關係如何呢？我們前面不是談過主體程序需要經過政策規則、安全本文比對之後，加上 rwx 的權限規範，
+		若一切合理才會讓程序順利的讀取檔案嗎？那麼這個 SELinux 的三種模式與上面談到的政策規則、安全本文的關係為何呢？我們還是使用圖示加上流程來讓大家理解一下：</p>
+
+	<a id="fig16.5.4"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/selinux_3.jpg" alt="SELinux 的三種類型與實際運作流程圖示意" title="SELinux 的三種類型與實際運作流程圖示意" style="border: 0px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖16.5.4、SELinux 的三種類型與實際運作流程圖示意</div>
+
+		<p>就如上圖所示，首先，你得要知道，並不是所有的程序都會被 SELinux 所管制，因此最左邊會出現一個所謂的『有受限的程序主體』！那如何觀察有沒有受限 (confined )呢？
+		很簡單啊！就透過 ps -eZ 去擷取！舉例來說，我們來找一找 crond 與 bash 這兩隻程序是否有被限制吧？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ps -eZ | grep -E 'cron|bash'</span>
+system_u:system_r:<span class="term_write">crond_t</span>:s0-s0:c0.c1023 1340 ? 00:00:00 atd
+unconfined_u:unconfined_r:<span class="term_write">unconfined_t</span>:s0-s0:c0.c1023 13888 tty2 00:00:00 bash
+unconfined_u:unconfined_r:<span class="term_write">unconfined_t</span>:s0-s0:c0.c1023 28054 pts/0 00:00:00 bash
+unconfined_u:unconfined_r:<span class="term_write">unconfined_t</span>:s0-s0:c0.c1023 28094 pts/0 00:00:00 bash
+system_u:system_r:<span class="term_write">crond_t</span>:s0-s0:c0.c1023 28174 ? 00:00:00 crond
+</pre></td></tr></tbody></table>
+
+		<p>如前所述，因為在目前 target 這個政策底下，只有第三個類型 (type) 欄位會有影響，因此我們上表僅列出第三個欄位的資料而已。
+		我們可以看到， crond 確實是有受限的主體程序，而 bash 因為是本機程序，因此就是不受限 (unconfined_t) 的類型！也就是說，
+		bash 是不需要經過圖 16.5.4 的流程，而是直接去判斷 rwx 而已～。</p>
+
+		<p>了解了受限的主體程序的意義之後，再來了解一下，三種模式的運作吧！首先，如果是 Disabled 的模式，那麼 SELinux 將不會運作，當然受限的程序也不會經過 SELinux ，
+		也是直接去判斷 rwx 而已。那如果是寬容 (permissive) 模式呢？這種模式也是不會將主體程序抵擋 (所以箭頭是可以直接穿透的喔！)，不過萬一沒有通過政策規則，或者是安全本文的比對時，
+		那麼該讀寫動作將會被紀錄起來 (log)，可作為未來檢查問題的判斷依據。</p>
+
+		<p>至於最終那個 Enforcing 模式，就是實際將受限主體進入規則比對、安全本文比對的流程，若失敗，就直接抵擋主體程序的讀寫行為，並且將他記錄下來。
+		如果通通沒問題，這才進入到 rwx 權限的判斷喔！這樣可以理解三種模式的行為了嗎？</p>
+
+		<a id="getenforce"></a>
+		<p>那你怎麼知道目前的 SELinux 模式呢？就透過 getenforce 吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">getenforce</span>
+Enforcing  <span class="term_note">&lt;==諾！就顯示出目前的模式為 Enforcing 囉！</span>
+</pre></td></tr></tbody></table>
+
+		<a id="sestatus"></a>
+		<p>另外，我們又如何知道 SELinux 的政策 (Policy) 為何呢？這時可以使用 sestatus 來觀察：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">sestatus [-vb]</span>
+<span class="term_say">選項與參數：
+-v  ：檢查列於 /etc/sestatus.conf 內的檔案與程序的安全性本文內容；
+-b  ：將目前政策的規則布林值列出，亦即某些規則 (rule) 是否要啟動 (0/1) 之意；</span>
+
+<span class="term_hd">範例一：列出目前的 SELinux 使用哪個政策 (Policy)？</span>
+[root@study ~]# <span class="term_command">sestatus</span>
+SELinux status:                 enabled           <span class="term_note">&lt;==是否啟動 SELinux</span>
+SELinuxfs mount:                /sys/fs/selinux   <span class="term_note">&lt;==SELinux 的相關檔案資料掛載點</span>
+SELinux root directory:         /etc/selinux      <span class="term_note">&lt;==SELinux 的根目錄所在</span>
+Loaded policy name:             targeted          <span class="term_note">&lt;==目前的政策為何？</span>
+Current mode:                   enforcing         <span class="term_note">&lt;==目前的模式</span>
+Mode from config file:          enforcing         <span class="term_note">&lt;==目前設定檔內規範的 SELinux 模式</span>
+Policy MLS status:              enabled           <span class="term_note">&lt;==是否含有 MLS 的模式機制</span>
+Policy deny_unknown status:     allowed           <span class="term_note">&lt;==是否預設抵擋未知的主體程序</span>
+Max kernel policy version:      28 
+</pre></td></tr></tbody></table>
+
+		<p>如上所示，目前是啟動的，而且是 Enforcing 模式，而由設定檔查詢得知亦為 Enforcing 模式。
+		此外，目前的預設政策為 targeted 這一個。你應該要有疑問的是， SELinux 的設定檔是哪個檔案啊？
+		其實就是 /etc/selinux/config 這個檔案喔！我們來看看內容：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vim /etc/selinux/config</span>
+SELINUX=enforcing     <span class="term_note">&lt;==調整 enforcing|disabled|permissive</span>
+SELINUXTYPE=targeted  <span class="term_note">&lt;==目前僅有 targeted, mls, minimum 三種政策</span>
+</pre></td></tr></tbody></table>
+
+		<p>若有需要修改預設政策的話，就直接改 SELINUX=enforcing 那一行即可喔！</p>
+
+		<a id="on_off"></a>
+		<ul class="toplist"><li>SELinux 的啟動與關閉</li></ul>
+
+		<p>上面是預設的政策與啟動的模式！你要注意的是，如果改變了政策則需要重新開機；如果由 enforcing 或 permissive
+		改成 disabled ，或由 disabled 改成其他兩個，那也必須要重新開機。這是因為 SELinux 是整合到核心裡面去的，
+		你只可以在 SELinux 運作下切換成為強制 (enforcing) 或寬容 (permissive) 模式，不能夠直接關閉 SELinux 的！
+		如果剛剛你發現 getenforce 出現 disabled 時，請到上述檔案修改成為 enforcing 然後重新開機吧！</p>
+
+		<p>不過你要注意的是，如果從 disable 轉到啟動 SELinux 的模式時，
+		由於系統必須要針對檔案寫入安全性本文的資訊，因此開機過程會花費不少時間在等待重新寫入 SELinux 安全性本文 
+		(有時也稱為 SELinux Label) ，而且在寫完之後還得要再次的重新開機一次喔！你必須要等待粉長一段時間！
+		等到下次開機成功後，再使用 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#getenforce">getenforce</a> 或 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#sestatus">sestatus</a>
+		來觀察看看有否成功的啟動到 Enforcing 的模式囉！</p>
+
+		<a id="setenforce"></a>
+		<p>如果你已經在 Enforcing 的模式，但是可能由於一些設定的問題導致 SELinux 讓某些服務無法正常的運作，
+		此時你可以將 Enforcing 的模式改為寬容 (permissive) 的模式，讓 SELinux 只會警告無法順利連線的訊息，
+		而不是直接抵擋主體程序的讀取權限。讓 SELinux 模式在 enforcing 與 permissive 之間切換的方法為：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">setenforce [0|1]</span>
+<span class="term_say">選項與參數：
+0 ：轉成 permissive 寬容模式；
+1 ：轉成 Enforcing 強制模式</span>
+
+<span class="term_hd">範例一：將 SELinux 在 Enforcing 與 permissive 之間切換與觀察</span>
+[root@study ~]# <span class="term_command">setenforce 0</span>
+[root@study ~]# <span class="term_command">getenforce</span>
+Permissive
+[root@study ~]# <span class="term_command">setenforce 1</span>
+[root@study ~]# <span class="term_command">getenforce</span>
+Enforcing
+</pre></td></tr></tbody></table>
+
+		<p>不過請注意， setenforce 無法在 Disabled 的模式底下進行模式的切換喔！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		在某些特殊的情況底下，你從 Disabled 切換成 Enforcing 之後，竟然有一堆服務無法順利啟動，都會跟你說在 /lib/xxx 
+		裡面的資料沒有權限讀取，所以啟動失敗。這大多是由於在重新寫入 SELinux type (Relabel) 出錯之故，使用 Permissive 
+		就沒有這個錯誤。那如何處理呢？最簡單的方法就是在 Permissive 的狀態下，使用『 restorecon -Rv / 』重新還原所有 SELinux 的類型，就能夠處理這個錯誤！
+		</fieldset><br>	</div><br>
+
+	<a id="selinux_policy"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.5.4 SELinux 政策內的規則管理</h2>
+
+		<p>從<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fig16.5.4">圖 16.5.4</a> 裡面，我們知道 SELinux 的三種模式是會影響到主體程序的放行與否。
+		如果是進入 Enforcing 模式，那麼接著下來會影響到主體程序的，當然就是第二關：『 target 政策內的各項規則 (rules) 』了！
+		好了，那麼我們怎麼知道目前這個政策裡面到底有多少會影響到主體程序的規則呢？很簡單，就透過 getsebool 來瞧一瞧即可。</p>
+
+		<ul class="toplist"><li>SELinux 各個規則的布林值查詢 getsebool</li></ul>
+
+		<p>如果想要查詢系統上面全部規則的啟動與否 (on/off，亦即布林值)，很簡單的透過 sestatus -b 或 getsebool -a 均可！</p>
+
+<a id="getsebool"></a>
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">getsebool [-a] [規則的名稱]</span>
+<span class="term_say">選項與參數：
+-a  ：列出目前系統上面的所有 SELinux 規則的布林值為開啟或關閉值</span>
+
+<span class="term_hd">範例一：查詢本系統內所有的布林值設定狀況</span>
+[root@study ~]# <span class="term_command">getsebool -a</span>
+abrt_anon_write --&gt; off
+abrt_handle_event --&gt; off
+<span class="term_say">....(中間省略)....</span>
+cron_can_relabel --&gt; off                 <span class="term_note"># 這個跟 cornd 比較有關！</span>
+cron_userdomain_transition --&gt; on
+<span class="term_say">....(中間省略)....</span>
+httpd_enable_homedirs --&gt; off            <span class="term_note"># 這當然就是跟網頁，亦即 http 有關的囉！</span>
+<span class="term_say">....(底下省略)....
+# 這麼多的 SELinux 規則喔！每個規則後面都列出現在是允許放行還是不許放行的布林值喔！</span>
+</pre></td></tr></tbody></table>
+
+		<ul class="toplist"><li>SELinux 各個規則規範的主體程序能夠讀取的檔案 SELinux type 查詢 seinfo, sesearch</li></ul>
+
+		<p>我們現在知道有這麼多的 SELinux 規則，但是每個規則內到底是在限制什麼東西？如果你想要知道的話，那就得要使用 seinfo 等工具！
+		這些工具並沒有在我們安裝時就安裝了，因此請拿出原版光碟，放到光碟機，鳥哥假設你將原版光碟掛載到 /mnt 底下，那麼接下來這麼作，
+		先安裝好我們所需要的軟體才行！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">yum install /mnt/Packages/setools-console-*</span>
+</pre></td></tr></tbody></table>
+
+		<p>很快的安裝完畢之後，我們就可以來使用 seinfo, sesearch 等指令了！</p>
+
+<a id="seinfo"></a>
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">seinfo [-trub]</span>
+<span class="term_say">選項與參數：
+--all ：列出 SELinux 的狀態、規則布林值、身份識別、角色、類別等所有資訊
+-u    ：列出 SELinux 的所有身份識別 (user) 種類
+-r    ：列出 SELinux 的所有角色 (role) 種類
+-t    ：列出 SELinux 的所有類別 (type) 種類
+-b    ：列出所有規則的種類 (布林值)</span>
+
+<span class="term_hd">範例一：列出 SELinux 在此政策下的統計狀態</span>
+[root@study ~]# <span class="term_command">seinfo</span>
+Statistics for policy file: /sys/fs/selinux/policy
+Policy Version &amp; Type: v.28 (binary, mls)
+
+   Classes:            83    Permissions:       255
+   Sensitivities:       1    Categories:       1024
+   <span class="term_write">Types:            4620</span>    Attributes:        357
+   Users:               8    Roles:              14
+   <span class="term_write">Booleans:          295</span>    Cond. Expr.:       346
+   Allow:          102249    Neverallow:          0
+   Auditallow:        160    Dontaudit:        8413
+   Type_trans:      16863    Type_change:        74
+   Type_member:        35    Role allow:         30
+   Role_trans:        412    Range_trans:      5439
+<span class="term_say">....(底下省略)....
+# 從上面我們可以看到這個政策是 targeted ，此政策的安全本文類別有 4620 個；
+# 而各種 SELinux 的規則 (Booleans) 共制訂了 295 條！</span>
+</pre></td></tr></tbody></table>
+
+		<p>我們在 16.5.2 裡面簡單的談到了幾個身份識別 (user) 以及角色 (role) 而已，如果你想要查詢目前所有的身份識別與角色，就使用『 seinfo -u 』及『
+		seinfo -r 』就可以知道了！至於簡單的統計資料，就直接輸入 seinfo 即可！但是上面還是沒有談到規則相關的東西耶～
+		沒關係～一個一個來～我們在 16.5.1 的最後面談到 /etc/cron.d/checktime 的 SELinux type 類型不太對～那我們也知道 crond 這個程序的 type 是 crond_t ，
+		能不能找一下 crond_t 能夠讀取的檔案 SELinux type 有哪些呢？</p>
+
+<a id="sesearch"></a>
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">sesearch [-A] [-s 主體類別] [-t 目標類別] [-b 布林值]</span>
+<span class="term_say">選項與參數：
+-A  ：列出後面資料中，允許『讀取或放行』的相關資料
+-t  ：後面還要接類別，例如 -t httpd_t
+-b  ：後面還要接SELinux的規則，例如 -b httpd_enable_ftp_server</span>
+
+<span class="term_hd">範例一：找出 crond_t 這個主體程序能夠讀取的檔案 SELinux type</span>
+[root@study ~]# <span class="term_command">sesearch -A -s crond_t | grep spool</span>
+   allow <span class="term_write">crond_t system_cron_spool_t : file</span> { ioctl read write create getattr ..
+   allow <span class="term_write">crond_t system_cron_spool_t : dir</span> { ioctl read getattr lock search op..
+   allow <span class="term_write">crond_t user_cron_spool_t : file</span> { ioctl read write create getattr se..
+   allow <span class="term_write">crond_t user_cron_spool_t : dir</span> { ioctl read write getattr lock add_n..
+   allow <span class="term_write">crond_t user_cron_spool_t : lnk_file</span> { read getattr } ;
+<span class="term_say"># allow 後面接主體程序以及檔案的 SELinux type，上面的資料是擷取出來的，
+# 意思是說，crond_t 可以讀取 system_cron_spool_t 的檔案/目錄類型～等等！</span>
+
+<span class="term_hd">範例二：找出 crond_t 是否能夠讀取 /etc/cron.d/checktime 這個我們自訂的設定檔？</span>
+[root@study ~]# <span class="term_command">ll -Z /etc/cron.d/checktime</span>
+-rw-r--r--. root root unconfined_u:object_r:<span class="term_write">admin_home_t</span>:s0 /etc/cron.d/checktime
+<span class="term_say"># 兩個重點，一個是 SELinux type 為 admin_home_t，一個是檔案 (file)</span>
+
+[root@study ~]# <span class="term_command">sesearch -A -s crond_t | grep admin_home_t</span>
+   allow domain admin_home_t : dir { getattr search open } ;
+   allow domain admin_home_t : lnk_file { read getattr } ;
+   allow crond_t admin_home_t : dir { ioctl read getattr lock search open } ;
+   allow crond_t admin_home_t : lnk_file { read getattr } ;
+<span class="term_say"># 仔細看！看仔細～雖然有 crond_t admin_home_t 存在，但是這是總體的資訊，
+# 並沒有針對某些規則的尋找～所以還是不確定 checktime 能否被讀取。但是，基本上就是 SELinux
+# type 出問題～因此才會無法讀取的！</span>
+</pre></td></tr></tbody></table>
+
+		<p>所以，現在我們知道 /etc/cron.d/checktime 這個我們自己複製過去的檔案會沒有辦法被讀取的原因，就是因為 SELinux type 錯誤啦！
+		根本就無法被讀取～好～那現在我們來查一查，那 getsebool -a 裡面看到的 httpd_enable_homedirs 到底是什麼？又是規範了哪些主體程序能夠讀取的 SELinux type 呢？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">semanage boolean -l | grep httpd_enable_homedirs</span>
+SELinux boolean                State  Default Description
+httpd_enable_homedirs          (off  ,  off)  Allow httpd to enable homedirs
+<span class="term_say"># httpd_enable_homedirs 的功能是允許 httpd 程序去讀取使用者家目錄的意思～</span>
+
+[root@study ~]# <span class="term_command">sesearch -A -b httpd_enable_homedirs</span>
+<span class="term_hd">範例三：列出 httpd_enable_homedirs 這個規則當中，主體程序能夠讀取的檔案 SELinux type</span>
+Found 43 semantic av rules:
+   allow httpd_t home_root_t : dir { ioctl read getattr lock search open } ;
+   allow httpd_t home_root_t : lnk_file { read getattr } ;
+   allow httpd_t user_home_type : dir { getattr search open } ;
+   allow httpd_t user_home_type : lnk_file { read getattr } ;
+<span class="term_say">....(後面省略)....
+# 從上面的資料才可以理解，在這個規則中，主要是放行 httpd_t 能否讀取使用者家目錄的檔案！
+# 所以，如果這個規則沒有啟動，基本上， httpd_t 這種程序就無法讀取使用者家目錄下的檔案！</span>
+</pre></td></tr></tbody></table>
+
+		<ul class="toplist"><li>修改 SELinux 規則的布林值 setsebool</li></ul>
+
+		<p>那麼如果查詢到某個 SELinux rule，並且以 sesearch 知道該規則的用途後，想要關閉或啟動他，又該如何處置？</p>
+
+<a id="setsebool"></a>
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">setsebool  [-P]  『規則名稱』 [0|1]</span>
+<span class="term_say">選項與參數：
+-P  ：直接將設定值寫入設定檔，該設定資料未來會生效的！</span>
+
+<span class="term_hd">範例一：查詢 httpd_enable_homedirs 這個規則的狀態，並且修改這個規則成為不同的布林值</span>
+[root@study ~]# <span class="term_command">getsebool httpd_enable_homedirs</span>
+httpd_enable_homedirs --&gt; <span class="term_write">off</span>  <span class="term_note">&lt;==結果是 off ，依題意給他啟動看看！</span>
+
+[root@study ~]# <span class="term_command">setsebool -P httpd_enable_homedirs 1</span> <span class="term_note"># 會跑很久很久！請耐心等待！</span>
+[root@study ~]# <span class="term_command">getsebool httpd_enable_homedirs</span>
+httpd_enable_homedirs --&gt; <span class="term_write">on</span>
+</pre></td></tr></tbody></table>
+
+		<p>這個 setsebool 最好記得一定要加上 -P 的選項！因為這樣才能將此設定寫入設定檔！
+		這是非常棒的工具組！你一定要知道如何使用 getsebool 與 setsebool 才行！</p>
+
+	<br></div><br>
+
+	<a id="selinux_chcon"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.5.5 SELinux 安全本文的修改</h2>
+
+		<p>再次的回到<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#fig16.5.4">圖 16.5.4</a> 上頭去，現在我們知道 SELinux 對受限的主體程序有沒有影響，第一關考慮 SELinux 的三種類型，第二關考慮
+		SELinux 的政策規則是否放行，第三關則是開始比對 SELinux type 啦！從剛剛 16.5.4 小節我們也知道可以透過 sesearch 來找到主體程序與檔案的 SELinux type 關係！
+		好，現在總算要來修改檔案的 SELinux type，以讓主體程序能夠讀到正確的檔案啊！這時就得要幾個重要的小東西了～來瞧瞧～</p>
+
+		<a id="chcon"></a>
+		<ul class="toplist"><li>使用 chcon 手動修改檔案的 SELinux type</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">chcon [-R] [-t type] [-u user] [-r role] 檔案</span>
+[root@study ~]# <span class="term_command">chcon [-R] --reference=範例檔 檔案</span>
+<span class="term_say">選項與參數：
+-R  ：連同該目錄下的次目錄也同時修改；
+-t  ：後面接安全性本文的類型欄位！例如 httpd_sys_content_t ；
+-u  ：後面接身份識別，例如 system_u； (不重要)
+-r  ：後面接角色，例如 system_r；     (不重要)
+-v  ：若有變化成功，請將變動的結果列出來
+--reference=範例檔：拿某個檔案當範例來修改後續接的檔案的類型！</span>
+
+<span class="term_hd">範例一：查詢一下 /etc/hosts 的 SELinux type，並將該類型套用到 /etc/cron.d/checktime 上</span>
+[root@study ~]# <span class="term_command">ll -Z /etc/hosts</span>
+-rw-r--r--. root root system_u:object_r:<span class="term_write">net_conf_t</span>:s0  /etc/hosts
+[root@study ~]# <span class="term_command">chcon -v -t net_conf_t /etc/cron.d/checktime</span>
+changing security context of ‘/etc/cron.d/checktime’
+[root@study ~]# <span class="term_command">ll -Z /etc/cron.d/checktime</span>
+-rw-r--r--. root root unconfined_u:object_r:<span class="term_write">net_conf_t</span>:s0 /etc/cron.d/checktime
+
+<span class="term_hd">範例二：直接以 /etc/shadow SELinux type 套用到 /etc/cron.d/checktime 上！</span>
+[root@study ~]# <span class="term_command">chcon -v --reference=/etc/shadow /etc/cron.d/checktime</span>
+[root@study ~]# <span class="term_command">ll -Z /etc/shadow /etc/cron.d/checktime</span>
+-rw-r--r--. root root system_u:object_r:shadow_t:s0    /etc/cron.d/checktime
+----------. root root system_u:object_r:shadow_t:s0    /etc/shadow
+</pre></td></tr></tbody></table>
+
+		<p>上面的練習『都沒有正確的解答！』因為正確的 SELinux type 應該就是要以 /etc/cron.d/ 底下的檔案為標準來處理才對啊～
+		好了～既然如此～能不能讓 SELinux 自己解決預設目錄下的 SELinux type 呢？可以！就用 restorecon 吧！</p>
+
+		<a id="restorecon"></a>
+		<ul class="toplist"><li>使用 restorecon 讓檔案恢復正確的 SELinux type</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">restorecon [-Rv] 檔案或目錄</span>
+<span class="term_say">選項與參數：
+-R  ：連同次目錄一起修改；
+-v  ：將過程顯示到螢幕上</span>
+
+<span class="term_hd">範例三：將 /etc/cron.d/ 底下的檔案通通恢復成預設的 SELinux type！</span>
+[root@study ~]# <span class="term_command">restorecon -Rv /etc/cron.d</span>
+restorecon reset /etc/cron.d/checktime context system_u:object_r:<span class="term_write">shadow_t</span>:s0-&gt;
+system_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0
+<span class="term_say"># 上面這兩行其實是同一行喔！表示將 checktime 由 shadow_t 改為 system_cron_spool_t</span>
+
+<span class="term_hd">範例四：重新啟動 crond 看看有沒有正確啟動 checktime 囉！？</span>
+[root@study ~]# <span class="term_command">systemctl restart crond</span>
+[root@study ~]# <span class="term_command">tail /var/log/cron</span>
+<span class="term_say"># 再去瞧瞧這個 /var/log/cron 的內容，應該就沒有錯誤訊息了</span>
+</pre></td></tr></tbody></table>
+
+		<p>其實，鳥哥幾乎已經忘了 chcon 這個指令了！因為 restorecon 主動的回復預設的 SELinux type 要簡單很多！而且可以一口氣恢復整個目錄下的檔案！
+		所以，鳥哥建議你幾乎只要記得 restorecon 搭配 -Rv 同時加上某個目錄這樣的指令串即可～修改 SELinux 的 type 就變得非常的輕鬆囉！</p>
+
+		<a id="semanage"></a>
+		<ul class="toplist"><li>semanage 預設目錄的安全性本文查詢與修改</li></ul>
+
+		<p>你應該要覺得奇怪，為什麼 restorecon 可以『恢復』原本的 SELinux type 呢？那肯定就是有個地方在紀錄每個檔案/目錄的 SELinux 預設類型囉？
+		沒錯！是這樣～那要如何 (1)查詢預設的 SELinux type 以及 (2)如何增加/修改/刪除預設的 SELinux type 呢？很簡單～透過 semanage 即可！他是這樣使用的：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">semanage {login|user|port|interface|fcontext|translation} -l</span>
+[root@study ~]# <span class="term_command">semanage fcontext -{a|d|m} [-frst] file_spec</span>
+<span class="term_say">選項與參數：
+fcontext ：主要用在安全性本文方面的用途， -l 為查詢的意思；
+-a ：增加的意思，你可以增加一些目錄的預設安全性本文類型設定；
+-m ：修改的意思；
+-d ：刪除的意思。</span>
+
+<span class="term_hd">範例一：查詢一下 /etc /etc/cron.d 的預設 SELinux type 為何？</span>
+[root@study ~]# <span class="term_command">semanage fcontext -l | grep -E '^/etc |^/etc/cron'</span>
+SELinux fcontext         type               Context
+/etc                     all files          system_u:object_r:<span class="term_write">etc_t</span>:s0
+/etc/cron\.d(/.*)?       all files          system_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0
+</pre></td></tr></tbody></table>
+
+		<p>看到上面輸出的最後一行，那也是為啥我們直接使用 vim 去 /etc/cron.d 底下建立新檔案時，預設的 SELinux type 就是正確的！
+		同時，我們也會知道使用 restorecon 回復正確的 SELinux type 時，系統會去判斷預設的類型為何的依據。現在讓我們來想一想，
+		如果 (當然是假的！不可能這麼幹) 我們要建立一個 /srv/mycron 的目錄，這個目錄預設也是需要變成 system_cron_spool_t 時，
+		我們應該要如何處理呢？基本上可以這樣作：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先建立 /srv/mycron 同時在內部放入設定檔，同時觀察 SELinux type</span>
+[root@study ~]# <span class="term_command">mkdir /srv/mycron</span>
+[root@study ~]# <span class="term_command">cp /etc/cron.d/checktime /srv/mycron</span>
+[root@study ~]# <span class="term_command">ll -dZ /srv/mycron /srv/mycron/checktime</span>
+drwxr-xr-x. root root unconfined_u:object_r:<span class="term_write">var_t</span>:s0   /srv/mycron
+-rw-r--r--. root root unconfined_u:object_r:<span class="term_write">var_t</span>:s0   /srv/mycron/checktime
+
+<span class="term_hd"># 2. 觀察一下上層 /srv 的 SELinux type</span>
+[root@study ~]# <span class="term_command">semanage fcontext -l | grep '^/srv'</span>
+SELinux fcontext         type               Context
+/srv                     all files          system_u:object_r:<span class="term_write">var_t</span>:s0
+<span class="term_say"># 怪不得 mycron 會是 var_t 囉！</span>
+
+<span class="term_hd"># 3. 將 mycron 預設值改為 system_cron_spool_t 囉！</span>
+[root@study ~]# <span class="term_command">semanage fcontext -a -t system_cron_spool_t "/srv/mycron(/.*)?"</span>
+[root@study ~]# <span class="term_command">semanage fcontext -l | grep '^/srv/mycron'</span>
+SELinux fcontext         type               Context
+/srv/mycron(/.*)?        all files          system_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0
+
+<span class="term_hd"># 4. 恢復 /srv/mycron 以及子目錄相關的 SELinux type 喔！</span>
+[root@study ~]# <span class="term_command">restorecon -Rv /srv/mycron</span>
+[root@study ~]# <span class="term_command">ll -dZ /srv/mycron /srv/mycron/*</span>
+drwxr-xr-x. root root unconfined_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0 /srv/mycron
+-rw-r--r--. root root unconfined_u:object_r:<span class="term_write">system_cron_spool_t</span>:s0 /srv/mycron/checktime
+<span class="term_say"># 有了預設值，未來就不會不小心被亂改了！這樣比較妥當些～</span>
+</pre></td></tr></tbody></table>
+
+		<p>semanage 的功能很多，不過鳥哥主要用到的僅有 fcontext 這個項目的動作而已。如上所示，
+		你可以使用 semanage 來查詢所有的目錄預設值，也能夠使用他來增加預設值的設定！如果您學會這些基礎的工具，
+		那麼 SELinux 對你來說，也不是什麼太難的咚咚囉！</p>
+	<br></div><br>
+
+	<a id="selinux_ftp"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top">Top</a></div>
+	<h2>16.5.6 一個網路服務案例及登錄檔協助</h2>
+
+		<p>本章在 SELinux 小節當中談到的各個指令中，尤其是 setsebool, chcon, restorecon 等，都是為了當你的某些網路服務無法正常提供相關功能時，
+		才需要進行修改的一些指令動作。但是，我們怎麼知道哪個時候才需要進行這些指令的修改啊？我們怎麼知道系統因為 SELinux 
+		的問題導致網路服務不對勁啊？如果都要靠用戶端連線失敗才來哭訴，那也太沒有效率了！所以，我們的 CentOS 7.x 有提供幾支偵測的服務在登錄 SELinux 
+		產生的錯誤喔！那就是 auditd 與 setroubleshootd。</p>
+
+		<a id="setroubleshoot"></a>
+		<ul class="toplist"><li>setroubleshoot --&gt; 錯誤訊息寫入 /var/log/messages</li></ul>
+
+		<p>幾乎所有 SELinux 相關的程式都會以 se 為開頭，這個服務也是以 se 為開頭！而 troubleshoot 大家都知道是錯誤克服，因此這個 
+		setroubleshoot 自然就得要啟動他啦！這個服務會將關於 SELinux 的錯誤訊息與克服方法記錄到 /var/log/messages 與 /var/log/setroubleshoot/* 
+		裡頭，所以你一定得要啟動這個服務才好。啟動這個服務之前當然就是得要安裝它啦！ 這玩意兒總共需要兩個軟體，分別是 setroublshoot 與 
+		setroubleshoot-server，如果你沒有安裝，請自行使用 yum 安裝吧！</p>
+
+		<p>此外，原本的 SELinux 資訊本來是以兩個服務來記錄的，分別是 auditd 與 setroubleshootd。既然是同樣的資訊，因此 CentOS 6.x (含 7.x) 以後將兩者整合在 
+		auditd 當中啦！所以，並沒有 setroubleshootd 的服務存在了喔！因此，當你安裝好了 setroubleshoot-server 之後，請記得要重新啟動 
+		auditd，否則 setroubleshootd 的功能不會被啟動的。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		事實上，CentOS 7.x 對 setroubleshootd 的運作方式是： (1)先由 auditd 去呼叫 audispd 服務， (2)然後 audispd 服務去啟動 sedispatch 程式， 
+		(3)sedispatch 再將原本的 auditd 訊息轉成 setroubleshootd 的訊息，進一步儲存下來的！
+		</fieldset><br>
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">rpm -qa | grep setroubleshoot</span>
+setroubleshoot-plugins-3.0.59-1.el7.noarch
+setroubleshoot-3.2.17-3.el7.x86_64
+setroubleshoot-server-3.2.17-3.el7.x86_64
+</pre></td></tr></tbody></table>
+
+		<p>在預設的情況下，這個 setroubleshoot 應該都是會安裝的！是否正確安裝可以使用上述的表格指令去查詢。萬一沒有安裝，請使用 yum install 去安裝吧！
+		再說一遍，安裝完畢最好重新啟動 auditd 這個服務喔！不過，剛剛裝好且順利啟動後， setroubleshoot 還是不會有作用，為啥？
+		因為我們並沒有任何受限的網路服務主體程序在運作啊！所以，底下我們將使用一個簡單的 FTP 伺服器軟體為例，讓你了解到我們上頭講到的許多重點的應用！</p>
+
+		<a id="selinux_ftp_how"></a>
+		<ul class="toplist"><li>實例狀況說明：透過 vsftpd 這個 FTP 伺服器來存取系統上的檔案</li></ul>
+
+		<p>現在的年輕小伙子們傳資料都用 line, FB, dropbox, google 雲端磁碟等等，不過在網路早期傳送大容量的檔案，還是以 FTP 這個協定為主！
+		現在為了速度，經常有 p2p 的軟體提供大容量檔案的傳輸，但以鳥哥這個老人家來說，可能 FTP 傳送資料還是比較有保障...
+		在 CentOS 7.x 的環境下，達成 FTP 的預設伺服器軟體主要是 vsftpd 這一支喔！</p>
+
+		<p>詳細的 FTP 協定我們在伺服器篇再來談，這裡只是簡單的利用 vsftpd 這個軟體與 FTP 的協定來講解 SELinux 的問題與錯誤克服而已。
+		不過既然要使用到 FTP 協定，一些簡單的知識還是得要存在才好！否則等一下我們沒有辦法了解為啥要這麼做！
+		首先，你得要知道，用戶端需要使用『FTP 帳號登入 FTP 伺服器』才行！而有一個稱為『匿名 (anonymous) 』的帳號可以登入系統！
+		但是這個匿名的帳號登入後，只能存取某一個特定的目錄，而無法脫離該目錄～！</p>
+
+		<p>在 vsftpd 中，一般用戶與匿名者的家目錄說明如下：</p>
+
+		<ul>
+		<li>匿名者：如果使用瀏覽器來連線到 FTP 伺服器的話，那預設就是使用匿名者登入系統。而匿名者的家目錄預設是在 /var/ftp 當中！
+		同時，匿名者在家目錄下只能下載資料，不能上傳資料到 FTP 伺服器。同時，匿名者無法離開 FTP 伺服器的 /var/ftp 目錄喔！</li>
+
+		<li style="margin-top: 10px">一般 FTP 帳號：在預設的情況下，所有 UID 大於 1000 的帳號，都可以使用 FTP 來登入系統！
+		而登入系統之後，所有的帳號都能夠取得自己家目錄底下的檔案資料！當然預設是可以上傳、下載檔案的！</li>
+		</ul>
+
+		<p>為了避免跟之前章節的用戶產生誤解的情況，這裡我們先建立一個名為 ftptest 的帳號，且帳號密碼為 myftp123，
+		先來建立一下吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">useradd -s /sbin/nologin ftptest</span>
+[root@study ~]# <span class="term_command">echo "myftp123" | passwd --stdin ftptest</span>
+</pre></td></tr></tbody></table>
+
+		<p>接下來當然就是安裝 vsftpd 這隻伺服器軟體，同時啟動這隻服務，另外，我們也希望未來開機都能夠啟動這隻服務！
+		因此需要這樣做 (鳥哥假設你的 CentOS 7.x 的原版光碟已經掛載於 /mnt 了喔！)：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">yum install /mnt/Packages/vsftpd-3*</span>
+[root@study ~]# <span class="term_command">systemctl start vsftpd</span>
+[root@study ~]# <span class="term_command">systemctl enable vsftpd</span>
+[root@study ~]# <span class="term_command">netstat -tlnp</span>
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address   Foreign Address   State   PID/Program name
+tcp        0      0 0.0.0.0:22      0.0.0.0:*         LISTEN  1326/sshd
+tcp        0      0 127.0.0.1:25    0.0.0.0:*         LISTEN  2349/master
+<span class="term_write">tcp6       0      0 :::21           :::*              LISTEN  6256/vsftpd</span>
+tcp6       0      0 :::22           :::*              LISTEN  1326/sshd
+tcp6       0      0 ::1:25          :::*              LISTEN  2349/master
+<span class="term_say"># 要注意看，上面的特殊字體那行有出現，才代表 vsftpd 這隻服務有啟動喔！！</span>
+</pre></td></tr></tbody></table>
+
+		<a id="selinux_ftp_type"></a>
+		<ul class="toplist"><li>匿名者無法下載的問題</li></ul>
+
+		<p>現在讓我們來模擬一些 FTP 的常用狀態！假設你想要將 /etc/securetty 以及主要的 /etc/sysctl.conf 放置給所有人下載，
+		那麼你可能會這樣做！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cp -a /etc/securetty /etc/sysctl.conf /var/ftp/pub</span>
+[root@study ~]# <span class="term_command">ll /var/ftp/pub</span>
+-rw-------. 1 root root 221 Oct 29  2014 securetty    <span class="term_note"># 先假設你沒有看到這個問題！</span>
+-rw-r--r--. 1 root root 225 Mar  6 11:05 sysctl.conf
+</pre></td></tr></tbody></table>
+
+		<p>一般來說，預設要給用戶下載的 FTP 檔案會放置到上面表格當中的 /var/ftp/pub 目錄喔！現在讓我們使用簡單的終端機瀏覽器 curl 來觀察看看！
+		看你能不能查詢到上述兩個檔案的內容呢？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先看看 FTP 根目錄底下有什麼檔案存在？</span>
+[root@study ~]# <span class="term_command">curl ftp://localhost</span>
+drwxr-xr-x    2 0        0              40 Aug 08 00:51 pub
+<span class="term_say"># 確實有存在一個名為 pub 的檔案喔！那就是在 /var/ftp 底下的 pub 囉！</span>
+
+<span class="term_hd"># 2. 再往下看看，能不能看到 pub 內的檔案呢？</span>
+[root@study ~]# <span class="term_command">curl ftp://localhost/pub/</span>  <span class="term_note"># 因為是目錄，要加上 / 才好！</span>
+-rw-------    1 0        0             221 Oct 29  2014 securetty
+-rw-r--r--    1 0        0             225 Mar 06 03:05 sysctl.conf
+
+<span class="term_hd"># 3. 承上，繼續看一下 sysctl.conf 的內容好了！</span>
+[root@study ~]# <span class="term_command">curl ftp://localhost/pub/sysctl.conf</span>
+# System default settings live in /usr/lib/sysctl.d/00-system.conf.
+# To override those settings, enter new settings here, or in an /etc/sysctl.d/&lt;name&gt;.conf file
+#
+# For more information, see sysctl.conf(5) and sysctl.d(5).
+<span class="term_say"># 真的有看到這個檔案的內容喔！所以確定是可以讓 vsftpd 讀取到這檔案的！</span>
+
+<span class="term_hd"># 4. 再來瞧瞧 securetty 好了！</span>
+[root@study ~]# <span class="term_command">curl ftp://localhost/pub/securetty</span>
+curl: (78) RETR response: 550
+<span class="term_say"># 看不到耶！但是，基本的原因應該是權限問題喔！因為 vsftpd 預設放在 /var/ftp/pub 內的資料，
+# 不論什麼 SELinux type 幾乎都可以被讀取的才對喔！所以要這樣處理！</span>
+
+<span class="term_hd"># 5. 修訂權限之後再一次觀察 securetty 看看！</span>
+[root@study ~]# <span class="term_command">chmod a+r /var/ftp/pub/securetty</span>
+[root@study ~]# <span class="term_command">curl ftp://localhost/pub/securetty</span>
+<span class="term_say"># 此時你就可以看到實際的檔案內容囉！</span>
+
+<span class="term_hd"># 6. 修訂 SELinux type 的內容 (非必備)</span>
+[root@study ~]# <span class="term_command">restorecon -Rv /var/ftp</span>
+</pre></td></tr></tbody></table>
+
+		<p>上面這個例子在告訴你，要先從權限的角度來瞧一瞧，如果無法被讀取，可能就是因為沒有 r 或沒有 rx 囉！並不一定是由 SELinux 引起的！
+		了解乎？好～再來瞧瞧如果是一般帳號呢？如何登入？</p>
+
+		<a id="ftp_home"></a>
+		<ul class="toplist"><li>無法從家目錄下載檔案的問題分析與解決</li></ul>
+
+		<p>我們前面建立了 ftptest 帳號，那如何使用文字界面來登入呢？就使用如下的方式來處理。同時請注意，因為文字型的 FTP 用戶端軟體，
+		預設會將用戶丟到根目錄而不是家目錄，因此，你的 URL 可能需要修訂一下如下！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 0. 為了讓 curl 這個文字瀏覽器可以傳輸資料，我們先建立一些資料在 ftptest 家目錄</span>
+[root@study ~]# <span class="term_command">echo "testing" &gt; ~ftptest/test.txt</span>
+[root@study ~]# <span class="term_command">cp -a /etc/hosts /etc/sysctl.conf ~ftptest/</span>
+[root@study ~]# <span class="term_command">ll ~ftptest/</span>
+-rw-r--r--. 1 root root 158 Jun  7  2013 hosts
+-rw-r--r--. 1 root root 225 Mar  6 11:05 sysctl.conf
+-rw-r--r--. 1 root root   8 Aug  9 01:05 test.txt
+
+<span class="term_hd"># 1. 一般帳號直接登入 FTP 伺服器，同時變換目錄到家目錄去！</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost/~/</span>
+-rw-r--r--    1 0        0             158 Jun 07  2013 hosts
+-rw-r--r--    1 0        0             225 Mar 06 03:05 sysctl.conf
+-rw-r--r--    1 0        0               8 Aug 08 17:05 test.txt
+<span class="term_say"># 真的有資料～看檔案最左邊的權限也是沒問題，所以，來讀一下 test.txt 的內容看看</span>
+
+<span class="term_hd"># 2. 開始下載 test.txt, sysctl.conf 等有權限可以閱讀的檔案看看！</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost/~/test.txt</span>
+curl: (78) RETR response: 550
+<span class="term_say"># 竟然說沒有權限！明明我們的 rwx 是正常沒問題！那是否有可能是 SELinux 造成的？</span>
+
+<span class="term_hd"># 3. 先將 SELinux 從 Enforce 轉成 Permissive 看看情況！同時觀察登錄檔</span>
+[root@study ~]# <span class="term_command">setenforce 0</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost/~/test.txt</span>
+testing
+[root@study ~]# <span class="term_command">setenforce 1</span>  <span class="term_note"># 確定問題後，一定要轉成 Enforcing 啊！</span>
+<span class="term_say"># 確定有資料內容！所以，確定就是 SELinux 造成無法讀取的問題～那怎辦？要改規則？還是改 type？
+# 因為都不知道，所以，就檢查一下登錄檔看看有沒有相關的資訊可以提供給我們處理！</span>
+
+[root@study ~]# <span class="term_command">vim /var/log/messages</span>
+Aug  9 02:55:58 station3-39 setroubleshoot: SELinux is preventing /usr/sbin/vsftpd 
+ from lock access on the file /home/ftptest/test.txt. For complete SELinux messages. 
+ run <span class="term_write">sealert -l 3a57aad3-a128-461b-966a-5bb2b0ffa0f9</span>
+Aug  9 02:55:58 station3-39 python: SELinux is preventing /usr/sbin/vsftpd from 
+ lock access on the file /home/ftptest/test.txt.
+
+*****  Plugin catchall_boolean (47.5 confidence) suggests   ******************
+
+If you want to allow ftp to home dir
+Then you must tell SELinux about this by enabling the 'ftp_home_dir' boolean.
+You can read 'None' man page for more details.
+Do
+<span style="text-decoration: underline">setsebool -P ftp_home_dir 1</span>
+
+*****  Plugin catchall_boolean (47.5 confidence) suggests   ******************
+
+If you want to allow ftpd to full access
+Then you must tell SELinux about this by enabling the 'ftpd_full_access' boolean.
+You can read 'None' man page for more details.
+Do
+<span style="text-decoration: underline">setsebool -P ftpd_full_access 1</span>
+
+*****  Plugin catchall (6.38 confidence) suggests   **************************
+<span class="term_say">.....(底下省略).....
+# 基本上，你會看到有個特殊字體的部份，就是 sealert 那一行。雖然底下已經列出可能的解決方案了，
+# 就是一堆底線那些東西。至少就有三個解決方案 (最後一個沒列出來)，哪種才是正確的？
+# 為了了解正確的解決方案，我們還是還執行一下 sealert 那行吧！看看情況再說！</span>
+
+<span class="term_hd"># 4. 透過 sealert 的解決方案來處理問題</span>
+[root@study ~]# <span class="term_command">sealert -l 3a57aad3-a128-461b-966a-5bb2b0ffa0f9</span>
+SELinux is preventing /usr/sbin/vsftpd from lock access on the file /home/ftptest/test.txt.
+
+<span class="term_say"># 底下說有 47.5% 的機率是由於這個原因所發生，並且可以使用 setsebool 去解決的意思！</span>
+*****  Plugin catchall_boolean (<span class="term_write">47.5 confidence</span>) suggests   ******************
+
+If you want to allow ftp to home dir
+Then you must tell SELinux about this by enabling the 'ftp_home_dir' boolean.
+You can read 'None' man page for more details.
+Do
+<span class="term_write">setsebool -P ftp_home_dir 1</span>
+
+<span class="term_say"># 底下說也是有 47.5% 的機率是由此產生的！</span>
+*****  Plugin catchall_boolean (47.5 confidence) suggests   ******************
+
+If you want to allow ftpd to full access
+Then you must tell SELinux about this by enabling the 'ftpd_full_access' boolean.
+You can read 'None' man page for more details.
+Do
+<span class="term_write">setsebool -P ftpd_full_access 1</span>
+
+<span class="term_say"># 底下說，僅有 6.38% 的可信度是由這個情況產生的！</span>
+*****  Plugin catchall (6.38 confidence) suggests   **************************
+
+If you believe that vsftpd should be allowed lock access on the test.txt file by default.
+Then you should report this as a bug.
+You can generate a local policy module to allow this access.
+Do
+allow this access for now by executing:
+# grep vsftpd /var/log/audit/audit.log | audit2allow -M mypol
+# semodule -i mypol.pp
+
+<span class="term_say"># 底下就重要了！是整個問題發生的主因～最好還是稍微瞧一瞧！</span>
+Additional Information:
+<span class="term_write">Source Context                system_u:system_r:ftpd_t:s0-s0:c0.c1023
+Target Context                unconfined_u:object_r:user_home_t:s0</span>
+Target Objects                /home/ftptest/test.txt [ file ]
+Source                        vsftpd
+Source Path                   /usr/sbin/vsftpd
+Port                          &lt;Unknown&gt;
+Host                          station3-39.gocloud.vm
+Source RPM Packages           vsftpd-3.0.2-9.el7.x86_64
+Target RPM Packages
+Policy RPM                    selinux-policy-3.13.1-23.el7.noarch
+Selinux Enabled               True
+Policy Type                   targeted
+Enforcing Mode                Permissive
+Host Name                     station3-39.gocloud.vm
+Platform                      Linux station3-39.gocloud.vm 3.10.0-229.el7.x86_64
+                              #1 SMP Fri Mar 6 11:36:42 UTC 2015 x86_64 x86_64
+Alert Count                   3
+First Seen                    2015-08-09 01:00:12 CST
+Last Seen                     2015-08-09 02:55:57 CST
+Local ID                      3a57aad3-a128-461b-966a-5bb2b0ffa0f9
+
+Raw Audit Messages
+type=AVC msg=audit(1439060157.358:635): avc:  denied  { lock } for  pid=5029 comm="vsftpd" 
+ path="/home/ftptest/test.txt" dev="dm-2" ino=141 scontext=system_u:system_r:ftpd_t:s0-s0:
+ c0.c1023 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file
+
+type=SYSCALL msg=audit(1439060157.358:635): arch=x86_64 syscall=fcntl success=yes exit=0 
+ a0=4 a1=7 a2=7fffceb8cbb0 a3=0 items=0 ppid=5024 pid=5029 auid=4294967295 uid=1001 gid=1001
+ euid=1001 suid=1001 fsuid=1001 egid=1001 sgid=1001 fsgid=1001 tty=(none) ses=4294967295
+ comm=vsftpd exe=/usr/sbin/vsftpd subj=system_u:system_r:ftpd_t:s0-s0:c0.c1023 key=(null)
+
+Hash: vsftpd,ftpd_t,user_home_t,file,lock
+</pre></td></tr></tbody></table>
+
+		<p>經過上面的測試，現在我們知道主要的問題發生在 SELinux 的 type 不是 vsftpd_t 所能讀取的原因～
+		經過仔細觀察 test.txt 檔案的類型，我們知道他原本就是家目錄，因此是 user_home_t 也沒啥了不起的啊！是正確的～
+		因此，分析兩個比較可信 (47.5%) 的解決方案後，可能是與 ftp_home_dir 比較有關啊！所以，我們應該不需要修改 SELinux type，
+		修改的應該是 SELinux rules 才對！所以，這樣做看看：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先確認一下 SELinux 的模式，然後再瞧一瞧能否下載 test.txt，最終使用處理方式來解決～</span>
+[root@study ~]# <span class="term_command">getenforce</span>
+Enforcing
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost/~/test.txt</span>
+curl: (78) RETR response: 550
+<span class="term_say"># 確定還是無法讀取的喔！</span>
+[root@study ~]# <span class="term_command">setsebool -P ftp_home_dir 1</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost/~/test.txt</span>
+testing
+<span class="term_say"># OK！太讚了！處理完畢！現在使用者可以在自己的家目錄上傳/下載檔案了！</span>
+
+<span class="term_hd"># 2. 開始下載其他檔案試看看囉！</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost/~/sysctl.conf</span>
+# System default settings live in /usr/lib/sysctl.d/00-system.conf.
+# To override those settings, enter new settings here, or in an /etc/sysctl.d/&lt;name&gt;.conf file
+#
+# For more information, see sysctl.conf(5) and sysctl.d(5).
+</pre></td></tr></tbody></table>
+
+		<p>沒問題喔！透過修改 SELinux rule 的布林值，現在我們就可以使用一般帳號在 FTP 服務來上傳/下載資料囉！非常愉快吧！
+		那萬一我們還有其他的目錄也想要透過 FTP 來提供這個 ftptest 用戶上傳與下載呢？往下瞧瞧～</p>
+
+		<a id="ftp_other"></a>
+		<ul class="toplist"><li>一般帳號用戶從非正規目錄上傳/下載檔案</li></ul>
+
+		<p>假設我們還想要提供 /srv/gogogo 這個目錄給 ftptest 用戶使用，那又該如何處理呢？假設我們都沒有考慮 SELinux ，
+		那就是這樣的情況：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先處理好所需要的目錄資料</span>
+[root@study ~]# <span class="term_command">mkdir /srv/gogogo</span>
+[root@study ~]# <span class="term_command">chgrp ftptest /srv/gogogo</span>
+[root@study ~]# <span class="term_command">echo "test" &gt; /srv/gogogo/test.txt</span>
+
+<span class="term_hd"># 2. 開始直接使用 ftp 觀察一下資料！</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost//srv/gogogo/test.txt</span>
+curl: (78) RETR response: 550
+<span class="term_say"># 有問題喔！來瞧瞧登錄檔怎麼說！</span>
+[root@study ~]# <span class="term_command">grep sealert /var/log/messages | tail</span>
+Aug  9 04:23:12 station3-39 setroubleshoot: SELinux is preventing /usr/sbin/vsftpd from
+ read access on the file test.txt. For complete SELinux messages. run sealert -l
+ 08d3c0a2-5160-49ab-b199-47a51a5fc8dd
+[root@study ~]# <span class="term_command">sealert -l 08d3c0a2-5160-49ab-b199-47a51a5fc8dd</span>
+SELinux is preventing /usr/sbin/vsftpd from read access on the file test.txt.
+
+<span class="term_say"># 雖然這個可信度比較高～不過，因為會全部放行 FTP ，所以不太考慮！</span>
+*****  Plugin catchall_boolean (57.6 confidence) suggests   ******************
+
+If you want to allow ftpd to full access
+Then you must tell SELinux about this by enabling the 'ftpd_full_access' boolean.
+You can read 'None' man page for more details.
+Do
+setsebool -P ftpd_full_access 1
+
+<span class="term_say"># 因為是非正規目錄的使用，所以這邊加上預設 SELinux type 恐怕會是比較正確的選擇！</span>
+*****  Plugin catchall_labels (36.2 confidence) suggests   *******************
+
+If you want to allow vsftpd to have read access on the test.txt file
+Then you need to change the label on test.txt
+Do
+# <span class="term_write">semanage fcontext -a -t FILE_TYPE 'test.txt'</span>
+where FILE_TYPE is one of the following: NetworkManager_tmp_t, abrt_helper_exec_t, abrt_tmp_t,
+ abrt_upload_watch_tmp_t, abrt_var_cache_t, abrt_var_run_t, admin_crontab_tmp_t, afs_cache_t,
+ alsa_home_t, alsa_tmp_t, amanda_tmp_t, antivirus_home_t, antivirus_tmp_t, apcupsd_tmp_t, ...
+Then execute:
+<span class="term_write">restorecon -v 'test.txt'</span>
+
+*****  Plugin catchall (7.64 confidence) suggests   **************************
+
+If you believe that vsftpd should be allowed read access on the test.txt file by default.
+Then you should report this as a bug.
+You can generate a local policy module to allow this access.
+Do
+allow this access for now by executing:
+# grep vsftpd /var/log/audit/audit.log | audit2allow -M mypol
+# semodule -i mypol.pp
+
+Additional Information:
+Source Context                system_u:system_r:ftpd_t:s0-s0:c0.c1023
+Target Context                unconfined_u:object_r:var_t:s0
+Target Objects                test.txt [ file ]
+Source                        vsftpd
+<span class="term_say">.....(底下省略).....</span>
+</pre></td></tr></tbody></table>
+
+		<p>因為是非正規目錄啊，所以感覺上似乎與 semanage 那一行的解決方案比較相關～接下來就是要找到 FTP 的 SELinux type 來解決囉！
+		所以，讓我們查一下 FTP 相關的資料囉！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 3. 先查看一下 /var/ftp 這個地方的 SELinux type 吧！</span>
+[root@study ~]# <span class="term_command">ll -Zd /var/ftp</span>
+drwxr-xr-x. root root system_u:object_r:<span class="term_write">public_content_t</span>:s0 /var/ftp
+
+<span class="term_hd"># 4. 以 sealert 建議的方法來處理好 SELinux type 囉！</span>
+[root@study ~]# <span class="term_command">semanage fcontext -a -t public_content_t "/srv/gogogo(/.*)?"</span>
+[root@study ~]# <span class="term_command">restorecon -Rv /srv/gogogo</span>
+[root@study ~]# <span class="term_command">curl ftp://ftptest:myftp123@localhost//srv/gogogo/test.txt</span>
+test
+<span class="term_say"># 喔耶！終於再次搞定喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>在這個範例中，我們是修改了 SELinux type 喔！與前一個修改 SELinux rule 不太一樣！要理解理解喔！</p>
+
+		<a id="ftp_port"></a>
+		<ul class="toplist"><li>無法變更 FTP 連線埠口問題分析與解決</li></ul>
+
+		<p>在某些情況下，可能你的伺服器軟體需要開放在非正規的埠口，舉例來說，如果因為某些政策問題，導致 FTP 啟動的正常的 21 號埠口無法使用，
+		因此你想要啟用在 555 號埠口時，該如何處理呢？基本上，既然 SELinux 的主體程序大多是被受限的網路服務，沒道理不限制放行的埠口啊！
+		所以，很可能會出問題～那就得要想想辦法才行！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先處理 vsftpd 的設定檔，加入換 port 的參數才行！</span>
+[root@study ~]# <span class="term_command">vim /etc/vsftpd/vsftpd.conf</span>
+<span class="term_say"># 請按下大寫的 G 跑到最後一行，然後新增加底下這行設定！前面不可以留白！</span>
+<span class="term_write">listen_port=555</span>
+
+<span class="term_hd"># 2. 重新啟動 vsftpd 並且觀察登錄檔的變化！</span>
+[root@study ~]# <span class="term_command">systemctl restart vsftpd</span>
+[root@study ~]# <span class="term_command">grep sealert /var/log/messages</span>
+Aug  9 06:34:46 station3-39 setroubleshoot: SELinux is preventing /usr/sbin/vsftpd from
+ name_bind access on the tcp_socket port 555. For complete SELinux messages. run
+ sealert -l 288118e7-c386-4086-9fed-2fe78865c704
+
+[root@study ~]# <span class="term_command">sealert -l 288118e7-c386-4086-9fed-2fe78865c704</span>
+SELinux is preventing /usr/sbin/vsftpd from name_bind access on the tcp_socket port 555.
+
+*****  Plugin bind_ports (92.2 confidence) suggests   ************************
+
+If you want to allow /usr/sbin/vsftpd to bind to network port 555
+Then you need to modify the port type.
+Do
+# <span class="term_write">semanage port -a -t PORT_TYPE -p tcp 555</span>
+    where PORT_TYPE is one of the following: certmaster_port_t, cluster_port_t,
+ ephemeral_port_t, ftp_data_port_t, <span class="term_write">ftp_port_t</span>, hadoop_datanode_port_t, hplip_port_t,
+ port_t, postgrey_port_t, unreserved_port_t.
+<span class="term_say">.....(後面省略).....
+# 看一下信任度，高達 92.2% 耶！幾乎就是這傢伙～因此不必再看～就是他了！比較重要的是，
+# 解決方案裡面，那個 PORT_TYPE 有很多選擇～但我們是要開啟 FTP 埠口嘛！所以，
+# 就由後續資料找到 ftp_port_t 那個項目囉！帶入實驗看看！</span>
+
+<span class="term_hd"># 3. 實際帶入 SELinux 埠口修訂後，在重新啟動 vsftpd 看看</span>
+[root@study ~]# <span class="term_command">semanage port -a -t ftp_port_t -p tcp 555</span>
+[root@study ~]# <span class="term_command">systemctl restart vsftpd</span>
+[root@study ~]# <span class="term_command">netstat -tlnp</span>
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address    Foreign Address   State    PID/Program name
+tcp        0      0 0.0.0.0:22       0.0.0.0:*         LISTEN   1167/sshd
+tcp        0      0 127.0.0.1:25     0.0.0.0:*         LISTEN   1598/master
+<span class="term_write">tcp6       0      0 :::555           :::*              LISTEN   8436/vsftpd</span>
+tcp6       0      0 :::22            :::*              LISTEN   1167/sshd
+tcp6       0      0 ::1:25           :::*              LISTEN   1598/master
+
+<span class="term_hd"># 4. 實驗看看這個 port 能不能用？</span>
+[root@study ~]# <span class="term_command">curl ftp://localhost:555/pub/</span>
+-rw-r--r--    1 0        0             221 Oct 29  2014 securetty
+-rw-r--r--    1 0        0             225 Mar 06 03:05 sysctl.conf
+</pre></td></tr></tbody></table>
+
+		<p>透過上面的幾個小練習，你會知道在正規或非正規的環境下，如何處理你的 SELinux 問題哩！仔細研究看看囉！</p>
+	<br></div>
+</div>
+
+
+<a id="hint"></a>
+<div class="block1">
+<h2>16.6 重點回顧</h2>
+<ul class="text_import2">
+	<li>程式 (program)：通常為 binary program ，放置在儲存媒體中 (如硬碟、光碟、軟碟、磁帶等)，為實體檔案的型態存在；</li>
+	<li>程序 (process)：程式被觸發後，執行者的權限與屬性、程式的程式碼與所需資料等都會被載入記憶體中，
+		作業系統並給予這個記憶體內的單元一個識別碼 (PID)，可以說，程序就是一個正在運作中的程式。</li>
+	<li>程式彼此之間是有相關性的，故有父程序與子程序之分。而 Linux 系統所有程序的父程序就是 systemd 這個 PID 為 1 號的程序。</li>
+	<li>在 Linux 的程序呼叫通常稱為 fork-and-exec 的流程！程序都會藉由父程序以複製 (fork) 的方式產生一個一模一樣的子程序，
+		然後被複製出來的子程序再以 exec 的方式來執行實際要進行的程式，最終就成為一個子程序的存在。</li>
+	<li>常駐在記憶體當中的程序通常都是負責一些系統所提供的功能以服務使用者各項任務，因此這些常駐程式就會被我們稱為：服務 
+		(daemon)。</li>
+	<li>在工作管理 (job control) 中，可以出現提示字元讓你操作的環境就稱為前景 (foreground)，至於其他工作就可以讓你放入背景 
+		(background) 去暫停或運作。</li>
+	<li>與 job control 有關的按鍵與關鍵字有： &amp;, [ctrl]-z, jobs, fg, bg, kill %n 等；</li>
+	<li>程序管理的觀察指令有： ps, top, pstree 等等；</li>
+	<li>程序之間是可以互相控制的，傳遞的訊息 (signal) 主要透過 kill 這個指令在處理；</li>
+	<li>程序是有優先順序的，該項目為 Priority，但 PRI 是核心動態調整的，使用者只能使用 nice 值去微調 PRI</li>
+	<li>nice 的給予可以有： nice, renice, top 等指令；</li>
+	<li>vmstat 為相當好用的系統資源使用情況觀察指令；</li>
+	<li>SELinux 當初的設計是為了避免使用者資源的誤用，而 SELinux 使用的是 MAC 委任式存取設定；</li>
+	<li>SELinux 的運作中，重點在於主體程序 (Subject) 能否存取目標檔案資源 (Object) ，這中間牽涉到政策 (Policy) 內的規則，
+		以及實際的安全性本文類別 (type)；</li>
+	<li>安全性本文的一般設定為：『Identify:role:type』其中又以 type 最重要；</li>
+	<li>SELinux 的模式有： enforcing, permissive, disabled 三種，而啟動的政策 (Policy) 主要是 targeted </li>
+	<li>SELinux 啟動與關閉的設定檔在： /etc/selinux/config</li>
+	<li>SELinux 的啟動與觀察： getenforce, sestatus 等指令</li>
+	<li>重設 SELinux 的安全性本文可使用 restorecon 與 chcon</li>
+	<li>在 SELinux 有啟動時，必備的服務至少要啟動 auditd 這個！</li>
+	<li>若要管理預設的 SELinux 布林值，可使用 getsebool, setsebool 來管理！</li>
+</ul>
+</div>
+
+
+<a id="ex"></a>
+<div class="block1">
+<h2>16.7 本章習題</h2>
+( 要看答案請將滑鼠移動到『答：』底下的空白處，按下左鍵圈選空白處即可察看 )
+<ul>
+	<li>簡單說明什麼是程式 (program) 而什麼是程序 (process)？
+	<div class="blockex">
+		程式 (program) 是系統上面可以被執行的檔案，由於 Linux 的完整檔名 (由 / 寫起) 僅能有一個，
+		所以 program 的檔名具有單一性。當程式被執行後，就會啟動成程序 (process)，
+		一個 program 可以被不同的使用者或者相同的使用者重複的執行成為多個程序，
+		且該程式所造成的程序還因為不同的使用者，而有不同的權限，且每個 process 幾乎都是獨立的。
+	</div></li>
+
+	<li>我今天想要查詢 /etc/crontab 與 crontab 這個程式的用法與寫法，請問我該如何線上查詢？
+	<div class="blockex">
+		查詢 crontab 指令可以使用 man crontab 或 info
+		crontab ，至於查詢 /etc/crontab ，則可以使用 man 5 crontab 囉！
+	</div></li>
+
+	<li><a id="20110414"></a>我要如何查詢 crond 這個 daemon 的 PID 與他的 PRI 值呢？
+	<div class="blockex">
+		ps -lA | grep crond 即可查到！
+	</div></li>
+
+	<li>我要如何修改 crond 這個 PID 的優先執行序？
+	<div class="blockex">
+		先以 ps aux 找到 crond  的 PID 後，再以：
+		renice -n number PID 來調整！
+	</div></li>
+
+	<li>我是一般身份使用者，我是否可以調整不屬於我的程序的 nice 值？此外，如果我調整了我自己的程序的
+	nice 值到 10 ，是否可以將他調回 5 呢？
+	<div class="blockex">
+		不行！一般身份使用者僅能調整屬於自己的 PID 程序，並且，只能將
+		nice 值一再地調高，並不能調低，所以調整為 10 之後，就不能降回 5 囉！
+	</div></li>
+
+	<li>我要怎麼知道我的網路卡在開機的過程中有沒有被捉到？
+	<div class="blockex">
+		可以使用 dmesg 來視察！
+	</div></li>
+</ul>
+</div>
+
+
+<a id="reference"></a>
+<div class="block1">
+<h2>16.8 參考資料與延伸閱讀</h2>
+<ul>
+	<li><a id="ps1"></a>註1：關於 fork-and-exec 的說明可以參考如下網頁與書籍：<br>
+		吳賢明老師維護的網站：<a href="http://nmc.nchu.edu.tw/linux/process.htm" target="_blank">http://nmc.nchu.edu.tw/linux/process.htm</a><br>
+		楊振和、作業系統導論、第三章、學貫出版社</li>
+	<li><a id="ps2"></a>註2：對 Linux 核心有興趣的話，可以先看看底下的連結：<br>
+	<a href="http://www.linux.org.tw/CLDP/OLD/INFO-SHEET-2.html" target="_blank">http://www.linux.org.tw/CLDP/OLD/INFO-SHEET-2.html</a></li>
+	<li><a id="ps3"></a>註3：來自 Linux Journal 的關於 /proc 的說明：<a href="http://www.linuxjournal.com/article/177" target="_blank">http://www.linuxjournal.com/article/177</a></li>
+	<li><a id="ps4"></a>註4：關於 SELinux 相關的網站與文件資料：<br>
+		美國國家安全局的 SELinux 簡介：<a href="http://www.nsa.gov/research/selinux/" target="_blank">http://www.nsa.gov/research/selinux/</a><br>
+		陳永昇、『企業級Linux 系統管理寶典』、學貫行銷股份有限公司<br>
+		Fedora SELinux 說明：<a href="http://fedoraproject.org/wiki/SELinux/SecurityContext" target="_blank">http://fedoraproject.org/wiki/SELinux/SecurityContext</a><br>
+		美國國家安全局對 SELinux 的白皮書：<a href="http://www.nsa.gov/research/_files/selinux/papers/module/t1.shtml" target="_blank">http://www.nsa.gov/research/_files/selinux/papers/module/t1.shtml</a></li>
+
+</ul>
+</div>
+
+
+<div class="block1" style="margin-bottom: 32px; padding-left: 10px; line-height: 1">
+<span class="text_history">
+2002/06/28：第一次完成<br>
+2003/02/10：重新編排與加入 FAQ<br>
+2005/09/07：將舊的文章移動到 <a href="http://linux.vbird.org/linux_basic/0440processcontrol/0440processcontrol.php">此處</a> 。<br>
+2005/09/18：哈哈，終於將這篇寫完囉。新增了一些簡單的小指令啦。<br>
+2009/03/15：將舊的基於 FC4 的文章移動到<a href="http://linux.vbird.org/linux_basic/0440processcontrol/0440processcontrol-fc4.php">此處</a>。<br>
+2009/03/19：調整 sar 成為 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#vmstat">vmstat</a> ，因為 vmstat 是預設有安裝的分析工具！<br>
+2009/09/11：加入了 <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#nohup">nohup</a> 的說明囉！並加入了情境模擬題<br>
+2011/04/14：原本的<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#20110414">習題</a>解答為 ps aux ，應該是 ps -lA 才好！感謝網友 redsc 的回報！<br>
+2012/06/14：原本是『記憶體欄位(procs)』錯了！是『程序欄位』才對！<br>
+2013/08/02：在 signal 的相關說明中，SIGSTOP 之前寫錯了！應該是 19 號才對！請觀察 man 7 signal(感謝網友王兄來信說明)<br>
+2015/08/03：將舊的基於 CentOS 5.x 的版本移動到 <a href="http://linux.vbird.org/linux_basic/0440processcontrol/0440processcontrol-centos5.php">此處</a>，有需要請前往查閱。<br>
+2016/07/08：重點回顧第三點，PID 1 應該是 systemd ，之前寫錯成為 init 了！真慘...<br>
+2016/10/24：感謝網友在討論區的回應，SELinux 的 seinfo 選項沒有 -A 了！使用 --all 來取代囉！<br>
+2018/01/29：根據網友回報， nice 值的 -n N ，那個 N 指的是『再加上』的數值！之前鳥哥的說法不好！要更新喔！<br>
+</span>
+<span class="text_date">2002/04/30以來統計人數</span><br>
+<img src="./鳥哥的 Linux 私房菜 -- 第16章、程序管理與 SELinux 初探_files/Count(3).cgi" style="height: 15px; width: 60px; " alt="計數器" title="計數器"><br>
+</div>
+
+
+<div class="rightarea">
+<a href="http://linux.vbird.org/linux_basic/0560daemons.php">&gt;&gt;</a>
+</div>
+
+<div style="position: relative; text-align:center; margin-top: -20px; margin-bottom: 40px; width: 100%;">
+	<div style="width: 100px; text-align:center; display: inline-block;">
+		<a href="http://linux.vbird.org/linux_basic/index.php">HOME</a>
+	</div>
+		<div style="width: 100px; float: left;">
+		<a href="http://linux.vbird.org/linux_basic/0430cron.php">PrePage</a>
+	</div>
+			<div style="width: 100px; float: right;">
+		<a href="http://linux.vbird.org/linux_basic/0560daemons.php">NextPage</a>
+	</div>
+	</div>
+
+</div>	<!-- mainarea -->
+</div>  <!-- tablearea -->
+
+<div class="bottomarea">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#top" title="Top">Top</a></li>
+	<li><a href="http://linux.vbird.org/index_old.php" title="前往鳥哥的 Linux 私房菜首頁">前往舊站</a></li>
+	<!--li><a href="http://vbird.dic.ksu.edu.tw" target="_blank" title="前往鳥哥的 Linux 私房菜首頁">簡體主站</a></li-->
+	<li><a href="http://phorum.vbird.org/" target="_blank" title="鳥站新手討論板">討論板</a></li>
+	<li><a href="http://phorum.study-area.org/" target="_blank" title="酷！學園討論板">酷學園</a></li>
+	<li><a href="http://www.dic.ksu.edu.tw/" target="_blank" title="崑山資傳">崑山資傳</a></li>
+</ul>
+&nbsp;&nbsp; <a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的首頁">http://linux.vbird.org</a>
+	is designed by <a href="mailto:vbird@mail.vbird.idv.tw" title="聯絡鳥哥(我不要廣告信！)">VBird</a>
+		during 2001-2017. <!--a href="http://www.ksu.edu.tw" target="_blank">ksu.edu</a-->
+
+</div>
+
+
+
+</body></html>

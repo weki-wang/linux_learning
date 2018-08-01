@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)http://linux.vbird.org/linux_basic/0610hardware.php -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="Author" content="VBird, 鳥哥">
+	<meta name="Description" content="在 Linux 系統上面偵測、維護、變更硬體的方法，以及系統備份的策略喔！">
+	<title>鳥哥的 Linux 私房菜 -- 第二十章、基礎系統設定與備份策略</title>
+	<style>
+	</style>
+	<link href="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/style_2013.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<!--最上方的一些連結與網站介紹 -->
+<div class="toparea">
+<span style="text-shadow: 1px 1px 2px black;">鳥哥的 Linux 私房菜</span>
+<ul>
+		<li class="topareali"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#">第二十章、基礎系統設定與備份策略</a></li>
+		<li><a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的 Linux 私房菜首頁">繁體主站</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/" title="Linux 基礎學習篇，從頭學習 Linux">基礎篇</a></li>
+	<li><a href="http://linux.vbird.org/linux_server/" title="Linux 伺服器架設篇">伺服器</a></li>
+	<li><a href="http://linux.vbird.org/linux_enterprise/" title="Linux 企業應用篇">企業應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_desktop/" title="Linux 桌面應用篇">桌面應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_security/" title="Linux 安全管理篇">安全管理</a></li>
+	<li><a href="http://linux.vbird.org/book/" title="書籍勘誤">書籍勘誤</a></li>
+	<li><a href="http://linux.vbird.org/vbird/" title="關於鳥哥的一些事情">鳥哥我</a></li>
+</ul>
+<iframe src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/index_2013.html" style="height: 29px; width: 150px; border:0; padding:0; margin: 0;
+		position: relative; float: right; overflow: hidden"></iframe>
+</div>
+
+<div class="leftarea">
+<a href="http://linux.vbird.org/linux_basic/0510osloader.php">&lt;&lt;</a>
+</div>
+
+<!-- 正中央的 1000 像素的內容 -->
+<div class="tablearea">
+<!-- 左邊的連結東東 -->
+<div class="nav">
+	<div style="text-align:center; line-height:1; font-size: 9pt; font-family: &#39;Times New Roman&#39;; color: #ff6600;
+	padding: 5px; margin: 2px;">
+		<img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/Count.cgi" alt="鳥站的上線人數統計" height="26" width="110"><br>
+		since 2002/01/01
+	</div>
+<ul>
+	<li><a href="http://linux.vbird.org/new_linux.php">新手建議</a></li>
+	<li><a href="http://linux.vbird.org/howtoread.php">開始閱讀之前</a></li>
+	<li><a href="http://linux.vbird.org/aboutmysite.php">網站導覽</a></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic">Linux 基礎文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/">基礎文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0105computers.php">0.計算機概論</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php">1.Linux是什麼</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0130designlinux.php">2.主機規劃與磁碟分割</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0157installcentos7.php">3.安裝CentOS 7.x</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0160startlinux.php">4.首次登入與man page</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0210filepermission.php">5.檔案權限與目錄配置</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0220filemanager.php">6.檔案與目錄管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php">7.磁碟與檔案系統</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0240tarcompress.php">8.壓縮指令的運用</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0310vi.php">9.vim程式編輯器</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0320bash.php">10.認識與學習BASH</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0330regularex.php">11.正規表示法與文件格式化</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0340bashshell-scripts.php">12.學習shell scripts</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">13.帳號管理與ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0420quota.php">14.Quota, RAID, LVM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0430cron.php">15.at, crontab, anacron</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">16.程序管理與 SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php">17.認識系統服務(daemon)</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0570syslog.php">18.認識與分析登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0510osloader.php">19.開機流程模組管理與Loader</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php">20.基礎系統設定與備份策略</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520source_code_and_tarball.php">21.原始碼與 Tarball</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520rpm_and_srpm.php">22.RPM/YUM/SRPM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0590xwindow.php">23.X-Window 設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0540kernel.php">24.Linux 核心編譯</a></li>
+		<li>底下尚未更新</li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010index.php">27.快速索引</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_A.php">附錄 A: GPL 條文</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_B.php">附錄 B: ext2/ext3</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0140spfdisk.php">SPFDISK 範例</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0150installredhat.php">安裝 RedHat 7.2</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0155installmdk.php">安裝 Mandrake 9</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0156installfc4.php">安裝 Fedora IV</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/9999questions.php">Linux 練習題</a></li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/centos5.php">CentOS 5.x(2009-2014)</a>
+		</li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/fc4.php">Fedora-4(2005-2008)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/mandrake9.0.php">Mandrake9.0(2001-2004)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic_train">Linux 基礎訓練</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic_train/">課程章節、授課方式、評分方式</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit01.php">第 01 堂課：指令列模式初探</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit02.php">第 02 堂課：指令下達與檔案管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit03.php">第 03 堂課：檔案管理與 vim</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit04.php">第 04 堂課：檔案權限與帳號管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit05.php">第 05 堂課：權限應用與程序觀察</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit06.php">第 06 堂課：基礎檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit07.php">第 07 堂課：bash 與系統救援</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice1.php">期中練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit08.php">第 08 堂課：連續指令與資料流導向</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit09.php">第 09 堂課：正規表示法與 script</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit10.php">第 10 堂課：使用者管理與 ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit11.php">第 11 堂課：基礎設定、壓縮、排程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit12.php">第 12 堂課：管理管理與登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit13.php">第 13 堂課：服務管理與開機流程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit14.php">第 14 堂課：進階檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice2.php">期末練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit15.php">第 15 堂課：Linux系統的準備</a></li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_server/">Linux 架站文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_server/">伺服器篇文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0104mytalking.php">0. 說說笑笑談 Linux server 規劃</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0107cloudandvm.php">1. 小型雲系統與主機安全強化流程</a></li>
+
+
+
+		<li><a href="http://linux.vbird.org/linux_server/0103introduce.php">序篇</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0105beforeserver.php">1.架設伺服器前的準備工作</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0110network_basic.php">2.基礎網路概念</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0120intranet.php">3.區域網路設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0130internet_connect.php">4.連上 Internet</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0140networkcommand.php">5.Linux網路指令</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0150detect_network.php">6.Linux網路偵錯</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0210network-secure.php">7.網路安全,port限制,網路升級,SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0230router.php">8.路由概念與路由器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0250simple_firewall.php">9.防火牆與 NAT 伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0270dynamic_dns.php">10.申請合法主機名稱</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0310telnetssh.php">11.遠端連線伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0340dhcp.php">12.DHCP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0330nfs.php">13.NFS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0430nis.php">14.NIS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0440ntp.php">15.NTP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0370samba.php">16.SAMBA Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0420squid.php">17.Proxy Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0460iscsi.php">18.iSCSI Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0350dns.php">19.DNS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0360apache.php">20.WWW Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0410vsftpd.php">21.vsFTPD Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0380mail.php">22.Mail Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0450apt.php">APT/YUM Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0520openwebmail.php">OpenWebMail</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0600cluster.php">Cluster System</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/1000results.php">來做練習</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat9.php">Red Hat 9(2002-2005)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos4.php">CentOS 4(2006-2010)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos5.php">CentOS 5(2010-2011)</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_enterprise/">Linux 企業應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_enterprise/">企業應用篇彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0110network.php">1. 區域網路軟硬體設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0120installation.php">2. PXE 安裝伺服器與 kickstart</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/xen.php">Xen 虛擬機器</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/cputune.php">CPU 效能優化</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/kerberos.php">kerberos 與 NFS 加密</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_security/">Linux 安全管理</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_security/0420rkhunter.php">rkhunter 檢測</a></li>
+		<li><a href="http://linux.vbird.org/linux_security/knockd.php">knockd</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_security/old/">舊的安全文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_desktop/">Linux 桌面應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_desktop/0110linuxbasic.php">Linux 基礎概念</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/resources.php">鳥哥彙整的資料</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/resources.php">Linux 資料庫</a></li>
+		<li><a href="http://linux.vbird.org/problem">一些問題彙整</a></li>
+		<li><a href="http://linux.vbird.org/othersites">網路連結</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/solaris/">Solaris</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/apache_packages/">Apache 套件安裝</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/adsl">ADSL 相關文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/vbird/index.php">關於鳥哥</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/vbird/vbird3.php">Why 鳥哥?</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird.php">關於鳥哥</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird2.php">關於鳥哥-2</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070718-1.php">2007-07-xx</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070520.php">2007-05-20</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070328.php">2007-03-28</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060701.php">2006-07-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060122.php">2006-01-24</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050412.php">2005-04-12</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050401.php">2005-04-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20041101.php">2004-11-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040829.php">2004-08-29</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040417.php">2004-04-17</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040221.php">2004-02-21</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/somepaper">網友分享</a></li>
+	<li><a href="http://linux.vbird.org/faq.php">特殊問題解決</a></li>
+	<!--li><a href="/download">檔案下載中心</a></li-->
+	<li><a href="http://linux.vbird.org/Searching.php">網站資料搜尋</a></li>
+</ul>
+
+<p style="text-align:center; margin: 0 0 0 0 ;">
+<a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+<img style="border:0;width:66px;height:24px" src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vcss-blue" alt="Valid CSS!">
+</a>
+<a href="http://validator.w3.org/check?uri=referer" target="_blank">
+<img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/valid-html401" style="border:0;width:66px;height:24px" alt="Valid HTML 5" title="Valid HTML 5"></a>
+</p>
+<p style="text-align:center; margin: 0 0 0 0 ; line-height:1; font-size: 9pt;color: #333333; ">
+今日 <img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/Count(1).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+昨日 <img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/yestoday.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+本月 <img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/Count(2).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+上月 <img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/lastmonth.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+</p>
+</div>
+
+<a id="top"></a>
+<div class="mainarea">
+<div class="block1">
+<!-- 本文的檔頭部分 -->
+<h1>第二十章、基礎系統設定與備份策略</h1>
+<div style="text-align:right">
+	<span class="text_history">最近更新日期：2015/09/03</span>
+</div>
+
+
+
+<!-- 本文的檔頭部分 -->
+<div class="abstract">
+	<p>新的 CentOS 7 有針對不同的服務提供了相當大量的指令列設定模式，因此過去那個 setup 似乎沒有什麼用了！
+	取而代之的是許多加入了 bash-complete 提供了不少參數補全的設定工具！甚至包括網路設定也是透過這個機制哩！
+	我們這個小章節主要就是在介紹如何透過這些基本的指令來設定系統就是了。另外，
+	萬一不幸你的 Linux 被駭客入侵了、或是你的 Linux 系統由於硬體關係 (不論是天災還是人禍) 
+	而掛掉了！這個時候，請問如何快速的回復你的系統呢？呵呵！當然囉，如果有備份資料的話，
+	那麼回復系統所花費的時間與成本將降低相當的多！平時最好就養成備份的習慣，
+	以免突然間的系統損毀造成手足無措！此外，哪些檔案最需要備份呢？又，備份是需要完整的備份還是僅備份重要資料即可？
+	嗯！確實需要考慮看看呦！</p>
+</div>
+
+
+<!-- 本文的連結區部分 -->
+<div class="links">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#basic">20.1 系統基本設定</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#basic_network">20.1.1 網路設定 (手動設定與DHCP自動取得)</a>：
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#network_manual">手動</a>,
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#network_auto">自動</a>,
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#hostnamectl">改主機名稱</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#basic_date">20.1.2 日期與時間設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#basic_lang">20.1.3 語系設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#basic_firewall">20.1.4 防火牆簡易設定</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#hw">20.2 伺服器硬體資料的收集</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#hw_mb">20.2.1 以系統內建 dmidecode 解析硬體配備</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#hw_pre_find">20.2.2 硬體資源的收集與分析</a>： 
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#lspci">lspci</a>, 
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#lsusb">lsusb</a>,
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#iostat">iostat...</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#hw_hd">20.2.3 瞭解磁碟的健康狀態</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#backup_hint">20.3 備份要點</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#who_need_backup">20.3.1 備份資料的考量</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#what_data_must_backup">20.3.2 哪些 Linux 資料具有備份的意義</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#what_media">20.3.3 備份用儲存媒體的選擇</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#backup_type">20.4 備份的種類、頻率與工具的選擇</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#full_incremental">20.4.1 完整備份之累積備份 (Incremental backup)</a>,
+			<a href="http://linux.vbird.org/linux_basic/0610hardware.php#incremental_tool">使用軟體</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#full_differential">20.4.2 完整備份之差異備份 (Differential backup)</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#key_file">20.4.3 關鍵資料備份</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#VBird_strategy">20.5 VBird 的備份策略與 scripts</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#all_back">20.5.1 每週系統備份的 script</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#daily">20.5.2 每日備份資料的 script</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#remote">20.5.3 遠端備援的 script</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#restore">20.6 災難復原的考量</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#hint">20.7 重點回顧</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#ex">20.8 本章習題</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#reference">20.9 參考資料與延伸閱讀</a></li>
+	<li><a href="http://phorum.vbird.org/viewtopic.php?t=23898" target="_blank">針對本文的建議：http://phorum.vbird.org/viewtopic.php?t=23898</a></li>
+
+</ul>
+</div>
+</div>
+
+
+<!-- 本文的正式部分 -->
+<a id="basic"></a>
+<div class="block1">
+<h2>20.1 系統基本設定</h2>
+
+	<p>我們的 CentOS 7 系統其實有很多東西需要來設定的，包括之前稍微談過的語系、日期、時間、網路設定等等。
+	CentOS 6.x 以前有個名為 setup 的軟體將許多的設定做成類圖形界面，連防火牆都可以這樣搞定！不過這個功能在 CentOS 7 已經式微～
+	這是因為 CentOS 7 已經將很多的軟體指令作的還不賴，又加入了 bash-complete 的功能，指令下達確實還 OK 啦！
+	如果不習慣指令，很多的圖形界面也可以使用～因此，setup 的需求就減少很多了！
+	底下我們會介紹基本的系統設定需求，其實也是將之前章節裡面稍微談過個資料做個彙整就是了！</p>
+
+
+	<a id="basic_network"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.1.1 網路設定 (手動設定與DHCP自動取得)</h2>
+
+		<p>網路其實是又可愛又麻煩的玩意兒，如果你是網路管理員，那麼你必須要瞭解區域網路內的 IP, gateway, netmask 
+		等參數，如果還想要連上 Internet ，那麼就得要理解 DNS 代表的意義為何。如果你的單位想要擁有自己的網域名稱，
+		那麼架設 DNS 伺服器則是不可或缺的。總之，要設定網路伺服器之前，你得要先理解<a href="http://linux.vbird.org/linux_server/0110network_basic.php">網路基礎</a>就是了！
+		沒有人願意自己的伺服器老是被攻擊或者是網路問題層出不窮吧！^_^</p>
+
+		<p>但鳥哥這裡的網路介紹僅止於當你是一部單機的 Linux 用戶端，而非伺服器！所以你的各項網路參數只要找到網路管理員，
+		或者是找到你的 ISP (Internet Service Provider) ，向他詢問<span class="text_import2">網路參數的取得方式</span>以及<span class="text_import2">實際的網路參數</span>即可。
+		通常網路參數的取得方式在台灣常見的有底下這幾種：</p>
+
+		<div class="illus">
+
+		<ul><li>手動設定固定 IP </li></ul>
+
+		<p>常見於學術網路的伺服器設定、公司行號內的特定座位等。這種方式你必須要取得底下的幾個參數才能夠讓你的 Linux 上網的：</p>
+
+		<ul style="list-style-type: square; margin-left: 45px;">
+		<li>IP</li>
+		<li>子網路遮罩(netmask)</li>
+		<li>通訊閘(gateway)</li>
+		<li>DNS 主機的 IP (通常會有兩個，若記不住的話，硬背 168.95.1.1 即可)</li>
+		</ul>
+
+		<ul><li>網路參數可自動取得 (dhcp 協定自動取得)</li></ul>
+
+		<p>常見於 IP 分享器後端的主機，或者是利用電視線路的纜線上網 (cable modem)，或者是學校宿舍的網路環境等。
+		這種網路參數取得方式就被稱為 dhcp ，你啥事都不需要知道，只要知道設定上網方式為 dhcp 即可。</p>
+
+		<ul><li>台灣的光纖到府與 ADSL 寬頻撥接</li></ul>
+
+		<p>不論你的 IP 是固定的還是每次撥接都不相同 (被稱為浮動式 IP)，只要是透過光纖到府或寬頻數據機『撥接上網』的，就是使用這種方式。
+		撥接上網雖然還是使用網路卡連接到數據機上，不過，系統最終會產生一個替代數據機的網路介面 (ppp0) ，
+		那個 ppp0 也是一個實體網路介面啦！</p>
+
+		<p>不過，因為台灣目前所謂的『光世代』寬頻上網的方式所提供的數據機中，內部已經涵蓋了 IP 分享與自動撥接功能，
+		因此，其實你在數據機後面也還是只需要『自動取得IP』的方式來取得網路參數即可喔！</p>
+
+		</div>
+
+		<p>瞭解了網路參數的取得方法後，你還得要知道一下我們透過啥硬體連上 Internet 的呢？其實就是網路卡嘛。
+		目前的主流網卡為使用乙太網路協定所開發出來的乙太網卡 (Ethernet)，因此我們 Linux 就稱呼這種網路介面為 ethN (N 為數字)。
+		舉例來說，鳥哥的這部測試機上面有一張乙太網卡，因此鳥哥這部主機的網路介面就是 eth0 囉 (第一張為 0 號開始)。</p>
+
+		<p>不過新的 CentOS 7 開始對於網卡的編號則有另一套規則，網卡的界面代號現在與網卡的來源有關～基本上的網卡名稱會是這樣分類的：</p>
+
+		<ul>
+		<li>eno1 ：代表由主機板 BIOS 內建的網卡</li>
+		<li>ens1 ：代表由主機板 BIOS 內建的 PCI-E 界面的網卡</li>
+		<li>enp2s0 ：代表 PCI-E 界面的獨立網卡，可能有多個插孔，因此會有 s0, s1... 的編號～</li>
+		<li>eth0 ：如果上述的名稱都不適用，就回到原本的預設網卡編號</li>
+		</ul>
+
+		<p>其實不管什麼網卡名稱啦！想要知道你有多少網卡，直接下達『 ifconfig -a 』全部列出來即可！此外，CentOS 7 也希望我們不要手動修改設定檔，
+		直接使用所謂的 nmcli 這個指令來設定網路參數即可～因為鳥哥的測試機器是虛擬機，所以上述的網卡代號只有 eth0 能夠支援～
+		你得要自己看自己的系統上面的網卡代號才行喔！</p>
+
+		<a id="network_manual"></a>
+		<ul class="toplist"><li>手動設定 IP 網路參數</li></ul>
+
+		<p>假設你已經向你的 ISP 取得你的網路參數，基本上的網路參數需要這些資料的：</p>
+
+		<ul>
+		<li>method: manual (手動設定)</li>
+		<li>IP: 172.16.1.1</li>
+		<li>netmask: 255.255.0.0</li>
+		<li>gateway: 172.16.200.254</li>
+		<li>DNS: 172.16.200.254</li>
+		<li>hostname: study.centos.vbird</li>
+		</ul>
+
+		<p>上面的資料除了 hostname 是可以暫時不理會的之外，如果你要上網，就得要有上面的這些資料才行啊！然後透過 nmcli 來處理！
+		你得要先知道的是，nmcli 是透過一個名為『連線代號』的名稱來設定是否要上網，而每個『連線代號』會有個『網卡代號』，
+		這兩個東西通常設定成相同就是了。那就來先查查看目前系統上預設有什麼連線代號吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">nmcli connection show [網卡代號]</span>
+[root@study ~]# <span class="term_command">nmcli connection show</span>
+NAME  UUID                                  TYPE            DEVICE
+eth0  505a7445-2aac-45c8-92df-dc10317cec22  802-3-ethernet  eth0
+<span class="term_say"># NAME    就是連線代號，通常與後面的網卡 DEVICE 會一樣！
+# UUID    這個是特殊的裝置識別，保留就好不要理他！
+# TYPE    就是網卡的類型，通常就是乙太網卡！
+# DEVICE  當然就是網卡名稱囉！
+# 從上面我們會知道有個 eth0 的連線代號，那麼來查察這個連線代號的設定為何？</span>
+
+[root@study ~]# <span class="term_command">nmcli connection show eth0</span>
+connection.id:                          eth0
+connection.uuid:                        505a7445-2aac-45c8-92df-dc10317cec22
+connection.interface-name:              eth0
+connection.type:                        802-3-ethernet
+connection.autoconnect:                 yes
+<span class="term_say">.....(中間省略).....</span>
+ipv4.method:                            manual
+ipv4.dns:
+ipv4.dns-search:
+ipv4.addresses:                         192.168.1.100/24
+ipv4.gateway:                           --
+<span class="term_say">.....(中間省略).....</span>
+IP4.ADDRESS[1]:                         192.168.1.100/24
+IP4.GATEWAY:
+IP6.ADDRESS[1]:                         fe80::5054:ff:fedf:e174/64
+IP6.GATEWAY:
+</pre></td></tr></tbody></table>
+
+		<p>如上表的輸出，最底下的大寫的 IP4, IP6 指的是目前的實際使用的網路參數，最上面的 connection 開頭的部份則指的是連線的狀態！
+		比較重要的參數鳥哥將它列出來如下：</p>
+
+		<ul>
+		<li>connection.autoconnect [yes|no] ：是否於開機時啟動這個連線，預設通常是 yes 才對！</li>
+		<li>ipv4.method [auto|manual] ：自動還是手動設定網路參數的意思</li>
+		<li>ipv4.dns [dns_server_ip] ：就是填寫 DNS 的 IP 位址～</li>
+		<li>ipv4.addresses [IP/Netmask] ：就是 IP 與 netmask 的集合，中間用斜線 / 來隔開～</li>
+		<li>ipv4.gateway [gw_ip] ：就是 gateway 的 IP 位址！</li>
+		</ul>
+
+		<p>所以，根據上面的設定項目，我們來將網路參數設定好吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">nmcli connection modify eth0 \</span>
+&gt;  <span class="term_command">connection.autoconnect yes \</span>
+&gt;  <span class="term_command">ipv4.method manual \</span>
+&gt;  <span class="term_command">ipv4.addresses 172.16.1.1/16 \</span>
+&gt;  <span class="term_command">ipv4.gateway 172.16.200.254 \</span>
+&gt;  <span class="term_command">ipv4.dns 172.16.200.254</span>
+<span class="term_say"># 上面只是『修改了設定檔』而已，要實際生效還得要啟動 (up) 這個 eth0 連線界面才行喔！</span>
+
+[root@study ~]# <span class="term_command">nmcli connection up eth0</span>
+[root@study ~]# <span class="term_command">nmcli connection show eth0</span>
+<span class="term_say">.....(前面省略).....</span>
+IP4.ADDRESS[1]:                         172.16.1.1/16
+IP4.GATEWAY:                            172.16.200.254
+IP4.DNS[1]:                             172.16.200.254
+IP6.ADDRESS[1]:                         fe80::5054:ff:fedf:e174/64
+IP6.GATEWAY:
+</pre></td></tr></tbody></table>
+
+		<p>最終執行『 nmcli connection show eth0 』然後看最下方，是否為正確的設定值呢？如果是的話，那就萬事 OK 啦！</p>
+
+		<a id="network_auto"></a>
+		<ul class="toplist"><li>自動取得 IP 參數</li></ul>
+
+		<p>如果你的網路是由自動取得的 DHCP 協定所分配的，那就太棒了！上述的所有功能你通通不需要背～只需要知道 ipv4.method 那個項目填成 auto 即可！
+		所以來查察，如果變成自動取得，網路設定要如何處理呢？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">nmcli connection modify eth0 \</span>
+&gt;  <span class="term_command">connection.autoconnect yes \</span>
+&gt;  <span class="term_command">ipv4.method auto</span>
+
+[root@study ~]# <span class="term_command">nmcli connection up eth0</span>
+[root@study ~]# <span class="term_command">nmcli connection show eth0</span>
+IP4.ADDRESS[1]:                         172.16.2.76/16
+IP4.ADDRESS[2]:                         172.16.1.1/16
+IP4.GATEWAY:                            172.16.200.254
+IP4.DNS[1]:                             172.16.200.254
+</pre></td></tr></tbody></table>
+
+		<p>自動取得 IP 要簡單太多了！同時下達 modify 之後，整個設定檔就寫入了！因此你無須使用 vim 去重新改寫與設定！
+		鳥哥是認為， nmcli 確實不錯用喔！另外，上面的參數中，那個 connection..., ipv4... 等等的，你也可以使用 [tab] 去呼叫出來喔！
+		也就是說， nmcli 有支援 bash-complete 的功能，所以指令下達也很方便的！</p>
+
+		<a id="hostnamectl"></a>
+		<ul class="toplist"><li>修改主機名稱</li></ul>
+
+		<p>主機名稱的修改就得要透過 hostnamectl 這個指令來處理了！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">hostnamectl [set-hostname 你的主機名]</span>
+
+<span class="term_hd"># 1. 顯示目前的主機名稱與相關資訊</span>
+[root@study ~]# <span class="term_command">hostnamectl</span>
+   Static hostname: study.centos.vbird                <span class="term_note"># 這就是主機名稱</span>
+         Icon name: computer
+           Chassis: n/a
+        Machine ID: 309eb890d09f440681f596543d95ec7a
+           Boot ID: b2de392ff1f74e568829c716a7166ecd
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)             <span class="term_note"># 作業系統名稱！</span>
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-229.el7.x86_64       <span class="term_note"># 核心版本也提供！</span>
+      Architecture: x86_64                            <span class="term_note"># 硬體等級也提供！</span>
+
+<span class="term_hd"># 2. 嘗試修改主機名稱為 www.centos.vbird 之後再改回來～</span>
+[root@study ~]# <span class="term_command">hostnamectl set-hostname www.centos.vbird</span>
+[root@study ~]# <span class="term_command">cat /etc/hostname</span>
+www.centos.vbird
+
+[root@study ~]# <span class="term_command">hostnamectl set-hostname study.centos.vbird</span>
+</pre></td></tr></tbody></table>
+
+	<br></div><br>
+
+	<a id="basic_date"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.1.2 日期與時間設定</h2>
+
+		<p>在<a href="http://linux.vbird.org/linux_basic/0160startlinux.php#date">第四章的 date</a> 指令解釋中，我們曾經談過這家伙可以進行日期、時間的設定。
+		不過，如果要改時區呢？例如台灣時區改成日本時區之類的，該如何處理？另外，真的設定了時間，那麼下次開機可以是正確的時間嗎？還是舊的時間？
+		我們也知道有『網路校時』這個功能，那如果有網路的話，可以透過這家伙來校時嗎？這就來談談。</p>
+
+		<ul class="toplist"><li>時區的顯示與設定</li></ul>
+
+		<p>因為地球是圓的，每個時刻每個地區的時間可能都不一樣。為了統一時間，所以有個所謂的『GMT、格林威治時間』這個時區！
+		同時，在太平洋上面還有一條看不見的『換日線』哩！台灣地區就比格林威治時間多了 8 小時，因為我們會比較早看到太陽啦！
+		那我怎麼知道目前的時區設定是正確的呢？就透過 timedatectl 這個指令吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">timedatectl [commamd]</span>
+<span class="term_say">選項與參數：
+list-timezones ：列出系統上所有支援的時區名稱
+set-timezone   ：設定時區位置
+set-time       ：設定時間
+set-ntp        ：設定網路校時系統</span>
+
+<span class="term_hd"># 1. 顯示目前的時區與時間等資訊</span>
+[root@study ~]# <span class="term_command">timedatectl</span>
+      Local time: Tue 2015-09-01 19:50:09 CST  <span class="term_note"># 本地時間</span>
+  Universal time: Tue 2015-09-01 11:50:09 UTC  <span class="term_note"># UTC 時間，可稱為格林威治標準時間</span>
+        RTC time: Tue 2015-09-01 11:50:12
+        Timezone: Asia/Taipei (CST, +0800)     <span class="term_note"># 就是時區囉！</span>
+     NTP enabled: no
+NTP synchronized: no
+ RTC in local TZ: no
+      DST active: n/a
+
+<span class="term_hd"># 2. 顯示出是否有 New_York 時區？若有，則請將目前的時區更新一下</span>
+[root@study ~]# <span class="term_command">timedatectl list-timezones | grep -i new</span>
+America/New_York
+America/North_Dakota/New_Salem
+
+[root@study ~]# <span class="term_command">timedatectl set-timezone "America/New_York"</span>
+[root@study ~]# <span class="term_command">timedatectl</span>
+      Local time: Tue 2015-09-01 07:53:24 EDT
+  Universal time: Tue 2015-09-01 11:53:24 UTC
+        RTC time: Tue 2015-09-01 11:53:28
+        Timezone: America/New_York (EDT, -0400)
+
+[root@study ~]# <span class="term_command">timedatectl set-timezone "Asia/Taipei"</span>
+<span class="term_say"># 最後還是要記得改回來台灣時區喔！不要忘記了！</span>
+</pre></td></tr></tbody></table>
+
+		<ul class="toplist"><li>時間的調整</li></ul>
+
+		<p>由於鳥哥的測試機使用的是虛擬機，預設虛擬機使用的是 UTC 時間而不是本地時間，所以在預設的情況下，測試機每次開機都會快上 8 小時...
+		所以就需要來調整一下時間囉！時間的格式可以是『 yyyy-mm-dd HH:MM 』的格式！比較方便記憶喔！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 將時間調整到正確的時間點上！</span>
+[root@study ~]# <span class="term_command">timedatectl set-time "2015-09-01 12:02"</span>
+</pre></td></tr></tbody></table>
+
+		<p>過去我們使用 date 去修改日期後，還得要使用 hwclock 去訂正 BIOS 記錄的時間～現在透過 timedatectl 一口氣幫我們全部搞定，方便又輕鬆！</p>
+
+		<ul class="toplist"><li>用 ntpdate 手動網路校時</li></ul>
+
+		<p>其實鳥哥真的不太愛讓系統自動網路校時，比較喜歡自己手動網路校時。當然啦，寫入 crontab 也是不錯的想法～
+		因為系統預設的自動校時會啟動 NTP 協定相關的軟體，會多開好幾個 port ～想到就不喜歡的緣故啦！沒啥特別的意思～
+		那如何手動網路校時呢？很簡單，透過 ntpdate 這個指令即可！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ntpdate tock.stdtime.gov.tw</span>
+ 1 Sep 13:15:16 ntpdate[21171]: step time server 211.22.103.157 offset -0.794360 sec
+
+[root@study ~]# <span class="term_command">hwclock -w</span>
+</pre></td></tr></tbody></table>
+
+		<p>上述的 tock.stdtime.gov.tw 指的是台灣地區國家標準實驗室提供的時間伺服器，如果你在台灣本島上，建議使用台灣提供的時間伺服器來更新你的伺服器時間，
+		速度會比較快些～至於 hwclock 則是將正確的時間寫入你的 BIOS 時間記錄內！如果確認可以執行，未來應該可以使用 crontab 來更新系統時間吧！</p>
+
+	<br></div><br>
+
+	<a id="basic_lang"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.1.3 語系設定</h2>
+
+		<p>我們在第四章知道有個 LANG 與 locale 的指令能夠查詢目前的語系資料與變數，也知道 /etc/locale.conf 其實就是語系的設定檔。
+		此外，你還得要知道的是，系統的語系與你目前軟體的語系資料可能是可以不一樣的！如果想要知道目前『系統語系』的話，
+		除了呼叫設定檔之外，也能夠使用 localectl 來查閱：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">localectl</span>
+   System Locale: LANG=zh_TW.utf8             <span class="term_note"># 底下這些資料就是『系統語系』</span>
+                  LC_NUMERIC=zh_TW.UTF-8
+                  LC_TIME=zh_TW.UTF-8
+                  LC_MONETARY=zh_TW.UTF-8
+                  LC_PAPER=zh_TW.UTF-8
+                  LC_MEASUREMENT=zh_TW.UTF-8
+       VC Keymap: cn
+      X11 Layout: cn
+     X11 Options: grp:ctrl_shift_toggle
+
+[root@study ~]# <span class="term_command">locale</span>
+LANG=zh_TW.utf8            <span class="term_note"># 底下的則是『當前這個軟體的語系』資料！</span>
+LC_CTYPE="en_US.utf8"
+LC_NUMERIC="en_US.utf8"
+<span class="term_say">.....(中間省略).....</span>
+LC_ALL=en_US.utf8
+</pre></td></tr></tbody></table>
+
+		<p>從上面的兩個指令結果你會發現到，系統的語系其實是中文的萬國碼 (zh_TW.UTF8) 這個語系。不過鳥哥為了目前的教學文件製作，
+		需要取消中文的顯示，而以較為單純的英文語系來處理～因此使用 locale 指令時，就可以發現『鳥哥的 bash 使用的語系環境為 en_US.utf8』這一個！
+		我們知道直接輸入的 locale 查詢到的語系，就是目前這個 bash 預設顯示的語言，那你應該會覺得怪，那系統語系 (localectl) 顯示的語系用在哪？</p>
+
+		<p>其實鳥哥一登入系統時，取得的語系確實是 zh_TW.utf8 這一個的，只是透過『 export LC_ALL=en_US.utf8 』來切換為英文語系而已。
+		此外，如果你有啟用圖形界面登入的話，那麼預設的顯示語系也是透過這個 localectl 所輸出的系統語系喔！</p>
+
+<table class="exam" style="width:95%"><tbody><tr><td>
+問：<div>
+如果你跟著鳥哥的測試機器一路走來，圖形界面將會是中文萬國碼的提示登入字元。如何改成英文語系的登入界面？
+</div>
+答：<div>
+就是將 locale 改成 en_US.utf8 之後，再轉成圖形界面即可！<br>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">localectl set-locale LANG=en_US.utf8</span>
+[root@study ~]# <span class="term_command">systemctl isolate multi-user.target</span>
+[root@study ~]# <span class="term_command">systemctl isolate graphical.target</span>
+</pre></td></tr></tbody></table>
+
+接下來你就可以看到英文的登入畫面提示了！未來的預設語系也都會是英文界面喔！
+</div>
+</td></tr></tbody></table><br>
+
+	<br></div><br>
+
+	<a id="basic_firewall"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.1.4 防火牆簡易設定</h2>
+
+		<p>有網路沒有防火牆還挺奇怪的，所以這個小節我們簡單的來談談防火牆的一點點資料好了！</p>
+
+		<p>防火牆其實是一種網路資料的過濾方式，它可以依據你伺服器啟動的服務來設定是否放行，也能夠針對你信任的用戶來放行！
+		這部份應該要對網路有點概念之後才來談比較好，所以詳細的資料會寫入在伺服器篇的內容。由於目前 CentOS 7 的預設防火牆機制為 firewalld，
+		他的管理界面主要是透過指令列 firewall-cmd 這個詳細的指令～既然我們還沒有談到更多的防火牆與網路規則，想要瞭解 firewall-cmd 有點難！
+		所以這個小節我們僅使用圖形界面來介紹防火牆的相關資料而已！</p>
+
+		<p>要啟動防火牆的圖形管理界面，你當然就得要先登入 X 才行！然後到『應用程式』--&gt;『雜項』--&gt;『防火牆』給它點下去，如下面的圖示：</p>
+
+	<a id="fig20.1.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/firewall-01.jpg" alt="防火牆啟動的連結畫面" title="防火牆啟動的連結畫面" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖20.1.1、防火牆啟動的連結畫面</div>
+
+		<p>之後出現的圖形管理界面會有點像底下這樣：</p>
+
+	<a id="fig20.1.2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/firewall-02.jpg" alt="防火牆圖形管理界面示意圖" title="防火牆圖形管理界面示意圖" style="border: 1px solid black; padding: 10px; width: 700px "></div>
+	<div style="text-align: center;">圖20.1.2、防火牆圖形管理界面示意圖</div>
+
+		<ul class="toplist"><li>組態：『執行時期』與『永久記錄』的差異</li></ul>
+
+		<p>如圖 20.1.2 的箭頭 1 處，基本上，防火牆的規則擬定大概有兩種情況，一種是『暫時用來執行』的規則，一種則是『永久記錄』的規則。
+		一般來說，剛剛啟動防火牆時，這兩種規則會一模一樣。不過，後來可能你會暫時測試而加上幾條規則，如果該規則沒有寫入『永久記錄』區的話，
+		那下次重新載入防火牆時，該規則就會消失喔！所以請特別注意：『<span class="text_import2">不要只是在執行階段增加規則設定，而是必須要在永久記錄區增加規則才行</span>！』</p>
+
+		<ul class="toplist"><li>界域 (zone)：依據不同的環境所設計的網路界域 (zone)</li></ul>
+
+		<p>玩過網路後，你可能會聽過所謂的本機網路、NAT 與 DMZ 等網域，同時，可能還有可信任的 (trusted) 網域，或者是應該被抵擋 (drop/block) 的網域等等。
+		這些網域各有其功能～早期的 iptables 防火牆服務，所有的規則你都得要自己手動來撰寫，然後規則的細分得要自己去規劃，
+		所以很可能會導致一堆無法理解的規則。</p>
+
+		<p>新的 firewalld 服務就預先設計這些可能會被用到的網路環境，裡面的規則除了 public (公開網域) 這個界域 (zone) 之外，其它的界域則暫時為沒有啟動的狀況。
+		因此，在預設的情況下，如圖 20.1.2 當中的 2 號箭頭與 3 號箭頭處，你只要考慮 public 那個項目即可！其他的領域等到讀完伺服器篇之後再來討論。
+		所以，再說一次～你只要考慮 public 這個 zone 即可喔！</p>
+
+		<ul class="toplist"><li>相關設定項目</li></ul>
+
+		<p>接下來圖 20.1.2 4 號箭頭的地方就是重點啦！防火牆規則通常需要設定的地方有：</p>
+
+		<ul>
+		<li>服務：一般來說，如果你的 Linux server 是作為 Internet 的伺服器，提供的是比較一般的服務，那麼只要處理『服務』項目即可。預設你的伺服器已經提供了
+			ssh 與 dhcpv6-client 的服務埠口喔！</li>
+		<li style="margin-top: 10px;">連接埠：如果你提供的服務所啟用的埠口並不是正規的埠口，舉例來說，為了玩 systemd 與 SELinux 我們曾經將 ssh 的埠口調整到 222 ，同時也曾經將 ftp 的埠口調整到
+			555 對吧！那如果你想要讓人家連進來，就不能只開放上面的『服務』項目，連這個『連接埠』的地方也需要調整才行！另外，
+			如果有某些比較特別的服務是 CentOS 預設沒有提供的，所以『服務』當然也就沒有存在！這時你也可以直接透過連接埠來搞定它！</li>
+		<li style="margin-top: 10px;">豐富規則(rich rule)：如果你有『整個網域』需要放行或者是拒絕的時候，那麼前兩個項目就沒有辦法適用，
+			這時就得要這個項目來處理了。不過鳥哥測試了 7.1 這一版的設定，似乎怪怪的～因此，底下我們會以 firewall-cmd 來增加這一個項目的設定。</li>
+		<li style="margin-top: 10px;">介面：就是這個界域主要是針對哪一個網路卡來做規範的意思，我們只有一張網卡，所以當然就是 eth0 囉！</li>
+		</ul>
+
+		<p>至於『偽裝』、『連接埠轉送』、『ICMP過濾器』、『來源』等等我們就不介紹了！畢竟那個是網路的東西，還不是在基礎篇應該要告訴你的項目。
+		好了！現在假設我們的 Linux server 是要作為底下的幾個重要的服務與相關的網域功能，你該如何設定防火牆呢？</p>
+
+		<ul>
+		<li>要作為 ssh, www, ftp, https 等等正規埠口的服務；</li>
+		<li>同時與前幾章搭配，還需要放行 port 222 與 port 555 喔！</li>
+		<li>區域網路 192.168.1.0/24 這一段我們目前想要直接放行這段網域對我們伺服器的連線</li>
+		</ul>
+
+		<p>請注意，因為未來都要持續生效，所以請一定要去到『永久』的防火牆設定項目裡頭去處理！不然只有這次開機期間會生效而已～注意注意！
+		好了，首先就來處理一下正規的服務埠口的放行吧！不過因為永久的設定比較重要，因此你得要先經過授權認證才行！如下圖所示。</p>
+
+	<a id="fig20.1.3"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/firewall-03.jpg" alt="永久的設定需要權限的認證" title="永久的設定需要權限的認證" style="border: 1px solid black; padding: 10px;"></div>
+	<div style="text-align: center;">圖20.1.3、永久的設定需要權限的認證</div>
+
+		<p>注意如下圖所示，你要先確認箭頭 1, 2, 3 的地方是正確的，然後再直接勾選 ftp, http, https, ssh 即可！因為 ssh 預設已經被勾選，
+		所以鳥哥僅截圖上頭的項目而已！比較特別的是，勾選就生效～沒有『確認』按鈕喔！呵呵！相當有趣！</p>
+
+	<a id="fig20.1.4"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/firewall-04.jpg" alt="以圖形界面的方式放行正規服務的防火牆設定" title="以圖形界面的方式放行正規服務的防火牆設定" style="border: 1px solid black; padding: 10px; width: 700px"></div>
+	<div style="text-align: center;">圖20.1.4、以圖形界面的方式放行正規服務的防火牆設定</div>
+
+		<p>接下來按下『連接埠』的頁面，如下圖所示，按下『加入』之後在出現的視窗當中填寫你需要的埠口號碼，通常也就是 tcp 協定保留它不動！
+		之後按下『確定』就好了！</p>
+
+	<a id="fig20.1.5"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/firewall-05.jpg" alt="以圖形界面的方式放行部份非正規埠口的防火牆設定" title="以圖形界面的方式放行部份非正規埠口的防火牆設定" style="border: 1px solid black; padding: 10px; "></div>
+	<div style="text-align: center;">圖20.1.5、以圖形界面的方式放行部份非正規埠口的防火牆設定</div>
+
+		<p>因為我們有兩個埠口要增加，所以請實作兩次產生 222 與 555 的埠口如下：</p>
+
+	<a id="fig20.1.6"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/firewall-06.jpg" alt="以圖形界面的方式放行部份非正規埠口的防火牆設定" title="以圖形界面的方式放行部份非正規埠口的防火牆設定" style="border: 1px solid black; padding: 10px; "></div>
+	<div style="text-align: center;">圖20.1.6、以圖形界面的方式放行部份非正規埠口的防火牆設定</div>
+
+		<p>最後一個要處理的是區域網路的放行，我們剛剛談到這個部份恐怕目前的圖形界面軟體有點怪異～所以，這時你可以這樣下達指令即可！
+		注意，下列的指令全部都是必要參數，只有 IP 網段的部份可以變動掉即可！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">firewall-cmd --permanent --add-rich-rule='rule family="ipv4" \</span>
+&gt;  <span class="term_command">source address="192.168.1.0/24" accept'</span>
+success
+[root@study ~]# <span class="term_command">firewall-cmd --reload</span>
+</pre></td></tr></tbody></table>
+
+		<p>最後一行很重要喔！我們上面的圖示通通是作用於『永久』設定中，只是變更設定檔，要讓這些設定實際生效，那麼就得要使用上面的 reload 項目，
+		讓防火牆系統整個完整的再載入一下～那就 OK 囉！這樣會使用簡易的防火牆設定了嗎？ ^_^</p>
+
+	<br></div>
+</div>
+
+
+<a id="hw"></a>
+<div class="block1">
+<h2>20.2 伺服器硬體資料的收集</h2>
+
+	<p>『工欲善其事，必先利其器』，這是一句大家耳熟能詳的古人名言，在我們的資訊設備上面也是一樣的啊！
+	在現在 (2015) 正好是 DDR3 切換到 DDR4 的時間點，假設你的伺服器硬體剛剛好記憶體不太夠，想要加記憶體，
+	那請教一下，你的主機板插槽還夠嗎？你的記憶體需要 DDR3 還是 DDR4 呢？你的主機能不能吃到 8G 以上的單條記憶體？
+	這就需要檢查一下系統囉！不想拆機殼吧？那怎辦？用軟體去查啦！此外，磁碟會不會出問題？你怎麼知道哪一顆磁碟出問題了？這就重要啦！</p>
+
+	<a id="hw_mb"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.2.1 以系統內建 dmidecode 解析硬體配備</h2>
+
+		<p>系統有個名為 dmidecode 的軟體，這個軟體挺有趣的，它可以解析 CPU 型號、主機板型號與記憶體相關的型號等等～
+		相當的有幫助！尤其是在升級配備上面！現在讓我們來查一查鳥哥的虛擬機裡頭有啥東西吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">dmidecode -t type</span>
+<span class="term_say">選項與參數：
+詳細的 type 項目請 man dmidecode 查詢更多的資料，這裡僅列出比較常用的項目：
+1 ：詳細的系統資料，含主機板的型號與硬體的基礎資料等
+4 ：CPU 的相關資料，包括倍頻、外頻、核心數、核心緒數等
+9 ：系統的相關插槽格式，包括 PCI, PCI-E 等等的插槽規格說明
+17：每一個記憶體插槽的規格，若內有記憶體，則列出該記憶體的容量與型號</span>
+
+<span class="term_hd">範例一：秀出整個系統的硬體資訊，例如主機板型號等等</span>
+[root@study ~]# <span class="term_command">dmidecode -t 1</span>
+# dmidecode 2.12
+SMBIOS 2.4 present.
+
+Handle 0x0100, DMI type 1, 27 bytes
+System Information
+        Manufacturer: Red Hat
+        Product Name: KVM
+        Version: RHEL 6.6.0 PC
+        Serial Number: Not Specified
+        UUID: AA3CB5D1-4F42-45F7-8DBF-575445D3887F
+        Wake-up Type: Power Switch
+        SKU Number: Not Specified
+        Family: Red Hat Enterprise Linux
+
+<span class="term_hd">範例二：那記憶體相關的資料呢？</span>
+[root@study ~]# <span class="term_command">dmidecode -t 17</span>
+# dmidecode 2.12
+SMBIOS 2.4 present.
+
+Handle 0x1100, DMI type 17, 21 bytes
+Memory Device
+        Array Handle: 0x1000
+        Error Information Handle: 0x0000
+        Total Width: 64 bits
+        Data Width: 64 bits
+        Size: 3072 MB
+        Form Factor: DIMM
+        Set: None
+        Locator: DIMM 0
+        Bank Locator: Not Specified
+        Type: RAM
+        Type Detail: None
+</pre></td></tr></tbody></table>
+
+		<p>因為我們的系統是虛擬機，否則的話，你的主機板型號、每一隻安插的記憶體容量等等，都會被列出來在上述的畫面中喔！
+		這樣可以讓你瞭解系統的所有主要硬體配備為何！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		因為某些緣故，鳥哥獲得了一部機架式的伺服器，不過該伺服器就是記憶體不夠。又因為某些緣故有朋友要送 ECC 的低電壓記憶體給鳥哥！太開心了！
+		不過為了擔心記憶體與主機板不相容，所以就使用了 dmidecode 去查主機板型號，再到原廠網站查詢相關主機板規格，這才確認可以使用！感謝各位親愛的朋友啊！！
+		</fieldset><br>
+	<br></div><br>
+
+	<a id="hw_pre_find"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.2.2 硬體資源的收集與分析</h2>
+
+		<p>現在我們知道系統硬體是由作業系統核心所管理的，由<a href="http://linux.vbird.org/linux_basic/0510osloader.php">第十九章</a>的開機流程分析中，我們也知道 Linux kernel 
+		在開機時就能夠偵測主機硬體並載入適當的模組來驅動硬體了。
+		而核心所偵測到的各項硬體裝置，後來就會被記錄在 /proc 與 /sys 當中了。
+		包括 /proc/cpuinfo, /proc/partitions, /proc/interrupts 等等。
+		更多的 /proc 內容介紹，先回到<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#proc">第十六章的程序管理</a>瞧一瞧先！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		其實核心所偵測到的硬體可能並非完全正確喔！因為他僅是『使用最適當的模組來驅動這個硬體』而已，
+		所以有時候難免會誤判啦 (雖然機率非常之低)！那你可能想要以最新最正確的模組來驅動你的硬體，
+		此時，重新編譯核心是一條可以達成的道路。不過，現在的 Linux 系統並沒有很建議你一定要重新編譯核心就是了。
+		</fieldset><br>
+		<p>那除了直接呼叫出 /proc 底下的檔案內容之外，其實 Linux 有提供幾個簡單的指令來將核心所偵測到的硬體叫出來的～
+		常見的指令有底下這些：</p>
+
+		<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#gdisk">gdisk</a>：第七章曾經談過，可以使用 gdisk -l 將分割表列出；</li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#dmesg">dmesg</a>：第十六章談過，
+		觀察核心運作過程當中所顯示的各項訊息記錄；</li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#vmstat">vmstat</a>：第十六章談過，可分析系統 
+		(CPU/RAM/IO) 目前的狀態；</li>
+		<li>lspci：列出整個 PC 系統的 PCI 介面裝置！很有用的指令；</li>
+		<li>lsusb：列出目前系統上面各個 USB 埠口的狀態，與連接的 USB 裝置；</li>
+		<li>iostat：與 vmstat 類似，可即時列出整個 CPU 與周邊設備的 Input/Output 狀態。</li>
+		</ul>
+
+		<p>lspci, lsusb, iostat 是本章新談到的指令，尤其如果你想要知道主機板與各周邊相關設備時，那個 lspci 
+		真是不可多得的好工具！而如果你想要知道目前 USB 插槽的使用情況以及偵測到的 USB 裝置，
+		那個 lsusb 則好用到爆！至於 iostat 則是一個即時分析軟體，與 vmstat 有異曲同工之妙！</p>
+
+		<p>基本上，想要知道你 Linux 主機的硬體配備，最好的方法還是直接拆開機殼去察看上面的資訊 (這也是為何<a href="http://linux.vbird.org/linux_basic/0105computers.php">第零章會談計概</a>啊)！
+		如果環境因素導致您無法直接拆開主機的話，那麼直接 lspci 是很棒的一的方法：</p>
+
+		<a id="lspci"></a>
+		<ul class="toplist"><li>lspci</li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">lspci [-vvn]</span>
+<span class="term_say">選項與參數：
+-v  ：顯示更多的 PCI 介面裝置的詳細資訊；
+-vv ：比 -v 還要更詳細的細部資訊；
+-n  ：直接觀察 PCI 的 ID 而不是廠商名稱</span>
+
+<span class="term_hd">範例一：查閱您系統內的 PCI 匯流排相關裝置：</span>
+[root@study ~]# <span class="term_command">lspci</span>
+<span style="font-size: 10pt">00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC [Natoma] (rev 02)
+00:01.0 ISA bridge: Intel Corporation 82371SB PIIX3 ISA [Natoma/Triton II]
+00:01.1 IDE interface: Intel Corporation 82371SB PIIX3 IDE [Natoma/Triton II]
+00:01.2 USB controller: Intel Corporation 82371SB PIIX3 USB [Natoma/Triton II] (rev 01)
+00:01.3 Bridge: Intel Corporation 82371AB/EB/MB PIIX4 ACPI (rev 03)
+00:02.0 VGA compatible controller: Red Hat, Inc. QXL paravirtual graphic card (rev 04)
+00:03.0 Ethernet controller: Red Hat, Inc Virtio network device
+00:04.0 SCSI storage controller: Red Hat, Inc Virtio block device
+00:05.0 RAM memory: Red Hat, Inc Virtio memory balloon
+00:06.0 Audio device: Intel Corporation 82801FB/FBM/FR/FW/FRW (ICH6 Family) High Definition Audio
+        Controller (rev 01)
+00:1d.0 USB controller: Intel Corporation 82801I (ICH9 Family) USB UHCI Controller #1 (rev 03)
+00:1d.1 USB controller: Intel Corporation 82801I (ICH9 Family) USB UHCI Controller #2 (rev 03)
+00:1d.2 USB controller: Intel Corporation 82801I (ICH9 Family) USB UHCI Controller #3 (rev 03)
+00:1d.7 USB controller: Intel Corporation 82801I (ICH9 Family) USB2 EHCI Controller #1 (rev 03)</span>
+<span class="term_say"># 不必加任何的參數，就能夠顯示出目前主機上面的各個 PCI 介面的裝置呢！</span>
+</pre></td></tr></tbody></table>
+
+		<p>不必加上任何選項，就能夠顯示出目前的硬體配備為何。上面就是鳥哥的測試機所使用的主機配備。
+		包括使用 Intel 晶片的模擬主機板、南橋使用 ICH9 的控制晶片、附掛 QXL 的顯示卡、使用虛擬化的 Virtio 網路卡等等。
+		您瞧瞧！很清楚，不是嘛。</p>
+
+		<p>如果你還想要瞭解某個設備的詳細資訊時，可以加上 -v 或 -vv 來顯示更多的資訊喔！
+		舉例來說，鳥哥想要知道那個乙太網路卡更詳細的資訊時，可以使用如下的選項來處理：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">lspci -s 00:03.0 -vv</span>
+</pre></td></tr></tbody></table>
+
+		<p>-s 後面接的那個怪東西每個設備的匯流排、插槽與相關函數功能啦！那個是我們硬體偵測所得到的數據囉！
+		你可以對照底下這個檔案來瞭解該串數據的意義：</p>
+
+		<ul class="text_import2"><li>/usr/share/hwdata/pci.ids</li></ul>
+
+		<p>其實那個就是 PCI 的標準 ID 與廠牌名稱的對應表啦！此外，剛剛我們使用 lspci 時，其實所有的資料都是由 /proc/bus/pci/ 
+		目錄下的資料所取出的呢！瞭解了吧！ ^_^！不過，由於硬體的發展太過迅速，所以你的 pci.ids 檔案可能會落伍了～那怎辦？
+		沒關係～可以使用底下的方式來線上更新你的對應檔：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">update-pciids</span>
+</pre></td></tr></tbody></table>
+
+		<a id="lsusb"></a>
+		<ul class="toplist"><li>lsusb</li></ul>
+
+		<p>剛剛談到的是 PCI 介面裝置，如果是想要知道系統接了多少個 USB 裝置呢？那就使用 lsusb 吧！這個指令也是很簡單的！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">lsusb [-t]</span>
+<span class="term_say">選項與參數：
+-t  ：使用類似樹狀目錄來顯示各個 USB 埠口的相關性</span>
+
+<span class="term_hd">範例一：列出目前鳥哥的測試用主機 USB 各埠口狀態</span>
+[root@study ~]# <span class="term_command">lsusb</span>
+Bus 002 Device 002: ID 0627:0001 Adomax Technology Co., Ltd
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+<span class="term_say"># 如上所示，鳥哥的主機在 Bus 002 有接了一個設備，
+# 該設備的 ID 是 0627:0001，對應的廠商與產品為 Adomax 的設備。</span>
+</pre></td></tr></tbody></table>
+
+		<p>確實非常清楚吧！其中比較有趣的就屬那個 ID 號碼與廠商型號對照了！那也是寫入在
+		/usr/share/hwdata/pci.ids 的東西，你也可以自行去查詢一下喔！</p>
+
+		<a id="iostat"></a>
+		<ul class="toplist"><li>iostat</li></ul>
+
+		<p>剛剛那個 lspci 找到的是目前主機上面的硬體配備，那麼整部機器的儲存設備，
+		主要是磁碟對吧！請問，您磁碟由開機到現在，已經存取多少資料呢？這個時候就得要 iostat 這個指令的幫忙了！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		預設 CentOS  並沒有安裝這個軟體，因此你必須要先安裝他才行！如果你已經有網路了，
+		那麼使用『 yum install sysstat 』先來安裝此軟體吧！否則無法進行如下的測試喔！
+		</fieldset><br>
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">iostat [-c|-d] [-k|-m] [-t] [間隔秒數] [偵測次數]</span>
+<span class="term_say">選項與參數：
+-c  ：僅顯示 CPU 的狀態；
+-d  ：僅顯示儲存設備的狀態，不可與 -c 一起用；
+-k  ：預設顯示的是 block ，這裡可以改成 K bytes 的大小來顯示；
+-m  ：與 -k 類似，只是以 MB 的單位來顯示結果。
+-t  ：顯示日期出來；</span>
+
+<span class="term_hd">範例一：顯示一下目前整個系統的 CPU 與儲存設備的狀態</span>
+[root@study ~]# <span class="term_command">iostat</span>
+Linux 3.10.0-229.el7.x86_64 (study.centos.vbird)  09/02/2015   _x86_64_    (4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.08    0.01    0.02    0.00    0.01   99.88
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+vda               0.46         5.42         3.16     973670     568007
+scd0              0.00         0.00         0.00        154          0
+sda               0.01         0.03         0.00       4826          0
+dm-0              0.23         4.59         3.09     825092     555621
+<span class="term_say"># 瞧！上面數據總共分為上下兩部分，上半部顯示的是 CPU 的當下資訊；
+# 下面數據則是顯示儲存裝置包括 /dev/vda 的相關數據，他的數據意義：
+# tps       ：平均每秒鐘的傳送次數！與資料傳輸『次數』有關，非容量！
+# kB_read/s ：開機到現在平均的讀取單位；
+# kB_wrtn/s ：開機到現在平均的寫入單位；
+# kB_read   ：開機到現在，總共讀出來的檔案單位；
+# kB_wrtn   ：開機到現在，總共寫入的檔案單位；</span>
+
+<span class="term_hd">範例二：僅針對 vda ，每兩秒鐘偵測一次，並且共偵測三次儲存裝置</span>
+[root@study ~]# <span class="term_command">iostat -d 2 3 vda</span>
+Linux 3.10.0-229.el7.x86_64 (study.centos.vbird)  09/02/2015   _x86_64_    (4 CPU)
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+vda               0.46         5.41         3.16     973682     568148
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+vda               1.00         0.00         0.50          0          1
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+vda               0.00         0.00         0.00          0          0
+<span class="term_say"># 仔細看一下，如果是有偵測次數的情況，那麼第一次顯示的是『從開機到現在的數據』，
+# 第二次以後所顯示的資料則代表兩次偵測之間的系統傳輸值！舉例來說，上面的資訊中，
+# 第二次顯示的資料，則是兩秒鐘內(本案例)系統的總傳輸量與平均值。</span>
+</pre></td></tr></tbody></table>
+
+		<p>透過 lspci 及 iostat 可以約略的瞭解到目前系統的狀態還有目前的主機硬體資料呢！</p>
+
+	<br></div><br>
+
+	<a id="hw_hd"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.2.3 瞭解磁碟的健康狀態</h2>
+
+		<p>其實 Linux server 最重要的就是『資料安全』了！而資料都是放在磁碟當中的，所以囉，無時無刻瞭解一下你的磁碟健康狀況，應該是個好習慣吧！
+		問題是，你怎麼知道你的磁碟是好是壞啊？這時就得要來談一個 smartd 的服務了！</p>
+
+		<p>SMART 其實是『 Self-Monitoring, Analysis and Reporting Technology System  』的縮寫，主要用來監測目前常見的 ATA 與 SCSI 界面的磁碟，
+		只是，要被監測的磁碟也必須要支援 SMART 的協定才行！否則 smartd 就無法去下達指令，讓磁碟進行自我健康檢查～
+		比較可惜的是，我們虛擬機的磁碟格式並不支援 smartd，所以無法用來作為測試！不過剛剛好鳥哥還有另外一顆用作 IDE 界面的 2G 磁碟，
+		這個就能夠用來作為測試了！ (/dev/sda)！</p>
+
+		<p>smartd 提供一隻指令名為 smartctl，這個指令功能非常多！不過我們底下只想要介紹數個基本的操作，讓各位瞭解一下如何確認你的磁碟是好是壞！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 用 smartctl 來顯示完整的 /dev/sda 的資訊</span>
+[root@study ~]# <span class="term_command">smartctl -a /dev/sda</span>
+smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-229.el7.x86_64] (local build)
+Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
+
+<span class="term_say"># 首先來輸出一下這部磁碟的整體資訊狀況！包括製造商、序號、格式、SMART 支援度等等！</span>
+=== START OF INFORMATION SECTION === 
+Device Model:     QEMU HARDDISK
+Serial Number:    QM00002
+Firmware Version: 0.12.1
+User Capacity:    2,148,073,472 bytes [2.14 GB]
+Sector Size:      512 bytes logical/physical
+Device is:        Not in smartctl database [for details use: -P showall]
+ATA Version is:   ATA/ATAPI-7, ATA/ATAPI-5 published, ANSI NCITS 340-2000
+Local Time is:    Wed Sep  2 18:10:38 2015 CST
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+
+<span class="term_say"># 接下來則是一堆基礎說明！鳥哥這裡先略過這段資料喔！</span>
+General SMART Values:
+Offline data collection status:  (0x82) Offline data collection activity
+                                        was completed without error.
+                                        Auto Offline Data Collection: Enabled.
+<span class="term_say">.....(中間省略).....
+# 再來則是有沒有曾經發生過磁碟錯亂的問題登錄！</span>
+SMART Error Log Version: 1
+No Errors Logged
+
+<span class="term_say"># 當你下達過磁碟自我檢測的過程，就會被記錄在這裡了！</span>
+SMART Self-test log structure revision number 1
+Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA_of_first_error
+# 1  Short offline       Completed without error       00%      4660         -
+# 2  Short offline       Completed without error       00%      4660         -
+
+<span class="term_hd"># 2. 命令磁碟進行一次自我檢測的動作，然後再次觀察磁碟狀態！</span>
+[root@study ~]# <span class="term_command">smartctl -t short /dev/sda</span>
+[root@study ~]# <span class="term_command">smartctl -a /dev/sda</span>
+<span class="term_say">.....(前面省略).....
+# 底下會多出一個第三筆的測試資訊！看一下 Status 的狀態，沒有問題就是好消息！</span>
+SMART Self-test log structure revision number 1
+Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA_of_first_error
+# 1  Short offline       Completed without error       00%      4660         -
+# 2  Short offline       Completed without error       00%      4660         -
+# 3  Short offline       Completed without error       00%      4660         -
+</pre></td></tr></tbody></table>
+
+		<p>不過要特別強調的是，因為進行磁碟自我檢查時，可能磁碟的 I/O 狀態會比較頻繁，因此不建議在系統忙碌的時候進行喔！
+		否則系統的效能是可能會被影響的哩！要注意！要注意！</p>
+
+	<br></div>
+</div>
+
+
+<a id="backup_hint"></a>
+<div class="block1">
+<h2>20.3 備份要點</h2>
+
+	<p>備份是個很重要的工作，很多人總是在系統損毀的時候才在哀嚎說：『我的資料啊！天那...！』此時才會發現備份資料的可愛！
+	但是備份其實也非常可怕！因為你的重要資料都在備份檔裡面，如果這個備份被竊取或遺失，其實對你的系統資安影響也非常大！
+	同時，備份使用的媒體選擇也非常多樣，但是各種儲存媒體各有其功能與優劣，所以當然得要選擇囉！閒話少說，來談談備份吧！</p>
+
+	<a id="who_need_backup"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.3.1 備份資料的考量</h2>
+
+		<p>老實說，<span class="text_import2">備份是系統損毀時等待救援的救星</span>！因為你需要重新安裝系統時，
+		備份的好壞會影響到你系統復原的進度！不過，我們想先知道的是，系統為什麼會損毀啊？是人為的還是怎樣產生的啊？
+		事實上，<span class="text_import2">系統有可能由於不預期的傷害而導致系統發生錯誤</span>！
+		什麼是不預期的傷害呢？這是由於系統可能因為不預期的硬體損壞，例如硬碟壞掉等等，或者是軟體問題導致系統出錯，
+		包括人為的操作不當或是其他不明因素等等所致。底下我們就來談談系統損壞的情況與為何需要備份吧！</p>
+
+		<div class="illus">
+
+		<ul><li>造成系統損毀的問題-硬體問題</li></ul>
+
+		<p>基本上，『<span class="text_import2">電腦是一個相當不可靠的機器</span>』這句話在大部分的時間內還是成立的！
+		常常會聽到說『要電腦正常的工作，最重要的是要去拜拜！』嘿嘿！不要笑！這還是真的哩！
+		尤其是在日前一些電腦周邊硬體的生產良率 (就是將硬體產生出來之後，經過測試，
+		發現可正常工作的與不能正常工作的硬體總數之比值) 越來越差的情況之下，電腦的不穩定狀態實在是越來越嚴重了！</p>
+
+		<p>一般來說，會造成系統損毀的硬體元件應該要算硬碟吧！因為其他的元件壞掉時，雖然會影響到系統的運作，
+		不過至少我們的資料還是存在硬碟當中的啊！為了避免這個困擾，於是乎有可備份用的 RAID1, RAID5, RAID6 
+		等磁碟陣列的應用啊！但是如果是 RAID 控制晶片壞掉呢？這就麻煩了～所以說，如果有 RAID 系統時，
+		鳥哥個人還是覺得需要進行額外的備份才好的！如果資料夠重要的話。</p>
+
+		<ul><li>造成系統損毀的問題-軟體與人的問題</li></ul>
+
+		<p>根據分析，<span class="text_import2">其實系統的軟體傷害最嚴重的就屬使用者的操作不當啦</span>！像以前 Google 還沒有這麼厲害時，
+		人們都到討論區去問問題，某些高手高手高高手被小白煩的不勝其擾，總是會回答：『喔！你的系統有問題喔！那請 rm -rf / 看看出現什麼狀況！
+		做完再回來！』...你真的做下去就死定了！如果你的系統有這種小白管理員呢？敢不備份喔？</p>
+
+		<p>軟體傷害除了來自主機上的使用者操作不當之外，最常見的可能是資安攻擊事件了。
+		假如你的 Linux 系統上面某些 Internet 的服務軟體是最新的！這也意味著可能是『相對最安全的』，
+		但是，這個世界目前的閒人是相當多的，你不知道什麼時候會有所謂的『駭客軟體』被提供出來，萬一你在
+		Internet 上面的服務程序被攻擊，導致你的 Linux 系統全毀，這個時候怎麼辦？當然是要復原系統吧？</p>
+
+		<p>那如何復原被傷害的系統呢？『<span class="text_import2">重新安裝就好啦</span>！』或許你會這麼說，
+		但是，像鳥哥管理的幾個網站的資料，尤其是 MySQL 資料庫的資料，這些都是彌足珍貴的經驗資料，
+		萬一被損毀而救不回來的時候，不是很可惜嗎？這個還好哩，萬一你是某家銀行的話，
+		那麼資料的損毀可就不是能夠等閒視之的！關係的可是數千甚至上萬人的身家財產！這就是備份的重要性了！
+		他可以最起碼的稍微保障我們的資料有另外一份
+		copy 的備援以達到『<span class="text_import2">安全回復</span>』的基本要求！</p>
+
+		<ul><li>主機角色不同，備份任務也不同</li></ul>
+
+		<p>由於軟硬體的問題都可能造成系統的損毀，所以備份當然就很重要啦！問題是，每一部主機都需要備份嗎？
+		多久備份一次呢？要備份什麼資料呢？</p>
+
+		<p>早期有 ghost 這套單機備份軟體，近期以來有台灣國家高速網路中心發展的再生龍 (clonzilla) 軟體，
+		這些軟體的共同特性就是可以將你系統上面的磁碟資料完整的複製起來，變成一個大檔案，你可以透過現在便宜到爆炸的 USB 外接磁碟來備份出來，
+		未來復原時，只要將 USB 安插到系統裡面，就幾乎可以進行裸機復原了哩！</p>
+
+		<p>但是，萬一你的主機有提供 Internet 方面的服務呢？又該如何備份啊？舉個例子來說，像是我們 Study Area 
+		團隊的討論區網站 <a href="http://phorum.study-area.org/" target="_blank">http://phorum.study-area.org</a> 提供的是類似 BBS 的討論文章，
+		雖然資料量不大，但是由於討論區的文件是天天在增加的，每天都有相當多的資訊流入，
+		由於某些資訊都是屬於重要的人物之留言，這個時候，我們能夠讓機器死掉嗎？或者是能夠一季三個月才備份一次嗎？
+		這個備份頻率需求的考量是非常重要的！</p>
+
+		<p>再提到 2002 年左右鳥哥的討論區曾經掛點的問題，以及 2003 年初 Study-Area 
+		討論區掛點的問題，討論區一旦掛點的話，該資料庫內容如果損毀到無法救回來，
+		嘿嘿！要曉得討論區可不是一個人的心血耶！有的時候 (像 Study-Area 討論區) 是一群熱心 Linux 
+		的朋友們互相建立交流起來的資料流通網，如果死掉了，那麼不是讓這些熱血青年的熱情付之一炬了嗎？
+		所以囉，建立備份的策略 (頻率、媒體、方法等) 是相當的重要的。</p>
+
+		</div>
+
+		<ul class="toplist"><li>備份因素考量</li></ul>
+
+		<p>由於電腦 (尤其是目前的電腦，操作頻率太高、硬體良率太差、使用者操作習慣不良、
+		『某些』作業系統的當機率太高....) 的穩定性較差，所以囉！備份的工作就越來越重要了！
+		那麼一般我們在備份時考慮的因素有哪些呢？</p>
+
+		<ul>
+		<li><span class="text_import2">備份哪些檔案：</span><br>
+		哪些資料對系統或使用者來說是重要的？那些資料就是值得備份的資料！例如 /etc/* 及 /home/* 等。<br><br></li>
+
+		<li><span class="text_import2">選擇什麼備份的媒介：</span><br>
+		是可讀寫光碟、另一顆硬碟、同一顆硬碟的不同 partition、還是使用網路備援系統？
+		哪一種的速度最快，最便宜，可將資料保存最久？這都可以考慮的。<br><br></li>
+
+		<li><span class="text_import2">考慮備份的方式：</span><br>
+		是以完整備份(類似 ghost)來備份所有資料，還是使用差異備份僅備份有被更動過的資料即可？<br><br></li>
+
+		<li><span class="text_import2">備份的頻率：</span><br>
+		例如 Mariadb 資料庫是否天天備份、若完整備份，需要多久進行一次？<br><br></li>
+
+		<li><span class="text_import2">備份使用的工具為何：</span><br>
+		是利用 tar 、 cpio 、 dd 還是 dump 等等的備份工具？</li>
+		</ul>
+
+		<p>底下我們就來談一談這些問題的解決之道吧！ ^_^</p>
+	<br></div><br>
+
+	<a id="what_data_must_backup"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.3.2 哪些 Linux 資料具有備份的意義</h2>
+
+		<p>一般來說，鳥哥比較喜歡備份最重要的檔案而已 (關鍵資料備份)，而不是整個系統都備份起來
+		(完整備份, Full backup)！那麼哪些檔案是有必要備份的呢？具有備份意義的檔案通常可以粗分為兩大類，<span class="text_import2">一類是系統基本設定資訊、一類則是類似網路服務的內容資料</span>。
+		那麼各有哪些檔案需要備份的呢？我們就來稍微分析一下。</p>
+
+		<ul class="toplist"><li>作業系統本身需要備份的檔案：</li></ul>
+
+		<p>這方面的檔案主要跟『<span class="text_import2">帳號與系統設定檔</span>』有關係！
+		主要有哪些帳號的檔案需要備份呢？就是<span class="text_import2" style="font-family: &#39;細明體&#39;">
+		/etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, /home 底下的使用者家目錄等等</span>，
+		而由於 Linux 預設的重要參數檔都在 /etc/ 底下，所以只要將這個目錄備份下來的話，
+		那麼幾乎所有的設定檔都可以被保存的！</p>
+
+		<p>至於 /home 目錄是一般用戶的家目錄，自然也需要來備份一番！再來，由於使用者會有郵件吧！所以呢，這個
+		/var/spool/mail/ 內容也需要備份呦！另外，由於如果你曾經自行更動過核心，那麼
+		/boot 裡頭的資訊也就很重要囉！所以囉，這方面的資料你必須要備份的檔案為：</p>
+
+		<ul class="text_import2" style="font-family: &#39;細明體&#39;">
+		<li>/etc/ 整個目錄</li>
+		<li>/home/ 整個目錄</li>
+		<li>/var/spool/mail/</li>
+		<li>/var/spool/{at|cron}/</li>
+		<li>/boot/</li>
+		<li>/root/</li>
+		<li>如果你自行安裝過其他的軟體，那麼 /usr/local/ 或 /opt 也最好備份一下！</li>
+		</ul>
+
+		<ul class="toplist"><li>網路服務的資料庫方面：</li></ul>
+
+		<p>這部份的資料可就多而且複雜了，首先是這些網路服務軟體的設定檔部分，
+		如果你的網路軟體安裝都是以原廠提供的為主，那麼你的設定檔案大多是在
+		/etc 底下，所以這個就沒啥大問題！但若你的套件大多來自於自行的安裝，那麼
+		/usr/local 這個目錄可就相當的重要了！</p>
+
+		<p>再來，每種服務提供的資料都不相同，這些資料很多都是人們提供的！舉例來說，你的 WWW 
+		伺服器總是需要有人提供網頁檔案吧？否則瀏覽器來是要看啥咚咚？你的討論區總是得要寫入資料庫系統吧？
+		否則討論的資料如何更新與記載？所以，使用者主動提供的檔案，以及服務運作過程會產生的資料，
+		都需要被考慮來備份。若我們假設我們提供的服務軟體都是使用原廠的 RPM 安裝的！所以要備份的資料檔案有：</p>
+
+		<ul class="text_import2" style="font-family: &#39;細明體&#39;">
+		<li>軟體本身的設定檔案，例如：/etc/ 整個目錄，/usr/local/ 整個目錄</li>
+		<li>軟體服務提供的資料，以 WWW 及 Mariadb 為例：<br>
+			WWW 資料：/var/www 整個目錄或 /srv/www 整個目錄，及系統的使用者家目錄<br>
+			Mariadb ： /var/lib/mysql 整個目錄</li>
+		<li>其他在 Linux 主機上面提供的服務之資料庫檔案！</li>
+		</ul>
+
+		<ul class="toplist"><li>推薦需要備份的目錄：</li></ul>
+
+		<p>由上面的介紹來看的話，如果你的硬體或者是由於經費的關係而無法全部的資料都予以備份時，
+		鳥哥建議你至少需要備份這些目錄呦！</p>
+
+		<ul class="text_import2" style="font-family: &#39;細明體&#39;">
+		<li>/etc</li>
+		<li>/home</li>
+		<li>/root</li>
+		<li>/var/spool/mail/, /var/spool/cron/, /var/spool/at/</li>
+		<li>/var/lib/</li>
+		</ul>
+
+		<ul class="toplist"><li>不需要備份的目錄：</li></ul>
+
+		<p>有些資料是不需要備份的啦！例如我們在<a href="http://linux.vbird.org/linux_basic/0210filepermission.php">第五章檔案權限與目錄配置</a>裡頭提到的 /proc 
+		這個目錄是在記錄目前系統上面正在跑的程序，這個資料根本就不需要備份的呢！此外，外掛的機器，例如
+		/mnt 或 /media 裡面都是掛載了其他的硬碟裝置、光碟機、軟碟機等等，這些也不需要備份吧？
+		所以囉！底下有些目錄可以不需要備份啦！</p>
+
+		<ul class="text_import2" style="font-family: &#39;細明體&#39;">
+		<li>/dev ：這個隨便你要不要備份</li>
+		<li>/proc, /sys, /run：這個真的不需要備份啦！</li>
+		<li>/mnt, /media：如果你沒有在這個目錄內放置你自己系統的東西，也不需要備份</li>
+		<li>/tmp ：幹嘛存暫存檔！不需要備份！</li>
+		</ul>
+	<br></div><br>
+
+	<a id="what_media"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.3.3 備份用儲存媒體的選擇</h2>
+
+		<p>用來儲存備份資料的媒體非常的多樣化，那該如何選擇呢？在選擇之前我們先來講個小故事先！</p>
+
+		<ul class="toplist"><li>一個實際發生的故事</li></ul>
+
+		<p>在備份的時候，選擇一個『<span class="text_import2">資料存放的地方</span>』也是很需要考慮的一個因素！
+		什麼叫做資料存放的地方呢？講個最簡單的例子好了，我們知道說，較為大型的機器都會使用
+		tape 這一種磁帶機來備份資料，早期如果是一般個人電腦的話，很可能是使用類似
+		Mo 這一種可讀寫式光碟片來存取資料！近來因為 USB 界面的大容量磁碟機越來越便宜且速度越來越快，
+		所以幾乎取代了上述的總總儲存媒體了！但是你不要忘記了幾個重要的因素，那就是萬一你的
+		Linux 主機被偷了呢？</p>
+
+		<p>這不是不可能的，之前鳥哥在成大唸書時 (2000年前後)，隔壁校區的研究室曾經遭小偷，
+		裡面所有的電腦都被偷走了！包括『Mo 片』，當他們發現的時候，一開始以為是硬體被偷走了，還好，
+		他們都有習慣進行備份，但是很不幸的，這一次連『備份的
+		MO 都被拿走了！』怎麼辦？！只能道德勸說小偷先生能夠良心發現的將硬碟拿回來囉！唉～真慘....</p>
+
+		<ul class="toplist"><li>異地備援系統</li></ul>
+
+		<p>這個時候，所謂的『<span class="text_import2">異地備援系統</span>』就顯的相當的重要了！
+		什麼是異地備援呀！說的太文言了！呵！簡單的說，就是將你的系統資料『備份』到其他的地方去，
+		例如說我的機器在台南，但是我還有另一部機器在高雄老家，這樣的話，
+		我可以將台南機器上面重要的資料都給他定期的自動的透過網路傳輸回去！
+		也可以將家裡重要的資料給他丟到台南來！這樣的最大優點是可以在台南的機器死掉的時候，
+		即使是遭小偷，也可以有一個『萬一』的備份所在！</p>
+
+		<p>有沒有缺點啊？有啊！缺點就是～<span class="text_import2">頻寬嚴重的不足</span>！
+		在這種狀態下，所能採取的策略大概就是『<span class="text_import2">僅將最重要的資料給他傳輸回去囉</span>！』
+		至於一些只要系統從新安裝就可以回復的咚咚！那就沒有這個必要了！當然囉，如果你的網路是屬於雙向 100Mbps 或 300Mbps 那就另當一回事，
+		想完整備份將資料丟到另一地去，也是很可行的啦！只是鳥哥沒有那麼好命...住家附近連 100/40 Mbps 的網路頻寬都沒有...</p>
+
+		<ul class="toplist"><li>儲存媒體的考量</li></ul>
+
+		<p>在此同時，我們再來談一談，那麼除了異地備援這個『<span class="text_import2">相對較為安全的備份</span>』方法之外，
+		還有沒有其他的方法可以儲存備份的呢？畢竟這種網路備援系統實在是太耗頻寬了！那麼怎麼辦？喔～那就只好使用近端的裝置來備份囉！
+		這也是目前我們最常見到的備份方法！</p>
+
+		<p>在過去我們使用的儲存媒體可能有 Tape, Mo, Zip, CD-RW, DVD-RW, 外接式磁碟等等，
+		近年來由於磁碟容量不斷上提，加上已經有便宜的桌上型 NAS 儲存設備，這些 NAS 儲存設備就等於是一部小型 Linux server，
+		裡面還能夠提供客製化的服務，包括不同的連接界面與傳輸協定，因此，你只要記得，就是買還能夠自我容錯的 NAS 設備來備份就對了！</p>
+
+		<p>在<span class="text_import2">經費充足的情況考量</span>之下，鳥哥相當建議您使用外接式的 NAS 設備，所謂的 NAS 其實就是一台內嵌 Linux 或 unix-like
+		的小型伺服器，可能提供硬體或軟體的磁碟陣列，讓你可以架設 RAID10 或 RAID5,6 等的等級，所以 NAS 本身的資料就已經有保障！
+		然後跟妳預計要備份的 Linux server 透過網路連線，你的資料就可以直接傳輸到 NAS 上頭去了！其他以前需要考量的注意事項，
+		幾乎都不再有限制～最多就是擔心 NAS 的硬體壞掉而已～</p>
+
+		<p>若經費不足怎辦，現在隨便磁碟都有 4TB 以上的容量，拿一顆磁碟透過外接式 USB 界面，搭配 USB 3.0 來傳輸～
+		隨便都能夠進行備份了！雖然這樣的處理方式最怕的是單顆磁碟損毀，不過，如果擔心的話，買兩三顆來互相輪流備份，也能夠處理掉這個問題！
+		因為目前的資料量越來越大，實在沒啥意義再使用類似 DVD 之類的儲存設備來備份了！</p>
+
+		<p>如果你想要有比較長時間的備份儲存，同時也比較擔心碰撞的問題，目前企業界還是很多人會喜歡使用 Tape 來儲存就是了！
+		不過聽業界的朋友說，磁帶就是比較怕被消磁以及發霉的問題～否則，這家伙倒是很受企業備份的喜好需求！</p>
+	<br></div>
+</div>
+
+
+<a id="backup_type"></a>
+<div class="block1">
+<h2>20.4 備份的種類、頻率與工具的選擇</h2>
+
+	<p>講了好多口水了，還是沒有講到重點，真是的....好了，再來提到那個備份的種類，因為想要選擇什麼儲存媒體與相關備份工具，
+	都與備份使用的方式有關！那麼備份有哪些方式呢？一般可以粗略分為『累積備份』與『差異備份』這兩種 (<a href="http://linux.vbird.org/linux_basic/0610hardware.php#ps1">註1</a>)。當然啦，如果你在系統出錯時想要重新安裝到更新的系統時，僅備份關鍵資料也就可以了！</p>
+
+	<a id="full_incremental"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.4.1 完整備份之累積備份 (Incremental backup)</h2>
+
+		<p>備份不就是將重要資料複製出來即可嗎？幹嘛需要完整備份 (Full backup) 呢？如果你的主機是負責相當重要的服務，
+		因此如果有不明原因的當機事件造成系統損毀時，你希望在最短的時間內復原系統。此時，如果僅備份關鍵資料時，
+		那麼你得要在系統出錯後，再去找新的 Linux distribution 來安裝，安裝完畢後還得要考慮到資料新舊版本的差異問題，
+		還得要進行資料的移植與系統服務的重新建立等等，等到建立妥當後，還得要進行相關測試！
+		這種種的工作可至少得要花上一個星期以上的工作天才能夠處理妥當！所以，僅有關鍵資料是不夠的！</p>
+
+		<ul class="toplist"><li>還原的考量</li></ul>
+
+		<p>但反過來講，如果是完整備份的話呢？若硬體出問題導致系統損毀時，只要將完整備份拿出來，整個給他傾倒回去硬碟，
+		所有事情就搞定了！有些時候 (例如使用 dd 指令) 甚至連系統都不需要重新安裝！反正整個系統都給他倒回去，連同重要的 
+		Linux 系統檔案等，所以當然也就不需要重新安裝啊！因此，很多企業用來提供重要服務的主機都會使用完整備份，
+		若所提供的服務真的非常重要時，甚至會再架設一部一模一樣的機器呢！如此一來，
+		若是原本的機器出問題，那就立刻將備份的機器拿出來接管！以使企業的網路服務不會中斷哩！</p>
+
+		<p>那你知道完整備份的定義了吧？沒錯！完整備份就是將根目錄 (/) 整個系統通通備份下來的意思！
+		不過，在某些場合底下，完整備份也可以是備份一個檔案系統 (filesystem)！例如 /dev/sda1 或
+		/dev/md0 或 /dev/myvg/mylv 之類的檔案系統就是了。</p>
+
+		<ul class="toplist"><li>累積備份的原則</li></ul>
+
+		<p>雖然完整備份在還原方面有相當良好的表現，但是我們都知道系統用的越久，資料量就會越大！如此一來，
+		完整備份所需要花費的時間與儲存媒體的使用就會相當麻煩～所以，完整備份並不會也不太可能每天都進行的！
+		那你想要每天都備份資料該如何進行呢？有兩種方式啦，一種是本小節會談到的累積備份，一種則是下個小節談到的差異備份。</p>
+
+		<p>所謂的累積備份，指的是在<span class="text_import2">系統在進行完第一次完整備份後，經過一段時間的運作，
+		比較系統與備份檔之間的差異，僅備份有差異的檔案而已。而第二次累積備份則與第一次累積備份的資料比較，
+		也是僅備份有差異的資料而已。</span>如此一來，由於僅備份有差異的資料，因此備份的資料量小且快速！備份也很有效率。
+		我們可以從下圖來說明：</p>
+
+	<a id="fig20.4.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/incremental.gif" alt="累積備份 (incremental backup) 操作示意圖" title="累積備份 (incremental backup) 操作示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖20.4.1、累積備份 (incremental backup) 操作示意圖</div>
+
+		<p>假如我在星期一作好完整備份，則星期二的累積備份是系統與完整備份間的差異資料；星期三的備份是系統與星期二的差異資料，
+		星期四的備份則是系統與星期三的差異資料。那你得要注意的是，星期二的資料是完整備份加第一次累積備份，
+		星期三的資料是完整備份加第一次累積與第二次累積備份，星期四的資料則是星期一的完整備份加第一次加第二次加第三次累積備份。
+		由於每次都僅與前一次的備份資料比較而已，因此備份的資料量就會少很多！</p>
+
+		<p><span class="text_import2">那如何還原</span>？經過上面的分析，我們也會知道累積備份的還原方面比較麻煩！
+		假設你的系統在星期五的時候掛點了！那你要如何還原？首先，你必須要還原星期一的完整備份，然後還原星期二的累積備份，
+		再依序還原星期三、星期四的累積備份才算完全復原！那如果你是經過了九次的累積備份，就得要還原到第九次的階段，
+		才是最完整的還原程序！</p>
+
+		<a id="incremental_tool"></a>
+		<ul class="toplist"><li>累積備份使用的備份軟體</li></ul>
+
+		<p>完整備份常用的工具有 <a href="http://linux.vbird.org/linux_basic/0240tarcompress.php#dd">dd</a>, 
+		<a href="http://linux.vbird.org/linux_basic/0240tarcompress.php#cpio">cpio</a>, 
+		<a href="http://linux.vbird.org/linux_basic/0240tarcompress.php#dump_restore">xfsdump/xfsrestore</a> 等等。因為這些工具都能夠備份裝置與特殊檔案！
+		dd 可以直接讀取磁碟的磁區 (sector) 而不理會檔案系統，是相當良好的備份工具！不過缺點就是慢很多！
+		cpio 是能夠備份所有檔名，不過，得要配合 find 或其他找檔名的指令才能夠處理妥當。以上兩個都能夠進行完整備份，
+		但累積備份就得要額外使用腳本程式來處理。可以直接進行累積備份的就是 xfsdump 這個指令囉！詳細的指令與參數用法，
+		請前往<a href="http://linux.vbird.org/linux_basic/0240tarcompress.php">第八章</a>查閱，這裡僅列出幾個簡單的範例而已。</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 用 dd 來將 /dev/sda 備份到完全一模一樣的 /dev/sdb 硬碟上：</span>
+[root@study ~]# <span class="term_command">dd if=/dev/sda of=/dev/sdb</span>
+<span class="term_say"># 由於 dd 是讀取磁區，所以 /dev/sdb 這顆磁碟可以不必格式化！非常的方便！
+# 只是你會等非常非常久！因為 dd 的速度比較慢！</span>
+
+<span class="term_hd"># 2. 使用 cpio 來備份與還原整個系統，假設儲存媒體為 SATA 磁帶機：</span>
+[root@study ~]# <span class="term_command">find / -print | cpio -covB &gt; /dev/st0</span>  <span class="term_note">&lt;==備份到磁帶機</span>
+[root@study ~]# <span class="term_command">cpio -iduv &lt; /dev/st0                </span>  <span class="term_note">&lt;==還原</span>
+</pre></td></tr></tbody></table>
+
+		<p>假設 /home 為一個獨立的檔案系統，而 /backupdata 也是一個獨立的用來備份的檔案系統，那如何使用 dump
+		將 /home 完整的備份到 /backupdata 上呢？可以像底下這樣進行看看：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 完整備份</span>
+[root@study ~]# <span class="term_command">xfsdump -l 0 -L 'full' -M 'full' -f /backupdata/home.dump /home</span>
+
+<span class="term_hd"># 2. 第一次進行累積備份</span>
+[root@study ~]# <span class="term_command">xfsdump -l 1 -L 'full-1' -M 'full-1' -f /backupdata/home.dump1 /home</span>
+</pre></td></tr></tbody></table>
+
+		<p>除了這些指令之外，其實 tar 也可以用來進行完整備份啦！舉例來說，/backupdata 是個獨立的檔案系統，
+		你想要將整個系統通通備份起來時，可以這樣考慮：將不必要的 /proc, /mnt, /tmp 等目錄不備份，其他的資料則予以備份：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">tar --exclude /proc --exclude /mnt --exclude /tmp \</span>
+&gt; <span class="term_command">--exclude /backupdata -jcvp -f /backupdata/system.tar.bz2 /</span>
+</pre></td></tr></tbody></table>
+
+	<br></div><br>
+
+	<a id="full_differential"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.4.2 完整備份之差異備份 (Differential backup)</h2>
+
+		<p>差異備份與累積備份有點類似，也是需要進行第一次的完整備份後才能夠進行。只是差異備份指的是：<span class="text_import2">每次的備份都是與原始的完整備份比較的結果。</span>所以系統運作的越久，離完整備份時間越長，
+		那麼該次的差異備份資料可能就會越大！差異備份的示意圖如下所示：</p>
+
+	<a id="fig20.4.2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/differential.gif" alt="差異備份 (differential backup) 操作示意圖" title="差異備份 (differential backup) 操作示意圖" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖20.4.2、差異備份 (differential backup) 操作示意圖</div>
+
+		<p>差異備份常用的工具與累積備份差不多！因為都需要完整備份嘛！如果使用 xfsdump 來備份的話，那麼每次備份的等級 (level)
+		就都會是 level 1 的意思啦！當然啦，你也可以透過 tar 的 -N 選項來備份喔！如下所示：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">tar -N '2015-09-01' -jpcv -f /backupdata/home.tar.bz2 /home</span>
+<span class="term_say"># 只有在比 2015-09-01 還要新的檔案，在 /home 底下的檔案才會被打包進 home.bz2 中！
+# 有點奇怪的是，目錄還是會被記錄下來，只是目錄內的舊檔案就不會備份。</span>
+</pre></td></tr></tbody></table>
+
+		<p>此外，你也可以透過 <a href="http://linux.vbird.org/linux_server/0310telnetssh.php#rsync">rsync</a> 來進行鏡像備份喔！
+		這個 rsync 可以對兩個目錄進行鏡像 (mirror) ，算是一個非常快速的備份工具！簡單的指令語法為：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">rsync -av 來源目錄 目標目錄</span>
+
+<span class="term_hd"># 1. 將 /home/ 鏡像到 /backupdata/home/ 去</span>
+[root@study ~]# <span class="term_command">rsync -av /home /backupdata/</span>
+<span class="term_say"># 此時會在 /backupdata 底下產生 home 這個目錄來！</span>
+[root@study ~]# <span class="term_command">rsync -av /home /backupdata/</span>
+<span class="term_say"># 再次進行會快很多！如果資料沒有更動，幾乎不會進行任何動作！</span>
+</pre></td></tr></tbody></table>
+
+		<p>根據分析 (<a href="http://linux.vbird.org/linux_basic/0610hardware.php#ps2">註2</a>) ，差異備份所使用的磁碟容量可能會比累積備份來的大，但是差異備份的還原較快，
+		因為只需要還原完整備份與最近一次的差異備份即可。無論如何，請依據你自己的喜好來選擇備份的方式吧！</p>
+
+	<br></div><br>
+
+	<a id="key_file"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.4.3 關鍵資料備份</h2>
+
+		<p>完整備份雖然有許多好處，但就是需要花費很多時間！所以，如果在主機提供的服務並不是一定要 24 小時提供的前提下，
+		我們可以僅備份重要的關鍵資料即可。由於主機即使當機個一兩天可能也不會影響到你的正常生活時，
+		僅備份關鍵資料就好啦！不需要整個系統都備份。僅備份關鍵資料是有許多好處的！
+		由於完整備份可能是在系統運作期間進行，不但會花費非常多時間，而且<span class="text_import2">如果備份當時系統已經被攻破，
+		那你備份的資料是有問題的，那還原回去也是有問題的系統啊！</span></p>
+
+		<p>如果僅是備份關鍵資料而已，那麼由於系統的絕大部分執行檔都可以後來重新安裝，因此若你的系統不是因為硬體問題，
+		而是因為軟體問題而導致系統被攻破或損毀時，直接捉取最新的 Linux distribution ，然後重新安裝，
+		然後再將系統資料 (如帳號/密碼與家目錄等等) 與服務資料 (如 www/email/crontab/ftp 等等) 一個一個的填回去！
+		那你的系統不但保持在最新的狀態，同時也可以趁機處理一下與重新溫習一下系統設定！是很不錯的呦！</p>
+
+		<p>不過，備份關鍵資料最麻煩的地方其實就是在還原啦！上述的還原方式是你必須要很熟悉系統運作，
+		否則還原得要花費很多時間的！尤其近來的 Linux 強調安全性，所以加入 SELinux 了，你如果要從舊版的 Linux 升級到新版時，
+		原本若沒有 SELinux 而換成新版則需要啟動 SELinux 時，那個除錯的時間會花很長一段日子哩！
+		鳥哥認為這是僅備份關鍵資料的一些優缺點啦～</p>
+
+		<p>備份關鍵資料鳥哥最愛使用 tar 來處理了！如果想要分門別類的將各種不同的服務在不同的時間備份使用不同檔名，
+		配合 date 指令是非常好用的工具！例如底下的案例是依據日期來備份 mariadb 的資料庫喔！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">tar -jpcvf mysql.`date +%Y-%m-%d`.tar.bz2 /var/lib/mysql</span>
+</pre></td></tr></tbody></table>
+
+		<p>備份是非常重要的工作，你可不希望想到才進行吧？交給系統自動處理就對啦！請自己撰寫 script ，
+		配合 crontab 去執行吧！這樣子，備份會很輕鬆喔！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		事實上除了這些基本的 Linux 備份還原工具之外，如果你還想要嘗試裸機復原的功能，那可以使用台灣國家高速網路中心開發的再生龍軟體！
+		這個軟體相當棒！鳥哥目前服務的單位也是透過這個軟體來處理整間電腦教室的復原工作喔！這個軟體也有單機版，
+		也挺好用的！有興趣的朋友得要自行處理軟體的使用喔：
+		<ul><li><a href="http://clonezilla.nchc.org.tw/" target="_blank">http://clonezilla.nchc.org.tw/</a></li></ul>
+		</fieldset><br>	<br></div>
+</div>
+
+
+<a id="VBird_strategy"></a>
+<div class="block1">
+<h2>20.5 鳥哥的備份策略</h2>
+
+	<p>每部主機的任務都不相同，重要的資料也不相同，重要性也不一樣，因此，每個人的備份思考角度都不一樣！
+	有些備份策略是非常有趣的，包括使用多個磁帶機與磁帶來自動備份企業資料哩 (<a href="http://linux.vbird.org/linux_basic/0610hardware.php#ps3">註3</a>) 。</p>
+
+	<p>就鳥哥的想法來說，鳥哥並沒有想要將整個系統完整的備份下來，因為太耗時間了！而且就鳥哥的立場而言，似乎也沒有這個必要，
+	所以通常鳥哥只備份較為重要的檔案而已！不過，由於鳥哥需要備份 /home 與網頁資料，如果天天都備份，我想，系統遲早會受不了 
+	(因為這兩個部分就已經佔去數 10 GB 的硬碟空間...)，所以鳥哥就將我的備份分為兩大部分，一個是每日備份經常性變動的重要資料，
+	一個則是每週備份就不常變動的資訊。這個時候我就寫了兩個簡單的 scripts ，分別來儲存這些資料。</p>
+
+	<p>所以針對鳥哥的『鳥站』來說，我的備份策略是這樣的：</p>
+
+	<ol class="text_import2">
+	<li>主機硬體：使用一個獨立的 filesystem 來儲存備份資料，此 filesystem 掛載到 /backup 當中；</li>
+	<li>每日進行：目前僅備份 MySQL 資料庫；</li>
+	<li>每週進行：包括 /home, /var, /etc, /boot, /usr/local 等目錄與特殊服務的目錄；</li>
+	<li>自動處理：這方面利用 /etc/crontab 來自動提供備份的進行；</li>
+	<li>異地備援：每月定期的將資料分別 (a)燒錄到光碟上面 (b)使用網路傳輸到另一部機器上面。</li>
+	</ol>
+
+	<p>那就來看看鳥哥是怎麼備份的吧！ ^_^</p>
+
+	<a id="all_back"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.5.1 每週系統備份的 script</h2>
+
+		<p>底下提供鳥哥的備份的 scripts ，希望對大家有點幫助！鳥哥假設你已經知道如何掛載一個新的 
+		filesystem 到 /backup 去，所以格式化與掛載這裡就不再強調囉。</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vi /backup/backupwk.sh</span>
+#!/bin/bash
+# ====================================================================
+# 使用者參數輸入位置：
+# basedir=你用來儲存此腳本所預計備份的資料之目錄(請獨立檔案系統)
+<span class="term_write">basedir=/backup/weekly</span>  <span class="term_note">&lt;==您只要改這裡就好了！</span>
+
+# ====================================================================
+# 底下請不要修改了！用預設值即可！
+PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH
+export LANG=C
+
+# 設定要備份的服務的設定檔，以及備份的目錄
+named=$basedir/named
+postfixd=$basedir/postfix
+vsftpd=$basedir/vsftp
+sshd=$basedir/ssh
+sambad=$basedir/samba
+wwwd=$basedir/www
+others=$basedir/others
+userinfod=$basedir/userinfo
+# 判斷目錄是否存在，若不存在則予以建立。
+for dirs in $named $postfixd $vsftpd $sshd $sambad $wwwd $others $userinfod
+do
+	[ ! -d "$dirs" ] &amp;&amp; mkdir -p $dirs
+done
+
+# 1. 將系統主要的服務之設定檔分別備份下來，同時也備份 /etc 全部。
+cp -a /var/named/chroot/{etc,var}	$named
+cp -a /etc/postfix /etc/dovecot.conf	$postfixd
+cp -a /etc/vsftpd/*			$vsftpd
+cp -a /etc/ssh/*			$sshd
+cp -a /etc/samba/*			$sambad
+cp -a /etc/{my.cnf,php.ini,httpd}	$wwwd
+cd /var/lib
+  tar -jpc -f $wwwd/mysql.tar.bz2 	mysql
+cd /var/www
+  tar -jpc -f $wwwd/html.tar.bz2 	html cgi-bin
+cd /
+  tar -jpc -f $others/etc.tar.bz2	etc
+cd /usr/
+  tar -jpc -f $others/local.tar.bz2	local
+
+# 2. 關於使用者參數方面
+cp -a /etc/{passwd,shadow,group}	$userinfod
+cd /var/spool
+  tar -jpc -f $userinfod/mail.tar.bz2	mail
+cd /
+  tar -jpc -f $userinfod/home.tar.bz2	home
+cd /var/spool
+  tar -jpc -f $userinfod/cron.tar.bz2	cron at
+
+[root@study ~]# <span class="term_command">chmod 700 /backup/backupwk.sh</span>
+[root@study ~]# <span class="term_command">/backup/backupwk.sh</span>  <span class="term_note">&lt;==記得自己試跑看看！</span>
+</pre></td></tr></tbody></table>
+
+		<p>上面的 script 主要均使用 CentOS 7.x (理論上， Red Hat 系列的 Linux 都適用) 預設的服務與目錄，
+		如果你有設定某些服務的資料在不同的目錄時，那麼上面的 script 是還需要修改的！不要只是拿來用而已喔！
+		上面 script 可以在底下的連結取得。</p>
+
+		<ul><li><a href="http://linux.vbird.org/linux_basic/0580backup/backupwk-0.1.sh" target="_blank">http://linux.vbird.org/linux_basic/0580backup/backupwk-0.1.sh</a></li></ul>
+	<br></div><br>
+
+	<a id="daily"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.5.2 每日備份資料的 script</h2>
+
+		<p>再來，繼續提供一下每日備份資料的腳本程式！請注意，鳥哥這裡僅有提供 Mariadb 的資料庫備份目錄，
+		與 WWW 的類似留言版程式使用的 CGI 程式與寫入的資料而已。
+		如果你還有其他的資料需要每日備份，請自行照樣造句囉！ ^_^</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vi /backup/backupday.sh</span>
+#!/bin/bash
+# =========================================================
+# 請輸入，你想讓備份資料放置到那個獨立的目錄去
+<span class="term_write">basedir=/backup/daily/</span>  <span class="term_note">&lt;==你只要改這裡就可以了！</span>
+
+# =========================================================
+PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH
+export LANG=C
+basefile1=$basedir/mysql.$(date +%Y-%m-%d).tar.bz2
+basefile2=$basedir/cgi-bin.$(date +%Y-%m-%d).tar.bz2
+[ ! -d "$basedir" ] &amp;&amp; mkdir $basedir
+
+# 1. MysQL (資料庫目錄在 /var/lib/mysql)
+cd /var/lib
+  tar -jpc -f $basefile1 mysql
+
+# 2. WWW 的 CGI 程式 (如果有使用 CGI 程式的話)
+cd /var/www
+  tar -jpc -f $basefile2 cgi-bin
+
+[root@study ~]# <span class="term_command">chmod 700 /backup/backupday.sh</span>
+[root@study ~]# <span class="term_command">/backup/backupday.sh</span>  <span class="term_note">&lt;==記得自己試跑看看！</span>
+</pre></td></tr></tbody></table>
+
+		<p>上面的腳本可以在底下的連結取得。這樣一來每天的 Mariadb 資料庫就可以自動的被記錄在 /backup/daily/ 
+		目錄裡頭啦！而且還是檔案名稱會自動改變的呦！呵呵！我很喜歡！OK！再來就是開始讓系統自己跑啦！
+		怎麼跑？就是 /etc/crontab 呀！提供一下我的相關設定呦！</p>
+
+		<ul><li><a href="http://linux.vbird.org/linux_basic/0580backup/backupday.sh" target="_blank">http://linux.vbird.org/linux_basic/0580backup/backupday.sh</a></li></ul>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vi /etc/crontab</span>
+<span class="term_say"># 加入這兩行即可 (請注意你的檔案目錄！不要照抄呦！)</span>
+<span class="term_write">30 3 * * 0 root /backup/backupwk.sh
+30 2 * * * root /backup/backupday.sh</span>
+</pre></td></tr></tbody></table>
+
+		<p>這樣系統就會自動的在每天的 2:30 進行 Mariadb 的備份，而在每個星期日的
+		3:30 進行重要檔案的備份！呵呵！你說，是不是很容易呢！但是請千萬記得呦！還要將
+		/backup/ 當中的資料 copy 出來才行耶！否則整部系統死掉的時候...那可不是鬧著玩的！
+		所以鳥哥大約一個月到兩個月之間，會將 /backup 目錄內的資料使用 DVD 複製一下，然後將 DVD
+		放置在家中保存！這個 DVD 很重要的喔！不可以遺失，否則系統的重要資料 (尤其是帳號資訊) 
+		流出去可不是鬧著玩的！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		有些時候，你在進行備份時，被備份的檔案可能同時間被其他的網路服務所修改喔！
+		舉例來說，當你備份 Mariadb 資料庫時，剛好有人利用你的資料庫發表文章，此時，
+		可能會發生一些錯誤的訊息。要避免這類的問題時，可以在備份前，將該服務先關掉，
+		備份完成後，再啟動該服務即可！感謝討論區 duncanlo 提供這個方法！
+		</fieldset><br>	<br></div><br>
+
+	<a id="remote"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top">Top</a></div>
+	<h2>20.5.3 遠端備援的 script</h2>
+
+		<p>如果你有控管兩部以上的 Linux 主機時，那麼互相將對方的重要資料保存一份在自己的系統中也是個不錯的想法！
+		那怎麼保存啊？使用 USB 複製來去嗎？當然不是啦！你可以透過網路來處置啦！我們假設你已經有一部主機，
+		這部主機的 IP 是 192.168.1.100 ，而且這部主機已經提供了 sshd 這個網路服務了，接下來你可以這樣作：</p>
+
+		<ul class="toplist"><li>使用 rsync 上傳備份資料</li></ul>
+
+		<p>要使用 rsync 你必須要在你的伺服器上面取得某個帳號使用權後，
+		並讓該帳號可以不用密碼即可登入才行！這部分得要先參考伺服器篇的遠端連線伺服器才行！
+		假設你已經設定好 dmtsai 這個帳號可以不用密碼即可登入遠端伺服器，而同樣的你要讓 /backup/weekly/
+		整個備份到 /home/backup/weekly 底下時，可以簡單這樣做：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vi /backup/rsync.sh</span>
+#!/bin/bash
+remotedir=/home/backup/
+basedir=/backup/weekly
+host=127.0.0.1
+id=dmtsai
+
+# 底下為程式階段！不需要修改喔！
+rsync -av -e ssh $basedir ${id}@${host}:${remotedir}
+</pre></td></tr></tbody></table>
+
+		<p>由於 rsync 可以透過 ssh 來進行鏡像備份，所以沒有變更的檔案將不需要上傳的！相當的好用呢！
+		好了！大家趕緊寫一個適合自己的備份 script 來進行備份的行為吧！重要重要喔！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		因為 rsync 搭配 sshd 真的很好用！加上它本身就有加密～近期以來大家對於資料在網路上面跑都非常的在乎安全性，
+		所以鳥哥就取消了 FTP 的傳輸方式囉～
+		</fieldset><br>	<br></div>
+</div>
+
+
+<a id="restore"></a>
+<div class="block1">
+<h2>20.6 災難復原的考量</h2>
+
+	<p>之所以要備份當然就是預防系統掛點啦！如果系統真的掛點的話，那麼你該如何還原系統呢？</p>
+
+	<ul class="toplist"><li>硬體損毀，且具有完整備份的資料時</li></ul>
+
+	<p>由於是硬體損毀，所以我們不需要考慮系統軟體的不穩定問題，所以可以直接將完整的系統復原回去即可。
+	首先，你必須要先處理好你的硬體，舉例來說，將你的硬碟作個適當的處理，譬如建置成為磁碟陣列之類的。
+	然後依據你的備份狀態來復原。舉例來說，如果是使用差異備份，那麼將完整備份復原後，
+	將最後一次的差異備份復原回去，你的系統就恢復了！非常簡單吧！</p>
+
+	<ul class="toplist"><li>由於軟體的問題產生的被攻破資安事件</li></ul>
+
+	<p>由於系統的損毀是因為被攻擊，此時即使你恢復到正常的系統，那麼這個系統既然會被攻破，
+	沒道理你還原成舊系統就不會被再次攻破！所以，此時完整備份的復原可能不是個好方式喔！最好是需要這樣進行啦：</p>
+
+	<ol>
+	<li>先拔除網路線，最好將系統進行完整備份到其他媒體上，以備未來查驗</li>
+	<li>開始查閱登錄檔，嘗試找出各種可能的問題</li>
+	<li>開始安裝新系統 (最好找最新的 distribution)</li>
+	<li>進行系統的升級，與防火牆相關機制的制訂</li>
+	<li>根據 2 的錯誤，在安裝完成新系統後，將那些 bug 修復</li>
+	<li>進行各項服務與相關資料的恢復</li>
+	<li>正式上線提供服務，並且開始測試</li>
+	</ol>
+
+	<p>軟體資安事件造成的問題可大可小，一般來說，標準流程都是建議你將出問題的系統備份下來，
+	如果被追蹤到你的主機曾經攻擊過別人的話，那麼你至少可以拿出備份資料來佐證說，你是被攻擊者，
+	而不是主動攻擊別人的壞人啊！然後，記得一定要找出問題點並予以克服，不然的話，你的系統將一再地被攻擊啊！
+	那樣可就傷腦筋囉～</p>
+</div>
+
+
+<a id="hint"></a>
+<div class="block1">
+<h2>20.7 重點回顧</h2>
+<ul class="text_import2">
+	<li>網際網路 (Internet) 就是 TCP/IP ，而 IP 的取得需與 ISP 要求。一般常見的取得 IP 的方法有：(1)手動直接設定
+		(2)自動取得 (dhcp) (3)撥接取得 (4)cable寬頻 等方式。</li>
+	<li>主機的網路設定要成功，必須要有底下的資料：(1)IP (2)Netmask (3)gateway (4)DNS 伺服器 等項目；</li>
+	<li>本章新增硬體資訊的收集指令有： lspci, lsusb, iostat 等；</li>
+	<li>備份是系統損毀時等待救援的救星，但造成系統損毀的因素可能有硬體與軟體等原因。</li>
+	<li>由於主機的任務不同，備份的資料與頻率等考量參數也不相同。</li>
+	<li>常見的備份考慮因素有：關鍵檔案、儲存媒體、備份方式(完整/關鍵)、備份頻率、使用的備份工具等。</li>
+	<li>常見的關鍵資料有：/etc, /home, /var/spool/mail, /boot, /root 等等</li>
+	<li>儲存媒體的選擇方式，需要考慮的地方有：備份速度、媒體的容量、經費與媒體的可靠性等。</li>
+	<li>與完整備份有關的備份策略主要有：累積備份與差異備份。</li>
+	<li>累積備份可具有較小的儲存資料量、備份速度快速等。但是在還原方面則比差異備份的還原慢。</li>
+	<li>完整備份的策略中，常用的工具有 dd, cpio, tar, xfsdump 等等。</li>
+</ul>
+</div>
+
+
+<a id="ex"></a>
+<div class="block1">
+<h2>20.8 本章習題</h2>
+( 要看答案請將滑鼠移動到『答：』底下的空白處，按下左鍵圈選空白處即可察看)<br>
+簡答題部分：
+<ul>
+	<li>如果你想要知道整個系統的周邊硬體裝置，可以使用哪個指令查詢？
+	<div class="blockex">
+		lspci 可以查詢到，更可使用 lspci -v 來查詢更詳細資訊。
+	</div></li>
+
+	<li>承上題，那麼如果單純只想要知道 USB 裝置呢？又該如何查詢？
+	<div class="blockex">
+		lsusb就可以查詢的到！
+	</div></li>
+
+	<li>(挑戰題)如果你的網路設定妥當了，但是卻老是發現網路不通，你覺得應該如何進行測試？
+	<div class="blockex">
+		(1)先檢查硬體，每個環節 (網卡、hub/switch、路由器等) 的燈號是否有亮？有亮再進行下個動作；<br>
+		(2)使用 ifconfig 檢查 IP 與 netmask 的資料是否正確，若正確才可進行下一步；<br>
+		(3)使用 route  看看 default gateway 是否正確，若正確再進行下一步；<br>
+		(4)使用 ping -c 3 [gateway IP] ，若有回應才進行下一步；<br>
+		(5)使用 ping -c 3 [外部IP，例如 168.95.1.1] ，若有回應則 IP 正常，若無回應，請檢查 gateway 的設定<br>
+		(6)使用 dig www.google.com 看看能否找到 IP ，找不到則請檢查 /etc/resolv.conf 的設定。<br>
+	</div></li>
+
+	<li>挑戰題：嘗試將你在學習本書所進行的各項任務備份下來，然後刪除你的系統，接下來重新安裝最新的 CentOS 7.x ，
+	再將你備份的資料復原回來，看看能否成功的讓你的系統回復到之前的狀態呢？<br><br></li>
+
+	<li>挑戰題：查詢一下何謂企鵝龍軟體，討論一下該軟體的還原機制是屬於累積備份？還是完整備份？<br><br></li>
+
+	<li>常用的完整備份 (full backup) 工具指令有哪些？
+	<div class="blockex">
+		xfsdump + xfsrestore, dd, cpio 搭配 find 等軟體。
+	</div></li>
+
+	<li>你所看到的常見的儲存設備有哪些？
+	<div class="blockex">
+		Floppy, Mo, Zip, CD-RW, DVD-RW, 外接式 USB 硬碟, Tape, 
+		外接式儲存陣列 (RAID)，額外的儲存架構，如 SAN, NAS 等。
+	</div></li>
+</ul>
+</div>
+
+
+<a id="reference"></a>
+<div class="block1">
+<h2>20.9 參考資料與延伸閱讀</h2>
+<ul>
+	<li><a id="ps1"></a>註1：維基百科的備份說明：<a href="http://en.wikipedia.org/wiki/Incremental_backup" target="_blank">http://en.wikipedia.org/wiki/Incremental_backup</a></li>
+	<li><a id="ps2"></a>註2：關於 differential 與 incremental 備份的優缺點說明：<br><a href="http://www.backupschedule.net/databackup/differentialbackup.html" target="_blank">http://www.backupschedule.net/databackup/differentialbackup.html</a></li>
+	<li><a id="ps3"></a>註3：一些備份計畫的實施：<a href="http://en.wikipedia.org/wiki/Backup_rotation_scheme" target="_blank">http://en.wikipedia.org/wiki/Backup_rotation_scheme</a></li>
+</ul>
+</div>
+
+
+<div class="block1" style="margin-bottom: 32px; padding-left: 10px; line-height: 1">
+<span class="text_history">
+2005/10/25：準備準備～寫一些跟硬體比較有關係的資料！<br>
+2005/11/08：準備完畢 <a href="http://linux.vbird.org/linux_basic/0610hardware.php#hw_pre_usb">USB</a> 與 <a href="http://linux.vbird.org/linux_basic/0610hardware.php#hw_pre_lm">lm_sensors</a> 
+	的部分了～啊！拖了真久～還有 <a href="http://linux.vbird.org/linux_basic/0610hardware.php#raid_raid">RAID</a> 的說明也差不多哩！<br>
+2005/11/09：加入了 FC4 的 <a href="http://linux.vbird.org/linux_basic/0610hardware.php#fc_setup">setup</a> 指令，尤其是印表機的部分，可以參考參考！<br>
+2005/11/10：終於將 iSCSI 的裝置寫好了～這部份真的是很有趣！不過，一般使用者可能碰不到就是了。<br>
+2005/11/13：終於將 CUPS 架構設定好自己的 Printer 部分了！<br>
+2005/11/14：連同 LVM 也大致的給他寫完了！那個 resize2fs 指令確實有趣！<br>
+2005/11/25：加入一個簡單的練習題～利用 dd 配合 resize2fs 來製作備份的資料！<br>
+2009/04/30：將 LVM 移動到 <a href="http://linux.vbird.org/linux_basic/0420quota.php#lvm">第十五章</a> ，且拿掉 <a href="http://linux.vbird.org/linux_basic/0610hardware/0610hardware-fc4.php">iSCSI 的說明</a>了。<br>
+2009/04/30：將舊的基於 FC4 撰寫的版本移動到 <a href="http://linux.vbird.org/linux_basic/0610hardware/0610hardware-fc4.php">此處</a> 。<br>
+2009/06/03：加入 udev 與 hal 的簡單說明！<br>
+2009/09/15：簡單修訂一些語句，修改章節的習題，並沒有改到什麼重要的資訊。<br>
+2015/08/31：將舊的基於 CentOS 5 的版本移動到 <a href="http://linux.vbird.org/linux_basic/0610hardware/0610hardware-centos5.php">這裡</a>。<br>
+2015/09/xx：將備份策略的文章也挪到本章來，同時移除很多資料，包括 CUPS 印表機等等都拿掉了！<br>
+</span>
+<span class="text_date">2005/11/14以來統計人數</span><br>
+<img src="./鳥哥的 Linux 私房菜 -- 第20章、基礎系統設定與備份策略_files/Count(3).cgi" style="height: 15px; width: 60px; " alt="計數器" title="計數器"><br>
+</div>
+
+<div class="rightarea">
+<a href="http://linux.vbird.org/linux_basic/0520source_code_and_tarball.php">&gt;&gt;</a>
+</div>
+
+<div style="position: relative; text-align:center; margin-top: -20px; margin-bottom: 40px; width: 100%;">
+	<div style="width: 100px; text-align:center; display: inline-block;">
+		<a href="http://linux.vbird.org/linux_basic/index.php">HOME</a>
+	</div>
+		<div style="width: 100px; float: left;">
+		<a href="http://linux.vbird.org/linux_basic/0510osloader.php">PrePage</a>
+	</div>
+			<div style="width: 100px; float: right;">
+		<a href="http://linux.vbird.org/linux_basic/0520source_code_and_tarball.php">NextPage</a>
+	</div>
+	</div>
+
+</div>	<!-- mainarea -->
+</div>  <!-- tablearea -->
+
+<div class="bottomarea">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php#top" title="Top">Top</a></li>
+	<li><a href="http://linux.vbird.org/index_old.php" title="前往鳥哥的 Linux 私房菜首頁">前往舊站</a></li>
+	<!--li><a href="http://vbird.dic.ksu.edu.tw" target="_blank" title="前往鳥哥的 Linux 私房菜首頁">簡體主站</a></li-->
+	<li><a href="http://phorum.vbird.org/" target="_blank" title="鳥站新手討論板">討論板</a></li>
+	<li><a href="http://phorum.study-area.org/" target="_blank" title="酷！學園討論板">酷學園</a></li>
+	<li><a href="http://www.dic.ksu.edu.tw/" target="_blank" title="崑山資傳">崑山資傳</a></li>
+</ul>
+&nbsp;&nbsp; <a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的首頁">http://linux.vbird.org</a>
+	is designed by <a href="mailto:vbird@mail.vbird.idv.tw" title="聯絡鳥哥(我不要廣告信！)">VBird</a>
+		during 2001-2017. <!--a href="http://www.ksu.edu.tw" target="_blank">ksu.edu</a-->
+
+</div>
+
+
+
+</body></html>

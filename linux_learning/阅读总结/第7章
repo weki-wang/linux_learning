@@ -1,0 +1,4 @@
+1.	增加、删除磁盘分区的操作：
+		1） 首先通过lsblk或者blkid找到磁盘;
+		2） 再使用parted /dev/xxx  print 来找出内部的分区表类型，是MBR还是GPT类型;
+		3） 在使用gdisk或者fdisk来操作系统进行分盘，GPT使用gdisk分盘，MBR使用fdisk分盘

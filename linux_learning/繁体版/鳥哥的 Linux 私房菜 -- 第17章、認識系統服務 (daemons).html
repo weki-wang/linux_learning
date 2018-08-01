@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://linux.vbird.org/linux_basic/0560daemons.php -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="Author" content="VBird, 鳥哥">
+	<meta name="Description" content="認識 daemons 可重要了，能夠更清楚的瞭解服務的啟動與運作方式！">
+	<title>鳥哥的 Linux 私房菜 -- 第十七章、認識系統服務 (daemons)</title>
+	<style>
+	</style>
+	<link href="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/style_2013.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<!--最上方的一些連結與網站介紹 -->
+<div class="toparea">
+<span style="text-shadow: 1px 1px 2px black;">鳥哥的 Linux 私房菜</span>
+<ul>
+		<li class="topareali"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#">第十七章、認識系統服務 (daemons)</a></li>
+		<li><a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的 Linux 私房菜首頁">繁體主站</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/" title="Linux 基礎學習篇，從頭學習 Linux">基礎篇</a></li>
+	<li><a href="http://linux.vbird.org/linux_server/" title="Linux 伺服器架設篇">伺服器</a></li>
+	<li><a href="http://linux.vbird.org/linux_enterprise/" title="Linux 企業應用篇">企業應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_desktop/" title="Linux 桌面應用篇">桌面應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_security/" title="Linux 安全管理篇">安全管理</a></li>
+	<li><a href="http://linux.vbird.org/book/" title="書籍勘誤">書籍勘誤</a></li>
+	<li><a href="http://linux.vbird.org/vbird/" title="關於鳥哥的一些事情">鳥哥我</a></li>
+</ul>
+<iframe src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/index_2013.html" style="height: 29px; width: 150px; border:0; padding:0; margin: 0;
+		position: relative; float: right; overflow: hidden"></iframe>
+</div>
+
+<div class="leftarea">
+<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">&lt;&lt;</a>
+</div>
+
+<!-- 正中央的 1000 像素的內容 -->
+<div class="tablearea">
+<!-- 左邊的連結東東 -->
+<div class="nav">
+	<div style="text-align:center; line-height:1; font-size: 9pt; font-family: &#39;Times New Roman&#39;; color: #ff6600;
+	padding: 5px; margin: 2px;">
+		<img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/Count.cgi" alt="鳥站的上線人數統計" height="26" width="110"><br>
+		since 2002/01/01
+	</div>
+<ul>
+	<li><a href="http://linux.vbird.org/new_linux.php">新手建議</a></li>
+	<li><a href="http://linux.vbird.org/howtoread.php">開始閱讀之前</a></li>
+	<li><a href="http://linux.vbird.org/aboutmysite.php">網站導覽</a></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic">Linux 基礎文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/">基礎文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0105computers.php">0.計算機概論</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php">1.Linux是什麼</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0130designlinux.php">2.主機規劃與磁碟分割</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0157installcentos7.php">3.安裝CentOS 7.x</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0160startlinux.php">4.首次登入與man page</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0210filepermission.php">5.檔案權限與目錄配置</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0220filemanager.php">6.檔案與目錄管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php">7.磁碟與檔案系統</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0240tarcompress.php">8.壓縮指令的運用</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0310vi.php">9.vim程式編輯器</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0320bash.php">10.認識與學習BASH</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0330regularex.php">11.正規表示法與文件格式化</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0340bashshell-scripts.php">12.學習shell scripts</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">13.帳號管理與ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0420quota.php">14.Quota, RAID, LVM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0430cron.php">15.at, crontab, anacron</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">16.程序管理與 SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php">17.認識系統服務(daemon)</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0570syslog.php">18.認識與分析登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0510osloader.php">19.開機流程模組管理與Loader</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php">20.基礎系統設定與備份策略</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520source_code_and_tarball.php">21.原始碼與 Tarball</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520rpm_and_srpm.php">22.RPM/YUM/SRPM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0590xwindow.php">23.X-Window 設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0540kernel.php">24.Linux 核心編譯</a></li>
+		<li>底下尚未更新</li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010index.php">27.快速索引</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_A.php">附錄 A: GPL 條文</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_B.php">附錄 B: ext2/ext3</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0140spfdisk.php">SPFDISK 範例</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0150installredhat.php">安裝 RedHat 7.2</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0155installmdk.php">安裝 Mandrake 9</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0156installfc4.php">安裝 Fedora IV</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/9999questions.php">Linux 練習題</a></li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/centos5.php">CentOS 5.x(2009-2014)</a>
+		</li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/fc4.php">Fedora-4(2005-2008)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/mandrake9.0.php">Mandrake9.0(2001-2004)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic_train">Linux 基礎訓練</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic_train/">課程章節、授課方式、評分方式</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit01.php">第 01 堂課：指令列模式初探</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit02.php">第 02 堂課：指令下達與檔案管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit03.php">第 03 堂課：檔案管理與 vim</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit04.php">第 04 堂課：檔案權限與帳號管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit05.php">第 05 堂課：權限應用與程序觀察</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit06.php">第 06 堂課：基礎檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit07.php">第 07 堂課：bash 與系統救援</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice1.php">期中練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit08.php">第 08 堂課：連續指令與資料流導向</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit09.php">第 09 堂課：正規表示法與 script</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit10.php">第 10 堂課：使用者管理與 ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit11.php">第 11 堂課：基礎設定、壓縮、排程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit12.php">第 12 堂課：管理管理與登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit13.php">第 13 堂課：服務管理與開機流程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit14.php">第 14 堂課：進階檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice2.php">期末練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit15.php">第 15 堂課：Linux系統的準備</a></li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_server/">Linux 架站文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_server/">伺服器篇文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0104mytalking.php">0. 說說笑笑談 Linux server 規劃</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0107cloudandvm.php">1. 小型雲系統與主機安全強化流程</a></li>
+
+
+
+		<li><a href="http://linux.vbird.org/linux_server/0103introduce.php">序篇</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0105beforeserver.php">1.架設伺服器前的準備工作</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0110network_basic.php">2.基礎網路概念</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0120intranet.php">3.區域網路設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0130internet_connect.php">4.連上 Internet</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0140networkcommand.php">5.Linux網路指令</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0150detect_network.php">6.Linux網路偵錯</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0210network-secure.php">7.網路安全,port限制,網路升級,SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0230router.php">8.路由概念與路由器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0250simple_firewall.php">9.防火牆與 NAT 伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0270dynamic_dns.php">10.申請合法主機名稱</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0310telnetssh.php">11.遠端連線伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0340dhcp.php">12.DHCP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0330nfs.php">13.NFS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0430nis.php">14.NIS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0440ntp.php">15.NTP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0370samba.php">16.SAMBA Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0420squid.php">17.Proxy Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0460iscsi.php">18.iSCSI Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0350dns.php">19.DNS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0360apache.php">20.WWW Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0410vsftpd.php">21.vsFTPD Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0380mail.php">22.Mail Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0450apt.php">APT/YUM Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0520openwebmail.php">OpenWebMail</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0600cluster.php">Cluster System</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/1000results.php">來做練習</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat9.php">Red Hat 9(2002-2005)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos4.php">CentOS 4(2006-2010)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos5.php">CentOS 5(2010-2011)</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_enterprise/">Linux 企業應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_enterprise/">企業應用篇彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0110network.php">1. 區域網路軟硬體設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0120installation.php">2. PXE 安裝伺服器與 kickstart</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/xen.php">Xen 虛擬機器</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/cputune.php">CPU 效能優化</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/kerberos.php">kerberos 與 NFS 加密</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_security/">Linux 安全管理</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_security/0420rkhunter.php">rkhunter 檢測</a></li>
+		<li><a href="http://linux.vbird.org/linux_security/knockd.php">knockd</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_security/old/">舊的安全文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_desktop/">Linux 桌面應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_desktop/0110linuxbasic.php">Linux 基礎概念</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/resources.php">鳥哥彙整的資料</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/resources.php">Linux 資料庫</a></li>
+		<li><a href="http://linux.vbird.org/problem">一些問題彙整</a></li>
+		<li><a href="http://linux.vbird.org/othersites">網路連結</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/solaris/">Solaris</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/apache_packages/">Apache 套件安裝</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/adsl">ADSL 相關文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/vbird/index.php">關於鳥哥</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/vbird/vbird3.php">Why 鳥哥?</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird.php">關於鳥哥</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird2.php">關於鳥哥-2</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070718-1.php">2007-07-xx</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070520.php">2007-05-20</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070328.php">2007-03-28</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060701.php">2006-07-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060122.php">2006-01-24</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050412.php">2005-04-12</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050401.php">2005-04-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20041101.php">2004-11-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040829.php">2004-08-29</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040417.php">2004-04-17</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040221.php">2004-02-21</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/somepaper">網友分享</a></li>
+	<li><a href="http://linux.vbird.org/faq.php">特殊問題解決</a></li>
+	<!--li><a href="/download">檔案下載中心</a></li-->
+	<li><a href="http://linux.vbird.org/Searching.php">網站資料搜尋</a></li>
+</ul>
+
+<p style="text-align:center; margin: 0 0 0 0 ;">
+<a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+<img style="border:0;width:66px;height:24px" src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/vcss-blue" alt="Valid CSS!">
+</a>
+<a href="http://validator.w3.org/check?uri=referer" target="_blank">
+<img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/valid-html401" style="border:0;width:66px;height:24px" alt="Valid HTML 5" title="Valid HTML 5"></a>
+</p>
+<p style="text-align:center; margin: 0 0 0 0 ; line-height:1; font-size: 9pt;color: #333333; ">
+今日 <img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/Count(1).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+昨日 <img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/yestoday.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+本月 <img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/Count(2).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+上月 <img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/lastmonth.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+</p>
+</div>
+
+<a id="top"></a>
+<div class="mainarea">
+<div class="block1">
+<!-- 本文的檔頭部分 -->
+<h1>第十七章、認識系統服務 (daemons)</h1>
+<div style="text-align:right">
+	<span class="text_history">最近更新日期：2015/08/14</span>
+</div>
+
+
+<!-- 本文的檔頭部分 -->
+<div class="abstract">
+	<p>在 Unix-Like 的系統中，你會常常聽到 daemon 這個字眼！那麼什麼是傳說中的 daemon
+	呢？這些 daemon 放在什麼地方？他的功能是什麼？該如何啟動這些 daemon ？又如何有效的將這些
+	daemon 管理妥當？此外，要如何視察這些 daemon 開了多少個 ports ？又這些 ports 
+	要如何關閉？還有還有，曉得你系統的這些 port 各代表的是什麼服務嗎？
+	這些都是最基礎需要注意的呢！尤其是在架設網站之前，這裡的觀念就顯的更重要了。</p>
+	<p>從 CentOS 7.x 這一版之後，傳統的 init 已經被捨棄，取而代之的是 systemd 這個傢伙～這傢伙跟之前的 init 有什麼差異？
+	優缺點為何？如何管理不同種類的服務類型？以及如何取代原本的『執行等級』等等，很重要的改變喔！</p>
+</div>
+
+
+<!-- 本文的連結區部分 -->
+<div class="links">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#daemon">17.1 什麼是 daemon 與服務 (service)</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#daemon_type_init">17.1.1 早期 Systemp V 的 init 管理行為中 daemon 的主要分類</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#daemon_type_systemd">17.1.2 systemd 使用的 unit 分類</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_cmd">17.2 透過 systemctl 管理服務</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_start">17.2.1 透過 systemctl 管理單一服務 (service unit) 的啟動/開機啟動與觀察狀態</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_list">17.2.2 透過 systemctl 觀察系統上所有的服務</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_target">17.2.3 透過 systemctl 管理不同的操作環境 (target unit)</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_deps">17.2.4 透過 systemctl 分析各服務之間的相依性</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_files">17.2.5 與 systemd 的 daemon 運作過程相關的目錄簡介</a>：
+			<a href="http://linux.vbird.org/linux_basic/0560daemons.php#etc_services">/etc/services</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_network">17.2.6 關閉網路服務</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemd_cfg">17.3 systemctl 針對 service 類型的設定檔</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemd_cfg_dir">17.3.1 systemctl 設定檔相關目錄簡介</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemd_cfg_options">17.3.2 systemctl 設定檔的設定項目簡介</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemd_cfg_vsftpd">17.3.3 兩個 vsftpd 運作的實例</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemd_cfg_repeat">17.3.4 多重的重複設定方式：以 getty 為例</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemd_cfg_custom">17.3.5 自己的服務自己作</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#systemctl_timer">17.4 systemctl 針對 timer 的設定檔</a></li><li>
+	</li><li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#illustrations">17.5 CentOS 7.x 預設啟動的服務簡易說明</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#hint">17.6 重點回顧</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#ex">17.7 本章習題</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#reference">17.8 參考資料與延伸閱讀</a></li>
+	<li><a href="http://phorum.vbird.org/viewtopic.php?t=23894" target="_blank">針對本文的建議：http://phorum.vbird.org/viewtopic.php?t=23894</a></li>
+
+</ul>
+</div>
+</div>
+
+
+<!-- 本文的正式部分 -->
+<a id="daemon"></a>
+<div class="block1">
+<h2>17.1 什麼是 daemon 與服務 (service)</h2>
+
+	<p>我們在<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#the_daemon">第十六章</a>就曾經談過『服務』這東西！
+	當時的說明是『常駐在記體體中的程序，且可以提供一些系統或網路功能，那就是服務』。而服務一般的英文說法是『 service 』。</p>
+
+	<p>但如果你常常上網去查看一些資料的話，尤其是 Unix-Like 的相關作業系統，應該常常看到『請啟動某某 daemon 
+	來提供某某功能』，唔！那麼 daemon 與 service 有關囉？否則為什麼都能夠提供某些系統或網路功能？此外，這個 daemon
+	是什麼東西呀？ daemon 的字面上的意思就是『守護神、惡魔？』還真是有點奇怪呦！^_^""！</p>
+
+	<p>簡單的說，系統為了某些功能必須要提供一些服務 (不論是系統本身還是網路方面)，這個服務就稱為 service 。
+	但是 service 的提供總是需要程式的運作吧！否則如何執行呢？所以達成這個 service 的程式我們就稱呼他為 daemon 囉！
+	舉例來說，達成循環型例行性工作排程服務 (service) 的程式為 crond 這個 daemon 啦！這樣說比較容易理解了吧！</p>
+
+	<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">	你不必去區分什麼是 daemon 與 service ！事實上，你可以將這兩者視為相同！因為達成某個服務是需要一支 daemon 在背景中運作，
+	沒有這支 daemon 就不會有 service ！所以不需要分的太清楚啦！
+	</fieldset><br>
+	<p>一般來說，當我們以文字模式或圖形模式 (非單人維護模式) 完整開機進入 Linux 主機後，
+	系統已經提供我們很多的服務了！包括列印服務、工作排程服務、郵件管理服務等等；
+	那麼這些服務是如何被啟動的？他們的工作型態如何？底下我們就來談一談囉！</p>
+
+	<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">	daemon 既然是一隻程式執行後的程序，那麼 daemon 所處的那個原本的程式通常是如何命名的呢 (daemon 程式的命名方式)。
+	每一個服務的開發者，當初在開發他們的服務時，都有特別的故事啦！不過，無論如何，這些服務的名稱被建立之後，被掛上
+	Linux 使用時，通常在服務的名稱之後會加上一個 d ，例如例行性命令的建立的	at, 與 cron 這兩個服務，
+	他的程式檔名會被取為 atd 與 crond，這個 d 代表的就是 daemon 
+	的意思。所以，在<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">第十六章</a>中，我們使用了 ps 與 top 
+	來觀察程序時，都會發現到很多的 {xxx}d 的程序，呵呵！通常那就是一些 daemon 的程序囉！
+	</fieldset><br>
+	<a id="daemon_type_init"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.1.1 早期 System V 的 init 管理行為中 daemon 的主要分類 (Optional)</h2>
+
+		<p>還記得我們在<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php">第一章</a>談到過 Unix 的 system V 版本吧？那個很純種的 Unix 版本～
+		在那種年代底下，我們啟動系統服務的管理方式被稱為 SysV 的 init 腳本程式的處理方式！亦即系統核心第一支呼叫的程式是 init ，
+		然後 init 去喚起所有的系統所需要的服務，不論是本機服務還是網路服務就是了。</p>
+
+		<p>基本上 init 的管理機制有幾個特色如下：</p>
+
+		<ul>
+		<li><span class="text_import2">服務的啟動、關閉與觀察等方式</span>：<br>
+			所有的服務啟動腳本通通放置於 /etc/init.d/ 底下，基本上都是使用 bash shell script 所寫成的腳本程式，需要啟動、關閉、重新啟動、觀察狀態時，
+			可以透過如下的方式來處理：<ul style="margin-top: 10px;"><li>啟動：/etc/init.d/daemon start</li><li>關閉：/etc/init.d/daemon stop</li>
+			<li>重新啟動：/etc/init.d/daemon restart</li><li>狀態觀察：/etc/init.d/daemon status</li></ul></li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">服務啟動的分類</span>：<br>init 服務的分類中，依據服務是獨立啟動或被一隻總管程式管理而分為兩大類：
+			<ul style="margin-top: 10px;"><li>獨立啟動模式 (stand alone)：服務獨立啟動，該服務直接常駐於記憶體中，提供本機或用戶的服務行為，反應速度快。</li>
+			<li style="margin-top: 10px;">總管程式 (super daemon)：由特殊的 xinetd 或 inetd 這兩個總管程式提供 socket 對應或 port 對應的管理。當沒有用戶要求某 socket 或 port 時，
+			所需要的服務是不會被啟動的。若有用戶要求時， xinetd 總管才會去喚醒相對應的服務程式。當該要求結束時，這個服務也會被結束掉～
+			因為透過 xinetd 所總管，因此這個傢伙就被稱為 super daemon。好處是可以透過 super daemon 來進行服務的時程、連線需求等的控制，缺點是喚醒服務需要一點時間的延遲。</li></ul></li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">服務的相依性問題</span>：<br>服務是可能會有相依性的～例如，你要啟動網路服務，但是系統沒有網路，
+			那怎麼可能可以喚醒網路服務呢？如果你需要連線到外部取得認證伺服器的連線，但該連線需要另一個A服務的需求，問題是，A服務沒有啟動，
+			因此，你的認證服務就不可能會成功啟動的！這就是所謂的服務相依性問題。<span class="text_import2">init 在管理員自己手動處理這些服務時，是沒有辦法協助相依服務的喚醒的</span>！</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">執行等級的分類</span>：<br>上面說到 init 是開機後核心主動呼叫的，
+			然後 init 可以根據使用者自訂的執行等級 (runlevel) 來喚醒不同的服務，以進入不同的操作界面。基本上 Linux 提供 7 個執行等級，分別是 0, 1, 2...6 ，
+			比較重要的是 1)單人維護模式、3)純文字模式、5)文字加圖形界面。而各個執行等級的啟動腳本是透過 /etc/rc.d/rc[0-6]/SXXdaemon 連結到 /etc/init.d/daemon ，
+			連結檔名 (SXXdaemon) 的功能為： S為啟動該服務，XX是數字，為啟動的順序。由於有 SXX 的設定，因此在開機時可以『依序執行』所有需要的服務，
+			同時也能解決相依服務的問題。這點與管理員自己手動處理不太一樣就是了。</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">制定執行等級預設要啟動的服務</span>：<br>若要建立如上提到的 SXXdaemon 的話，不需要管理員手動建立連結檔，
+			透過如下的指令可以來處理預設啟動、預設不啟動、觀察預設啟動否的行為：<ul style="margin-top: 10px;"><li>預設要啟動： chkconfig daemon on</li>
+			<li>預設不啟動： chkconfig daemon off</li><li>觀察預設為啟動否： chkconfig --list daemon</li></ul></li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">執行等級的切換行為</span>：<br>當你要從純文字界面 (runlevel 3) 切換到圖形界面 (runlevel 5)，
+			不需要手動啟動、關閉該執行等級的相關服務，只要『 init 5 』即可切換，init 這小子會主動去分析 /etc/rc.d/rc[35].d/ 這兩個目錄內的腳本，
+			然後啟動轉換 runlevel 中需要的服務～就完成整體的 runlevel 切換。</li>
+		</ul>
+
+		<p>基本上 init 主要的功能都寫在上頭了，重要的指令包括 daemon 本身自己的腳本 (/etc/init.d/daemon) 、xinetd 這個特殊的總管程式 (super daemon)、設定預設開機啟動的 chkconfig，
+		以及會影響到執行等級的 init N 等。雖然 CentOS 7 已經不使用 init 來管理服務了，不過因為考量到某些腳本沒有辦法直接塞入 systemd 的處理，因此這些腳本還是被保留下來，
+		所以，我們在這裡還是稍微介紹了一下。更多更詳細的資料就請自己查詢舊版本囉！如下就是一個可以參考的版本：</p>
+		<ul><li><a href="http://linux.vbird.org/linux_basic/0560daemons//0560daemons-centos5.php">http://linux.vbird.org/linux_basic/0560daemons/0560daemons-centos5.php</a></li></ul>
+
+	<br></div><br>
+
+	<a id="daemon_type_systemd"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.1.2 systemd 使用的 unit 分類</h2>
+
+		<p>從 CentOS 7.x 以後，Red Hat 系列的 distribution 放棄沿用多年的 System V 開機啟動服務的流程，就是前一小節提到的 init 啟動腳本的方法，
+		改用 systemd 這個啟動服務管理機制～那麼 systemd 有什麼好處呢？</p>
+
+		<ul>
+		<li style="margin-top: 15px;"><span class="text_import2">平行處理所有服務，加速開機流程</span>：<br>
+		舊的 init 啟動腳本是『一項一項任務依序啟動』的模式，因此不相依的服務也是得要一個一個的等待。但目前我們的硬體主機系統與作業系統幾乎都支援多核心架構了，
+		沒道理未相依的服務不能同時啟動啊！systemd 就是可以讓所有的服務同時啟動，因此你會發現到，系統啟動的速度變快了！</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">一經要求就回應的 on-demand 啟動方式</span>：<br>
+		systemd 全部就是僅有一隻 systemd 服務搭配 systemctl 指令來處理，無須其他額外的指令來支援。不像 systemV 還要 init, chkconfig, service... 等等指令。
+		此外， systemd 由於常駐記憶體，因此任何要求 (on-demand) 都可以立即處理後續的 daemon 啟動的任務。</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">服務相依性的自我檢查</span>：<br>
+		由於 systemd 可以自訂服務相依性的檢查，因此如果 B 服務是架構在 A 服務上面啟動的，那當你在沒有啟動 A 服務的情況下僅手動啟動 
+		B 服務時， systemd 會自動幫你啟動 A 服務喔！這樣就可以免去管理員得要一項一項服務去分析的麻煩～(如果讀者不是新手，應該會有印象，當你沒有啟動網路，
+		但卻啟動 NIS/NFS 時，那個開機時的 timeout 甚至可達到 10~30 分鐘...)</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">依 daemon 功能分類</span>：<br>
+		systemd 旗下管理的服務非常多，包山包海啦～為了釐清所有服務的功能，因此，首先 systemd 先定義所有的服務為一個服務單位 (unit)，並將該 unit 歸類到不同的服務類型 (type) 去。
+		舊的 init 僅分為 stand alone 與 super daemon 實在不夠看，systemd 將服務單位 (unit) 區分為 service, socket, target, path, snapshot, timer 等多種不同的類型(type)，
+		方便管理員的分類與記憶。</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">將多個 daemons 集合成為一個群組</span>：<br>
+		如同 systemV 的 init 裡頭有個 runlevel 的特色，systemd 亦將許多的功能集合成為一個所謂的 target 項目，這個項目主要在設計操作環境的建置，
+		所以是集合了許多的 daemons，亦即是執行某個 target 就是執行好多個 daemon 的意思！</li>
+
+		<li style="margin-top: 15px;"><span class="text_import2">向下相容舊有的 init 服務腳本</span>：<br>
+		基本上， systemd 是可以相容於 init 的啟動腳本的，因此，舊的 init 啟動腳本也能夠透過 systemd 來管理，只是更進階的 systemd 功能就沒有辦法支援就是了。</li>
+		</ul>
+
+		<p>雖然如此，不過 systemd 也是有些地方無法完全取代 init 的！包括：</p>
+
+		<ul>
+		<li>在 runlevel 的對應上，大概僅有 runlevel 1, 3, 5 有對應到 systemd 的某些 target 類型而已，沒有全部對應；</li>
+		<li>全部的 systemd 都用 systemctl 這個管理程式管理，而 systemctl 支援的語法有限制，不像 /etc/init.d/daemon 就是純腳本可以自訂參數，systemctl 不可自訂參數。；</li>
+		<li>如果某個服務啟動是管理員自己手動執行啟動，而不是使用 systemctl 去啟動的 (例如你自己手動輸入 crond 以啟動 crond 服務)，那麼 systemd
+		將無法偵測到該服務，而無法進一步管理。</li>
+		<li>systemd 啟動過程中，無法與管理員透過 standard input 傳入訊息！因此，自行撰寫 systemd 的啟動設定時，務必要取消互動機制～(連透過啟動時傳進的標準輸入訊息也要避免！)</li>
+		</ul>
+
+		<p>不過，光是同步啟動服務腳本這個功能就可以節省你很多開機的時間～同時 systemd 還有很多特殊的服務類型 (type) 可以提供更多有趣的功能！確實值得學一學～
+		而且 CentOS 7 已經用了 systemd 了！想不學也不行啊～哈哈哈！好～既然要學，首先就得要針對 systemd 管理的 unit 來了解一下。</p>
+
+		<ul class="toplist"><li>systemd 的設定檔放置目錄</li></ul>
+
+		<p>基本上， systemd 將過去所謂的 daemon 執行腳本通通稱為一個服務單位 (unit)，而每種服務單位依據功能來區分時，就分類為不同的類型 (type)。
+		基本的類型有包括系統服務、資料監聽與交換的插槽檔服務 (socket)、儲存系統狀態的快照類型、提供不同類似執行等級分類的操作環境 (target) 等等。
+		哇！這麼多類型，那設定時會不會很麻煩呢？其實還好，因為設定檔都放置在底下的目錄中：</p>
+
+		<ul>
+		<li><span class="text_import2">/usr/lib/systemd/system/</span>：每個服務最主要的啟動腳本設定，有點類似以前的 /etc/init.d 底下的檔案；</li>
+		<li><span class="text_import2">/run/systemd/system/</span>：系統執行過程中所產生的服務腳本，這些腳本的優先序要比 /usr/lib/systemd/system/ 高！</li>
+		<li><span class="text_import2">/etc/systemd/system/</span>：管理員依據主機系統的需求所建立的執行腳本，其實這個目錄有點像以前 /etc/rc.d/rc5.d/Sxx 
+		之類的功能！執行優先序又比 /run/systemd/system/ 高喔！</li>
+		</ul>
+
+		<p>也就是說，到底系統開機會不會執行某些服務其實是看 /etc/systemd/system/ 底下的設定，所以該目錄底下就是一大堆連結檔。而實際執行的 systemd 啟動腳本設定檔，
+		其實都是放置在 /usr/lib/systemd/system/ 底下的喔！因此如果你想要修改某個服務啟動的設定，應該要去 /usr/lib/systemd/system/ 底下修改才對！
+		/etc/systemd/system/ 僅是連結到正確的執行腳本設定檔而已。所以想要看執行腳本設定，應該就得要到 /usr/lib/systemd/system/ 底下去查閱才對！</p>
+
+		<ul class="toplist"><li>systemd 的 unit 類型分類說明</li></ul>
+
+		<p>那 /usr/lib/systemd/system/ 以下的資料如何區分上述所謂的不同的類型 (type) 呢？很簡單！看副檔名！舉例來說，我們來瞧瞧上一章談到的 vsftpd 這個範例的啟動腳本設定，
+		還有 crond 與純文字模式的 multi-user 設定：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">ll /usr/lib/systemd/system/ | grep -E '(vsftpd|multi|cron)'</span>
+<span class="term_write">-rw-r--r--. 1 root root  284  7月 30  2014 crond.service</span>
+-rw-r--r--. 1 root root  567  3月  6 06:51 multipathd.service
+<span class="term_write">-rw-r--r--. 1 root root  524  3月  6 13:48 multi-user.target</span>
+drwxr-xr-x. 2 root root 4096  5月  4 17:52 multi-user.target.wants
+lrwxrwxrwx. 1 root root   17  5月  4 17:52 runlevel2.target -&gt; multi-user.target
+lrwxrwxrwx. 1 root root   17  5月  4 17:52 runlevel3.target -&gt; multi-user.target
+lrwxrwxrwx. 1 root root   17  5月  4 17:52 runlevel4.target -&gt; multi-user.target
+<span class="term_write">-rw-r--r--. 1 root root  171  6月 10  2014 vsftpd.service</span>
+-rw-r--r--. 1 root root  184  6月 10  2014 vsftpd@.service
+-rw-r--r--. 1 root root   89  6月 10  2014 vsftpd.target
+<span class="term_say"># 比較重要的是上頭提供的那三行特殊字體的部份！</span>
+</pre></td></tr></tbody></table>
+
+		<p>所以我們可以知道 vsftpd 與 crond 其實算是系統服務 (service)，而 multi-user 要算是執行環境相關的類型 (target type)。根據這些副檔名的類型，
+		我們大概可以找到幾種比較常見的 systemd 的服務類型如下：</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td style="width: 80px">副檔名</td><td>主要服務功能</td></tr>
+<tr>
+	<td>.service</td>
+	<td>一般服務類型 (service unit)：主要是系統服務，包括伺服器本身所需要的本機服務以及網路服務都是！比較經常被使用到的服務大多是這種類型！
+	所以，這也是最常見的類型了！</td>
+</tr>
+<tr>
+	<td>.socket</td>
+	<td><p style="margin-top: 0">內部程序資料交換的插槽服務 (socket unit)：主要是 IPC (Inter-process communication) 的傳輸訊息插槽檔 (socket file) 功能。
+	這種類型的服務通常在監控訊息傳遞的插槽檔，當有透過此插槽檔傳遞訊息來說要連結服務時，就依據當時的狀態將該用戶的要求傳送到對應的 daemon，
+	若 daemon 尚未啟動，則啟動該 daemon 後再傳送用戶的要求。</p>
+	<p style="margin-bottom: 0">使用 socket 類型的服務一般是比較不會被用到的服務，因此在開機時通常會稍微延遲啟動的時間 
+	(因為比較沒有這麼常用嘛！)。一般用於本機服務比較多，例如我們的圖形界面很多的軟體都是透過 socket 來進行本機程序資料交換的行為。
+	(這與早期的 xinetd 這個 super daemon 有部份的相似喔！)</p></td>
+</tr>
+<tr>
+	<td>.target</td>
+	<td>執行環境類型 (target unit)：其實是一群 unit 的集合，例如上面表格中談到的 multi-user.target 其實就是一堆服務的集合～也就是說，
+	選擇執行 multi-user.target 就是執行一堆其他 .service 或/及 .socket 之類的服務就是了！</td>
+</tr>
+<tr>
+	<td>.mount<br>.automount</td>
+	<td>檔案系統掛載相關的服務 (automount unit / mount unit)：例如來自網路的自動掛載、NFS 檔案系統掛載等與檔案系統相關性較高的程序管理。</td>
+</tr>
+<tr>
+	<td>.path</td>
+	<td>偵測特定檔案或目錄類型 (path unit)：某些服務需要偵測某些特定的目錄來提供佇列服務，例如最常見的列印服務，就是透過偵測列印佇列目錄來啟動列印功能！
+	這時就得要 .path 的服務類型支援了！</td>
+</tr>
+<tr>
+	<td>.timer</td>
+	<td>循環執行的服務 (timer unit)：這個東西有點類似 anacrontab 喔！不過是由 systemd 主動提供的，比 anacrontab 更加有彈性！</td>
+</tr>
+</tbody></table>
+
+		<p>其中又以 .service 的系統服務類型最常見了！因為我們一堆網路服務都是透過這種類型來設計的啊！接下來，讓我們來談談如何管理這些服務的啟動與關閉。</p>
+
+	<br></div>
+</div>
+
+
+<a id="systemctl_cmd"></a>
+<div class="block1">
+<h2>17.2 透過 systemctl 管理服務</h2>
+
+	<p>基本上， systemd 這個啟動服務的機制，主要是透過一隻名為 systemctl 的指令來處理的！跟以前 systemV 需要 service / chkconfig / setup / init 等指令來協助不同，
+	systemd 就是僅有 systemctl 這個指令來處理而已呦！所以全部的行為都得要使用 systemctl 的意思啦！有沒有很難？其實習慣了之後，
+	鳥哥是覺得 systemctl 還挺好用的！ ^_^</p>
+
+	<a id="systemctl_start"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.2.1 透過 systemctl 管理單一服務 (service unit) 的啟動/開機啟動與觀察狀態</h2>
+
+		<p>在開始這個小節之前，鳥哥要先來跟大家報告一下，那就是：<span class="text_import2">一般來說，服務的啟動有兩個階段，一個是『開機的時候設定要不要啟動這個服務』，
+		以及『你現在要不要啟動這個服務』</span>，這兩者之間有很大的差異喔！舉個例子來說，假如我們現在要『立刻取消 atd 這個服務』時，正規的方法 (不要用 kill) 要怎麼處理？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl [command] [unit]</span>
+<span class="term_say">command 主要有：
+start     ：立刻啟動後面接的 unit
+stop      ：立刻關閉後面接的 unit
+restart   ：立刻關閉後啟動後面接的 unit，亦即執行 stop 再 start 的意思
+reload    ：不關閉後面接的 unit 的情況下，重新載入設定檔，讓設定生效
+enable    ：設定下次開機時，後面接的 unit 會被啟動
+disable   ：設定下次開機時，後面接的 unit 不會被啟動
+status    ：目前後面接的這個 unit 的狀態，會列出有沒有正在執行、開機預設執行否、登錄等資訊等！
+is-active ：目前有沒有正在運作中
+is-enabled：開機時有沒有預設要啟用這個 unit</span>
+
+<span class="term_hd">範例一：看看目前 atd 這個服務的狀態為何？</span>
+[root@study ~]# <span class="term_command">systemctl status atd.service</span>
+atd.service - Job spooling tools
+   <span class="term_write">Loaded: loaded (/usr/lib/systemd/system/atd.service; enabled)
+   Active: active (running)</span> since Mon 2015-08-10 19:17:09 CST; 5h 42min ago
+ Main PID: 1350 (atd)
+   CGroup: /system.slice/atd.service
+           └─1350 /usr/sbin/atd -f
+
+Aug 10 19:17:09 study.centos.vbird systemd[1]: Started Job spooling tools.
+<span class="term_say"># 重點在第二、三行喔～
+# Loaded：這行在說明，開機的時候這個 unit 會不會啟動，enabled 為開機啟動，disabled 開機不會啟動
+# Active：現在這個 unit 的狀態是正在執行 (running) 或沒有執行 (dead)
+# 後面幾行則是說明這個 unit 程序的 PID 狀態以及最後一行顯示這個服務的登錄檔資訊！
+# 登錄檔資訊格式為：『時間』 『訊息發送主機』 『哪一個服務的訊息』 『實際訊息內容』
+# 所以上面的顯示訊息是：這個 atd 預設開機就啟動，而且現在正在運作的意思！</span>
+
+<span class="term_hd">範例二：正常關閉這個 atd 服務</span>
+[root@study ~]# <span class="term_command">systemctl stop atd.service</span>
+[root@study ~]# <span class="term_command">systemctl status atd.service</span>
+atd.service - Job spooling tools
+   Loaded: loaded (/usr/lib/systemd/system/atd.service; <span class="term_write">enabled</span>)
+   <span class="term_write">Active: inactive (dead)</span> since Tue 2015-08-11 01:04:55 CST; 4s ago
+  Process: 1350 ExecStart=/usr/sbin/atd -f $OPTS (code=exited, status=0/SUCCESS)
+ Main PID: 1350 (code=exited, status=0/SUCCESS)
+
+Aug 10 19:17:09 study.centos.vbird systemd[1]: Started Job spooling tools.
+<span class="term_write">Aug 11 01:04:55 study.centos.vbird systemd[1]: Stopping Job spooling tools...
+Aug 11 01:04:55 study.centos.vbird systemd[1]: Stopped Job spooling tools.</span>
+<span class="term_say"># 目前這個 unit 下次開機還是會啟動，但是現在是沒在運作的狀態中！同時，
+# 最後兩行為新增加的登錄訊息，告訴我們目前的系統狀態喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>上面的範例中，我們已經關掉了 atd 囉！這樣作才是對的！不應該使用 kill 的方式來關掉一個正常的服務喔！否則 systemctl 會無法繼續監控該服務的！
+		那就比較麻煩。而使用 systemtctl status atd 的輸出結果中，第 2, 3 兩行很重要～因為那個是告知我們該 unit 下次開機會不會預設啟動，以及目前啟動的狀態！
+		相當重要！最底下是這個 unit 的登錄檔～如果你的這個 unit 曾經出錯過，觀察這個地方也是相當重要的！</p>
+
+		<p>那麼現在問個問題，你的 atd 現在是關閉的，未來重新開機後，這個服務會不會再次的啟動呢？答案是？當然會！
+		因為上面出現的第二行中，它是 enabled 的啊！這樣理解所謂的『現在的狀態』跟『開機時預設的狀態』兩者的差異了嗎？</p>
+
+		<p>好！再回到 systemctl status atd.service 的第三行，不是有個 Active 的 daemon 現在狀態嗎？除了 running 跟 dead 之外，
+		有沒有其他的狀態呢？有的～基本上有幾個常見的狀態：</p>
+
+		<ul>
+		<li style="margin-top: 10px"><span class="text_import2">active (running)</span>：正有一隻或多隻程序正在系統中執行的意思，舉例來說，正在執行中的 vsftpd 就是這種模式。</li>
+		<li style="margin-top: 10px"><span class="text_import2">active (exited)</span>：僅執行一次就正常結束的服務，目前並沒有任何程序在系統中執行。
+			舉例來說，開機或者是掛載時才會進行一次的 quotaon 功能，就是這種模式！
+			quotaon 不須一直執行～只須執行一次之後，就交給檔案系統去自行處理囉！通常用 bash shell 寫的小型服務，大多是屬於這種類型 (無須常駐記憶體)。</li>
+		<li style="margin-top: 10px"><span class="text_import2">active (waiting)</span>：正在執行當中，不過還再等待其他的事件才能繼續處理。舉例來說，列印的佇列相關服務就是這種狀態！
+			雖然正在啟動中，不過，也需要真的有佇列進來 (列印工作) 這樣他才會繼續喚醒印表機服務來進行下一步列印的功能。</li>
+		<li style="margin-top: 10px"><span class="text_import2">inactive</span>：這個服務目前沒有運作的意思。</li>
+		</ul>
+
+		<p>既然 daemon 目前的狀態就有這麼多種了，那麼 daemon 的預設狀態有沒有可能除了 enable/disable 之外，還有其他的情況呢？當然有！</p>
+
+		<ul>
+		<li style="margin-top: 10px"><span class="text_import2">enabled</span>：這個 daemon 將在開機時被執行</li>
+		<li style="margin-top: 10px"><span class="text_import2">disabled</span>：這個 daemon 在開機時不會被執行</li>
+		<li style="margin-top: 10px"><span class="text_import2">static</span>：這個 daemon 不可以自己啟動 (enable 不可)，不過可能會被其他的 enabled 的服務來喚醒 (相依屬性的服務)</li>
+		<li style="margin-top: 10px"><span class="text_import2">mask</span>：這個 daemon 無論如何都無法被啟動！因為已經被強制註銷 (非刪除)。可透過 systemctl unmask 方式改回原本狀態</li>
+		</ul>
+
+		<ul class="toplist"><li>服務啟動/關閉與觀察的練習</li></ul>
+
+<table class="exam"><tbody><tr><td>
+問題：
+<div>
+	找到系統中名為 chronyd 的服務，觀察此服務的狀態，觀察完畢後，將此服務設定為： 1)開機不會啟動 2)現在狀況是關閉的情況！
+</div>
+回答：
+<div>
+	我們直接使用指令的方式來查詢與設定看看：<br>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 觀察一下狀態，確認是否為關閉/未啟動呢？</span>
+[root@study ~]# <span class="term_command">systemctl status chronyd.service</span>
+hronyd.service - NTP client/server
+   Loaded: loaded (/usr/lib/systemd/system/chronyd.service; <span class="term_write">enabled</span>)
+   Active: <span class="term_write">active (running)</span> since Mon 2015-08-10 19:17:07 CST; 24h ago
+<span class="term_say">.....(底下省略).....</span>
+
+<span class="term_hd"># 2. 由上面知道目前是啟動的，因此立刻將他關閉，同時開機不會啟動才行！</span>
+[root@study ~]# <span class="term_command">systemctl stop chronyd.service</span>
+[root@study ~]# <span class="term_command">systemctl disable chronyd.service</span>
+rm '/etc/systemd/system/multi-user.target.wants/chronyd.service'
+<span class="term_say"># 看得很清楚～其實就是從 /etc/systemd/system 底下刪除一條連結檔案而已～</span>
+
+[root@study ~]# <span class="term_command">systemctl status chronyd.service</span>
+chronyd.service - NTP client/server
+   Loaded: loaded (/usr/lib/systemd/system/chronyd.service; <span class="term_write">disabled</span>)
+   Active: <span class="term_write">inactive (dead)</span>
+<span class="term_say"># 如此則將 chronyd 這個服務完整的關閉了！</span>
+</pre></td></tr></tbody></table>
+</div>
+</td></tr></tbody></table>
+
+		<p>上面是一個很簡單的練習，妳先不要知道 chronyd 是啥東西，只要知道透過這個方式，可以將一個服務關閉就是了！好！那再來一個練習，
+		看看有沒有問題呢？</p>
+
+<table class="exam"><tbody><tr><td>
+問題：
+<div>
+	因為我根本沒有印表機安裝在伺服器上，目前也沒有網路印表機，因此我想要將 cups 服務整個關閉，是否可以呢？
+</div>
+回答：
+<div>
+	同樣的，眼見為憑，我們就動手作看看：<br>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先看看 cups 的服務是開還是關？</span>
+[root@study ~]# <span class="term_command">systemctl status cups.service</span>
+cups.service - CUPS Printing Service
+   Loaded: loaded (/usr/lib/systemd/system/cups.service; enabled)
+   Active: inactive (dead) since Tue 2015-08-11 19:19:20 CST; 3h 29min ago
+<span class="term_say"># 有趣得很！竟然是 enable 但是卻是 inactive 耶！相當特別！</span>
+
+<span class="term_hd"># 2. 那就直接關閉，同時確認沒有啟動喔！</span>
+[root@study ~]# <span class="term_command">systemctl stop    cups.service</span>
+[root@study ~]# <span class="term_command">systemctl disable cups.service</span>
+rm '/etc/systemd/system/multi-user.target.wants/cups.path'
+rm '/etc/systemd/system/sockets.target.wants/cups.socket'
+rm '/etc/systemd/system/printer.target.wants/cups.service'
+<span class="term_say"># 也是非常特別！竟然一口氣取消掉三個連結檔！也就是說，這三個檔案可能是有相依性的問題喔！</span>
+
+[root@study ~]# <span class="term_command">netstat -tlunp | grep cups</span>
+<span class="term_say"># 現在應該不會出現任何資料！因為根本沒有 cups 的任務在執行當中～所以不會有 port 產生</span>
+
+<span class="term_hd"># 3. 嘗試啟動 cups.socket 監聽用戶端的需求喔！</span>
+[root@study ~]# <span class="term_command">systemctl start cups.socket</span>
+[root@study ~]# <span class="term_command">systemctl status cups.service cups.socket cups.path</span>
+cups.service - CUPS Printing Service
+   Loaded: loaded (/usr/lib/systemd/system/cups.service; disabled)
+   Active: <span class="term_write">inactive (dead)</span> since Tue 2015-08-11 22:57:50 CST; 3min 41s ago
+cups.socket - CUPS Printing Service Sockets
+   Loaded: loaded (/usr/lib/systemd/system/cups.socket; disabled)
+   Active: <span class="term_write">active (listening)</span> since Tue 2015-08-11 22:56:14 CST; 5min ago
+cups.path - CUPS Printer Service Spool
+   Loaded: loaded (/usr/lib/systemd/system/cups.path; disabled)
+   Active: <span class="term_write">inactive (dead)</span>
+<span class="term_say"># 確定僅有 cups.socket 在啟動，其他的並沒有啟動的狀態！</span>
+
+<span class="term_hd"># 4. 嘗試使用 lp 這個指令來列印看看？</span>
+[root@study ~]# <span class="term_command">echo "testing" | lp</span>
+lp: Error - no default destination available. <span class="term_note"># 實際上就是沒有印表機！所以有錯誤也沒關係！</span>
+
+[root@study ~]# <span class="term_command">systemctl status cups.service</span>
+cups.service - CUPS Printing Service
+   Loaded: loaded (/usr/lib/systemd/system/cups.service; disabled)
+   Active: <span class="term_write">active (running)</span> since Tue 2015-08-11 23:03:18 CST; 34s ago
+[root@study ~]# <span class="term_command">netstat -tlunp | grep cups</span>
+tcp        0      0 127.0.0.1:631    0.0.0.0:*   LISTEN     25881/cupsd
+tcp6       0      0 ::1:631          :::*        LISTEN     25881/cupsd
+<span class="term_say"># 見鬼！竟然 cups 自動被啟動了！明明我們都沒有驅動他啊！怎麼回事啊？</span>
+</pre></td></tr></tbody></table>
+</div>
+</td></tr></tbody></table>
+
+		<p>上面這個範例的練習在讓您了解一下，很多服務彼此之間是有相依性的！cups 是一種列印服務，這個列印服務會啟用 port 631 來提供網路印表機的列印功能。
+		但是其實我們無須一直啟動 631 埠口吧？因此，多了一個名為 cups.socket 的服務，這個服務可以在『用戶有需要列印時，才會主動喚醒 cups.service 』的意思！
+		因此，如果你僅是 disable/stop cups.service 而忘記了其他兩個服務的話，那麼當有用戶向其他兩個 cups.path, cups.socket 提出要求時，
+		cups.service 就會被喚醒！所以，你關掉也沒用！</p>
+
+		<ul class="toplist"><li>強迫服務註銷 (mask) 的練習</li></ul>
+
+		<p>比較正規的作法是，要關閉 cups.service 時，連同其他兩個會喚醒 service 的 cups.socket 與 cups.path 通通關閉，那就沒事了！
+		比較不正規的作法是，那就強迫 cups.service 註銷吧！透過 mask 的方式來將這個服務註銷看看！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 保持剛剛的狀態，關閉 cups.service，啟動 cups.socket，然後註銷 cups.servcie</span>
+[root@study ~]# <span class="term_command">systemctl stop cups.service</span>
+[root@study ~]# <span class="term_command">systemctl mask cups.service</span>
+ln -s '/dev/null' '/etc/systemd/system/cups.service'
+<span class="term_say"># 喔耶～其實這個 mask 註銷的動作，只是讓啟動的腳本變成空的裝置而已！</span>
+
+[root@study ~]# <span class="term_command">systemctl status cups.service</span>
+cups.service
+   Loaded: <span class="term_write">masked (/dev/null)</span>
+   Active: inactive (dead) since Tue 2015-08-11 23:14:16 CST; 52s ago
+
+[root@study ~]# <span class="term_command">systemctl start cups.service</span>
+Failed to issue method call: Unit cups.service is masked.  <span class="term_note"># 再也無法喚醒！</span>
+</pre></td></tr></tbody></table>
+
+		<p>上面的範例你可以仔細推敲一下～原來整個啟動的腳本設定檔被連結到 /dev/null 這個空裝置～因此，無論如何你是再也無法啟動這個 cups.service 了！
+		透過這個 mask 功能，你就可以不必管其他相依服務可能會啟動到這個想要關閉的服務了！雖然是非正規，不過很有效！ ^_^</p>
+
+		<p>那如何取消註銷呢？當然就是 unmask 即可啊！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl unmask cups.service</span>
+rm '/etc/systemd/system/cups.service'
+[root@study ~]# <span class="term_command">systemctl status cups.service</span>
+cups.service - CUPS Printing Service
+   Loaded: loaded (/usr/lib/systemd/system/cups.service; disabled)
+   Active: inactive (dead) since Tue 2015-08-11 23:14:16 CST; 4min 35s ago
+<span class="term_say"># 好佳在有恢復正常！</span>
+</pre></td></tr></tbody></table>
+
+	<br></div><br>
+
+	<a id="systemctl_list"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.2.2 透過 systemctl 觀察系統上所有的服務</h2>
+
+		<p>上一小節談到的是單一服務的啟動/關閉/觀察，以及相依服務要註銷的功能。那系統上面有多少的服務存在呢？這個時候就得要透過 list-units 及 list-unit-files 來觀察了！
+		細部的用法如下：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl [command] [--type=TYPE] [--all]</span>
+<span class="term_say">command:
+    list-units      ：依據 unit 列出目前有啟動的 unit。若加上 --all 才會列出沒啟動的。
+    list-unit-files ：依據 /usr/lib/systemd/system/ 內的檔案，將所有檔案列表說明。
+--type=TYPE：就是之前提到的 unit type，主要有 service, socket, target 等</span>
+
+<span class="term_hd">範例一：列出系統上面有啟動的 unit</span>
+[root@study ~]# <span class="term_command">systemctl</span>
+UNIT                      LOAD   ACTIVE SUB       DESCRIPTION
+proc-sys-fs-binfmt_mis... loaded active waiting   Arbitrary Executable File Formats File System
+sys-devices-pc...:0:1:... loaded active plugged   QEMU_HARDDISK
+sys-devices-pc...0:1-0... loaded active plugged   QEMU_HARDDISK
+sys-devices-pc...0:0-1... loaded active plugged   QEMU_DVD-ROM
+<span class="term_say">.....(中間省略).....</span>
+vsftpd.service            loaded active running   Vsftpd ftp daemon
+<span class="term_say">.....(中間省略).....</span>
+cups.socket               loaded failed failed    CUPS Printing Service Sockets
+<span class="term_say">.....(中間省略).....</span>
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+
+<span class="term_write">141 loaded units listed. Pass --all to see loaded but inactive units, too.
+To show all installed unit files use 'systemctl list-unit-files'.</span>
+<span class="term_say"># 列出的項目中，主要的意義是：
+# UNIT   ：項目的名稱，包括各個 unit 的類別 (看副檔名)
+# LOAD   ：開機時是否會被載入，預設 systemctl 顯示的是有載入的項目而已喔！
+# ACTIVE ：目前的狀態，須與後續的 SUB 搭配！就是我們用 systemctl status 觀察時，active 的項目！
+# DESCRIPTION ：詳細描述囉
+# cups 比較有趣，因為剛剛被我們玩過，所以 ACTIVE 竟然是 failed 的喔！被玩死了！ ^_^
+# 另外，systemctl 都不加參數，其實預設就是 list-units 的意思！</span>
+
+<span class="term_hd">範例二：列出所有已經安裝的 unit 有哪些？</span>
+[root@study ~]# <span class="term_command">systemctl list-unit-files</span>
+UNIT FILE                                   STATE
+proc-sys-fs-binfmt_misc.automount           static
+dev-hugepages.mount                         static
+dev-mqueue.mount                            static
+proc-fs-nfsd.mount                          static
+<span class="term_say">.....(中間省略).....</span>
+systemd-tmpfiles-clean.timer                static
+
+336 unit files listed.
+</pre></td></tr></tbody></table>
+
+		<p>使用 systemctl list-unit-files 會將系統上所有的服務通通列出來～而不像 list-units 僅以 unit 分類作大致的說明。
+		至於 STATE 狀態就是前兩個小節談到的開機是否會載入的那個狀態項目囉！主要有 enabled / disabled / mask / static 等等。</p>
+
+		<p>假設我不想要知道這麼多的 unit 項目，我只想要知道 service 這種類別的 daemon 而已，而且不論是否已經啟動，通通要列出來！
+		那該如何是好？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-units --type=service --all</span>
+<span class="term_say"># 只剩下 *.service 的項目才會出現喔！</span>
+
+<span class="term_hd">範例一：查詢系統上是否有以 cpu 為名的服務？</span>
+[root@study ~]# <span class="term_command">systemctl list-units --type=service --all | grep cpu</span>
+cpupower.service  loaded inactive dead    Configure CPU power related settings
+<span class="term_say"># 確實有喔！可以改變 CPU 電源管理機制的服務哩！</span>
+</pre></td></tr></tbody></table>
+
+	<br></div><br>
+
+	<a id="systemctl_target"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.2.3 透過 systemctl 管理不同的操作環境 (target unit)</h2>
+
+		<p>透過上個小節我們知道系統上所有的 systemd 的 unit 觀察的方式，那麼可否列出跟操作界面比較有關的 target 項目呢？
+		很簡單啊！就這樣搞一下：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-units --type=target --all</span>
+UNIT                   LOAD   ACTIVE   SUB    DESCRIPTION
+basic.target           loaded active   active Basic System
+cryptsetup.target      loaded active   active Encrypted Volumes
+emergency.target       loaded inactive dead   Emergency Mode
+final.target           loaded inactive dead   Final Step
+getty.target           loaded active   active Login Prompts
+graphical.target       loaded active   active Graphical Interface
+local-fs-pre.target    loaded active   active Local File Systems (Pre)
+local-fs.target        loaded active   active Local File Systems
+multi-user.target      loaded active   active Multi-User System
+network-online.target  loaded inactive dead   Network is Online
+network.target         loaded active   active Network
+nss-user-lookup.target loaded inactive dead   User and Group Name Lookups
+paths.target           loaded active   active Paths
+remote-fs-pre.target   loaded active   active Remote File Systems (Pre)
+remote-fs.target       loaded active   active Remote File Systems
+rescue.target          loaded inactive dead   Rescue Mode
+shutdown.target        loaded inactive dead   Shutdown
+slices.target          loaded active   active Slices
+sockets.target         loaded active   active Sockets
+sound.target           loaded active   active Sound Card
+swap.target            loaded active   active Swap
+sysinit.target         loaded active   active System Initialization
+syslog.target          not-found inactive dead   syslog.target
+time-sync.target       loaded inactive dead   System Time Synchronized
+timers.target          loaded active   active Timers
+umount.target          loaded inactive dead   Unmount All Filesystems
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+
+26 loaded units listed.
+To show all installed unit files use 'systemctl list-unit-files'.
+</pre></td></tr></tbody></table>
+
+		<p>喔！在我們的 CentOS 7.1 的預設情況下，就有 26 個 target unit 耶！而跟操作界面相關性比較高的 target 主要有底下幾個：</p>
+
+		<ul>
+		<li>graphical.target：就是文字加上圖形界面，這個項目已經包含了底下的 multi-user.target 項目！</li>
+		<li>multi-user.target：純文字模式！</li>
+		<li>rescue.target：在無法使用 root 登入的情況下，systemd 在開機時會多加一個額外的暫時系統，與你原本的系統無關。這時你可以取得 root 的權限來維護你的系統。
+			但是這是額外系統，因此可能需要動到 chroot 的方式來取得你原有的系統喔！再後續的章節我們再來談！</li>
+		<li>emergency.target：緊急處理系統的錯誤，還是需要使用 root 登入的情況，在無法使用 rescue.target 時，可以嘗試使用這種模式！</li>
+		<li>shutdown.target：就是關機的流程。</li>
+		<li>getty.target：可以設定你需要幾個 tty 之類的，如果想要降低 tty 的項目，可以修改這個東西的設定檔！</li>
+		</ul>
+
+		<p>正常的模式是 multi-user.target 以及 graphical.target 兩個，救援方面的模式主要是 rescue.target 以及更嚴重的 emergency.target。
+		如果要修改可提供登入的 tty 數量，則修改 getty.target 項目。基本上，我們最常使用的當然就是 multi-user 以及 graphical 囉！
+		那麼我如何知道目前的模式是哪一種？又得要如何修改呢？底下來玩一玩吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl [command] [unit.target]</span>
+<span class="term_say">選項與參數：
+command:
+    get-default ：取得目前的 target 
+    set-default ：設定後面接的 target 成為預設的操作模式
+    isolate     ：切換到後面接的模式</span>
+
+<span class="term_hd">範例一：我們的測試機器預設是圖形界面，先觀察是否真為圖形模式，再將預設模式轉為文字界面</span>
+[root@study ~]# <span class="term_command">systemctl get-default </span>
+graphical.target  <span class="term_note"># 果然是圖形界面喔！</span>
+
+[root@study ~]# <span class="term_command">systemctl set-default multi-user.target</span>
+[root@study ~]# <span class="term_command">systemctl get-default </span>
+multi-user.target
+
+<span class="term_hd">範例二：在不重新開機的情況下，將目前的操作環境改為純文字模式，關掉圖形界面</span>
+[root@study ~]# <span class="term_command">systemctl isolate multi-user.target</span>
+
+<span class="term_hd">範例三：若需要重新取得圖形界面呢？</span>
+[root@study ~]# <span class="term_command">systemctl isolate graphical.target</span>
+</pre></td></tr></tbody></table>
+
+		<p>要注意，改變 graphical.target 以及 multi-user.target 是透過 isolate 來處理的！鳥哥剛剛接觸到 systemd 的時候，在 multi-user.target 環境下轉成 graphical.target 時，
+		可以透過 systemctl start graphical.target 喔！然後鳥哥就以為關閉圖形界面即可回到 multi-user.target 的！但使用 systemctl stop graphical.target
+		卻完全不理鳥哥～這才發現錯了...在 service 部份用 start/stop/restart 才對，在 target 項目則請使用 isolate (隔離不同的操作模式) 才對！</p>
+
+		<p>在正常的切換情況下，使用上述 isolate 的方式即可。不過為了方便起見， systemd 也提供了數個簡單的指令給我們切換操作模式之用喔！
+		大致上如下所示：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl poweroff </span> <span class="term_note">系統關機</span>
+[root@study ~]# <span class="term_command">systemctl reboot   </span> <span class="term_note">重新開機</span>
+[root@study ~]# <span class="term_command">systemctl suspend  </span> <span class="term_note">進入暫停模式</span>
+[root@study ~]# <span class="term_command">systemctl hibernate</span> <span class="term_note">進入休眠模式</span>
+[root@study ~]# <span class="term_command">systemctl rescue   </span> <span class="term_note">強制進入救援模式</span>
+[root@study ~]# <span class="term_command">systemctl emergency</span> <span class="term_note">強制進入緊急救援模式</span>
+</pre></td></tr></tbody></table>
+
+		<p>關機、重新開機、救援與緊急模式這沒啥問題，那麼什麼是暫停與休眠模式呢？</p>
+
+		<ul>
+		<li>suspend：暫停模式會將系統的狀態資料保存到記憶體中，然後關閉掉大部分的系統硬體，當然，並沒有實際關機喔！
+		當使用者按下喚醒機器的按鈕，系統資料會重記憶體中回復，然後重新驅動被大部分關閉的硬體，就開始正常運作！喚醒的速度較快。</li>
+		<li style="margin-top: 10px;">hibernate：休眠模式則是將系統狀態保存到硬碟當中，保存完畢後，將電腦關機。當使用者嘗試喚醒系統時，系統會開始正常運作，
+		然後將保存在硬碟中的系統狀態恢復回來。因為資料是由硬碟讀出，因此喚醒的效能與你的硬碟速度有關。</li>
+		</ul>
+
+	<br></div><br>
+
+	<a id="systemctl_deps"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.2.4 透過 systemctl 分析各服務之間的相依性</h2>
+
+		<p>我們在本章一開始談到 systemd 的時候就有談到相依性的問題克服，那麼，如何追蹤某一個 unit 的相依性呢？
+		舉例來說好了，我們怎麼知道 graphical.target 會用到 multi-user.target 呢？那 graphical.target 底下還有哪些東西呢？
+		底下我們就來談一談：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-dependencies [unit] [--reverse]</span>
+<span class="term_say">選項與參數：
+--reverse ：反向追蹤誰使用這個 unit 的意思！</span>
+
+<span class="term_hd">範例一：列出目前的 target 環境下，用到什麼特別的 unit </span>
+[root@study ~]# <span class="term_command">systemctl get-default</span>
+multi-user.target
+
+[root@study ~]# <span class="term_command">systemctl list-dependencies</span>
+default.target
+├─abrt-ccpp.service
+├─abrt-oops.service
+├─vsftpd.service
+├─basic.target
+│ ├─alsa-restore.service
+│ ├─alsa-state.service
+<span class="term_say">.....(中間省略).....</span>
+│ ├─sockets.target
+│ │ ├─avahi-daemon.socket
+│ │ ├─dbus.socket
+<span class="term_say">.....(中間省略).....</span>
+│ ├─sysinit.target
+│ │ ├─dev-hugepages.mount
+│ │ ├─dev-mqueue.mount
+<span class="term_say">.....(中間省略).....</span>
+│ └─timers.target
+│   └─systemd-tmpfiles-clean.timer
+├─getty.target
+│ └─getty@tty1.service
+└─remote-fs.target
+</pre></td></tr></tbody></table>
+
+		<p>因為我們前一小節的練習將預設的操作模式變成 multi-user.target 了，因此這邊使用 list-dependencies 時，所列出的 default.target 其實是 multi-user.target
+		的內容啦！根據線條連線的流程，我們也能夠知道， multi-user.target 其實還會用到 basic.target + getty.target + remote-fs.target 三大項目，
+		而 basic.target 又用到了 sockets.target + sysinit.target + timers.target... 等一堆～所以囉，從這邊就能夠清楚的查詢到每種 target 模式底下還有的相依模式。
+		那麼如果要查出誰會用到 multi-user.target 呢？就這麼作！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-dependencies --reverse</span>
+default.target
+└─graphical.target
+</pre></td></tr></tbody></table>
+
+		<p>reverse 本來就是反向的意思，所以加上這個選項，代表『誰還會用到我的服務』的意思～所以看得出來， multi-user.target 主要是被 graphical.target 所使用喔！
+		好～那再來，graphical.target 又使用了多少的服務呢？可以這樣看：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-dependencies graphical.target</span>
+graphical.target
+├─accounts-daemon.service
+├─gdm.service
+├─network.service
+├─rtkit-daemon.service
+├─systemd-update-utmp-runlevel.service
+└─multi-user.target
+  ├─abrt-ccpp.service
+  ├─abrt-oops.service
+<span class="term_say">.....(底下省略).....</span>
+</pre></td></tr></tbody></table>
+
+		<p>所以可以看得出來，graphical.target 就是在 multi-user.target 底下再加上 accounts-daemon, gdm, network, rtkit-deamon, systemd-update-utmp-runlevel 等服務而已！
+		這樣會看了嗎？了解 daemon 之間的相關性也是很重要的喔！出問題時，可以找到正確的服務相依流程！</p>
+
+	<br></div><br>
+
+	<a id="systemctl_files"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.2.5 與 systemd 的 daemon 運作過程相關的目錄簡介</h2>
+
+		<p>我們在前幾小節曾經談過比較重要的 systemd 啟動腳本設定檔在 /usr/lib/systemd/system/, /etc/systemd/system/ 目錄下，那還有哪些目錄跟系統的 daemon 運作有關呢？
+		基本上是這樣的：</p>
+
+		<ul>
+		<li><span class="text_import2">/usr/lib/systemd/system/</span>：<br>
+			使用 CentOS 官方提供的軟體安裝後，預設的啟動腳本設定檔都放在這裡，這裡的資料盡量不要修改～
+			要修改時，請到 /etc/systemd/system 底下修改較佳！</li>
+		<li style="margin-top: 10px"><span class="text_import2">/run/systemd/system/</span>：<br>
+			系統執行過程中所產生的服務腳本，這些腳本的優先序要比 /usr/lib/systemd/system/ 高！</li>
+		<li style="margin-top: 10px"><span class="text_import2">/etc/systemd/system/</span>：<br>
+			管理員依據主機系統的需求所建立的執行腳本，其實這個目錄有點像以前 /etc/rc.d/rc5.d/Sxx 
+			之類的功能！執行優先序又比 /run/systemd/system/ 高喔！</li>
+		<li style="margin-top: 10px"><span class="text_import2">/etc/sysconfig/*</span>：<br>
+			幾乎所有的服務都會將初始化的一些選項設定寫入到這個目錄下，舉例來說，mandb 所要更新的 man page 索引中，需要加入的參數就寫入到此目錄下的 man-db 
+			當中喔！而網路的設定則寫在 /etc/sysconfig/network-scripts/ 這個目錄內。所以，這個目錄內的檔案也是挺重要的；</li>
+		<li style="margin-top: 10px"><span class="text_import2">/var/lib/</span>：<br>
+			一些會產生資料的服務都會將他的資料寫入到 /var/lib/ 目錄中。舉例來說，資料庫管理系統 Mariadb 的資料庫預設就是寫入 /var/lib/mysql/ 這個目錄下啦！</li>
+		<li style="margin-top: 10px"><span class="text_import2">/run/</span>：<br>
+			放置了好多 daemon 的暫存檔，包括 lock file 以及 PID file 等等。</li>
+		</ul>
+
+		<p>我們知道 systemd 裡頭有很多的本機會用到的 socket 服務，裡頭可能會產生很多的 socket file ～那你怎麼知道這些 socket file 放置在哪裡呢？
+		很簡單！還是透過 systemctl 來管理！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-sockets</span>
+LISTEN                          UNIT                         ACTIVATES
+/dev/initctl                    systemd-initctl.socket       systemd-initctl.service
+/dev/log                        systemd-journald.socket      systemd-journald.service
+/run/dmeventd-client            dm-event.socket              dm-event.service
+/run/dmeventd-server            dm-event.socket              dm-event.service
+/run/lvm/lvmetad.socket         lvm2-lvmetad.socket          lvm2-lvmetad.service
+/run/systemd/journal/socket     systemd-journald.socket      systemd-journald.service
+/run/systemd/journal/stdout     systemd-journald.socket      systemd-journald.service
+/run/systemd/shutdownd          systemd-shutdownd.socket     systemd-shutdownd.service
+/run/udev/control               systemd-udevd-control.socket systemd-udevd.service
+/var/run/avahi-daemon/socket    avahi-daemon.socket          avahi-daemon.service
+/var/run/cups/cups.sock         cups.socket                  cups.service
+/var/run/dbus/system_bus_socket dbus.socket                  dbus.service
+/var/run/rpcbind.sock           rpcbind.socket               rpcbind.service
+@ISCSIADM_ABSTRACT_NAMESPACE    iscsid.socket                iscsid.service
+@ISCSID_UIP_ABSTRACT_NAMESPACE  iscsiuio.socket              iscsiuio.service
+kobject-uevent 1                systemd-udevd-kernel.socket  systemd-udevd.service
+
+16 sockets listed.
+Pass --all to see loaded but inactive sockets, too.
+</pre></td></tr></tbody></table>
+
+		<p>這樣很清楚的就能夠知道正在監聽本機服務需求的 socket file 所在的檔名位置囉！</p>
+
+		<a id="etc_services"></a>
+		<ul class="toplist"><li>網路服務與埠口對應簡介</li></ul>
+
+		<p>從<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">第十六章</a>與前一小節對服務的說明後，你應該要知道的是，
+		系統所有的功能都是某些程序所提供的，而程序則是透過觸發程式而產生的。同樣的，系統提供的網路服務當然也是這樣的！
+		只是由於網路牽涉到 TCP/IP 的概念，所以顯的比較複雜一些就是了。</p>
+
+		<p>玩過網際網路 (Internet) 的朋友應該知道 IP 這玩意兒，大家都說 IP 就是代表你的主機在網際網路上面的『門牌號碼』。
+		但是你的主機總是可以提供非常多的網路服務而不止一項功能而已，但我們僅有一個 IP 呢！當用戶端連線過來我們的主機時，
+		我們主機是如何分辨不同的服務要求呢？那就是透過埠號 (port number) 啦！埠號簡單的想像，他就是你家門牌上面的第幾層樓！
+		這個 IP 與 port 就是網際網路連線的最重要機制之一囉。我們拿底下的網址來說明：</p>
+
+		<ul>
+		<li><a href="http://ftp.ksu.edu.tw/" target="_blank">http://ftp.ksu.edu.tw/</a></li>
+		<li><a href="ftp://ftp.ksu.edu.tw/" target="_blank">ftp://ftp.ksu.edu.tw/</a></li>
+		</ul>
+
+		<p>有沒有發現，兩個網址都是指向 ftp.ksu.edu.tw 這個崑山科大的 FTP 網站，但是瀏覽器上面顯示的結果卻是不一樣的？
+		是啊！這是因為我們指向不同的服務嘛！一個是 http 這個 WWW 的服務，一個則是 ftp 
+		這個檔案傳輸服務，當然顯示的結果就不同了。</p>
+
+	<a id="fig17.2.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/port_daemon.gif" alt="port 與 daemon 的對應" title="port 與 daemon 的對應" style="border: 0px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖17.2.1、port 與 daemon 的對應</div>
+
+		<p>事實上，為了統一整個網際網路的埠號對應服務的功能，好讓所有的主機都能夠使用相同的機制來提供服務與要求服務，
+		所以就有了『通訊協定』這玩意兒。也就是說，有些約定俗成的服務都放置在同一個埠號上面啦！舉例來說，
+		網址列上面的 http 會讓瀏覽器向 WWW 伺服器的 80 埠號進行連線的要求！而 WWW 伺服器也會將 httpd 這個軟體啟動在 port 80，
+		這樣兩者才能夠達成連線的！</p>
+
+		<p>嗯！那麼想一想，系統上面有沒有什麼設定可以讓服務與埠號對應在一起呢？那就是 /etc/services 啦！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cat /etc/services</span>
+<span class="term_say">....(前面省略)....</span>
+ftp             21/tcp
+ftp             21/udp          fsp fspd
+ssh             22/tcp                          # The Secure Shell (SSH) Protocol
+ssh             22/udp                          # The Secure Shell (SSH) Protocol
+<span class="term_say">....(中間省略)....</span>
+http            80/tcp          www www-http    # WorldWideWeb HTTP
+http            80/udp          www www-http    # HyperText Transfer Protocol
+<span class="term_say">....(底下省略)....</span>
+<span class="term_say"># 這個檔案的內容是以底下的方式來編排的：
+# &lt;daemon name&gt;   &lt;port/封包協定&gt;   &lt;該服務的說明&gt;</span>
+</pre></td></tr></tbody></table>
+
+		<p>像上面說的是，第一欄為 daemon 的名稱、第二欄為該 daemon 所使用的埠號與網路資料封包協定，
+		封包協定主要為可靠連線的 TCP 封包以及較快速但為非連線導向的 UDP 封包。
+		舉個例子說，那個遠端連線機制使用的是 ssh 這個服務，而這個服務的使用的埠號為 22 ！就是這樣啊！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		請特別注意！雖然有的時候你可以藉由修改 /etc/services 來更改一個服務的埠號，不過並不建議如此做，
+		因為很有可能會造成一些協定的錯誤情況！這裡特此說明一番呦！(除非你要架設一個地下網站，否則的話，使用 
+		/etc/services 原先的設定就好啦！)
+		</fieldset><br>
+	<br></div><br>
+
+	<a id="systemctl_network"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.2.6 關閉網路服務</h2>
+
+		<p>當你第一次使用 systemctl 去觀察本機伺服器啟動的服務時，不知道有沒有嚇一跳呢？怎麼隨隨便便 CentOS 7.x 就給我啟動了幾乎 100 多個以上的 daemon？
+		會不會有事啊？沒關係啦！因為 systemd 將許多原本不被列為 daemon 的程序都納入到 systemd 自己的管轄監測範圍內，因此就多了很多 daemon 存在！
+		那些大部分都屬於 Linux 系統基礎運作所需要的環境，沒有什麼特別需求的話，最好都不要更動啦！除非你自己知道自己需要什麼。</p>
+
+		<p>除了本機服務之外，其實你一定要觀察的，反而是網路服務喔！雖然網路服務預設有 SELinux 管理，不過，在鳥哥的立場上，
+		我還是建議非必要的網路服務就關閉他！那麼什麼是網路服務呢？基本上，會產生一個網路監聽埠口 (port) 的程序，你就可以稱他是個網路服務了！
+		那麼如何觀察網路埠口？就這樣追蹤啊！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">netstat -tlunp</span>
+Proto Recv-Q Send-Q Local Address   Foreign Address  State    PID/Program name
+tcp        0      0 0.0.0.0:22      0.0.0.0:*        LISTEN   1340/sshd
+tcp        0      0 127.0.0.1:25    0.0.0.0:*        LISTEN   2387/master
+tcp6       0      0 :::555          :::*             LISTEN   29113/vsftpd
+tcp6       0      0 :::22           :::*             LISTEN   1340/sshd
+tcp6       0      0 ::1:25          :::*             LISTEN   2387/master
+udp        0      0 0.0.0.0:5353    0.0.0.0:*                 750/avahi-daemon: r
+udp        0      0 0.0.0.0:36540   0.0.0.0:*                 750/avahi-daemon: r
+</pre></td></tr></tbody></table>
+
+		<p>如上表所示，我們的系統上至少開了 22, 25, 555, 5353, 36540 這幾個埠口～而其中 5353, 36540 是由 avahi-daemon 這個東西所啟動的！
+		接下來我們使用 systemctl 去觀察一下，到底有沒有 avahi-daemon 為開頭的服務呢？</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl list-units --all | grep avahi-daemon</span>
+avahi-daemon.service   loaded active   running   Avahi mDNS/DNS-SD Stack
+avahi-daemon.socket    loaded active   running   Avahi mDNS/DNS-SD Stack Activation Socket
+</pre></td></tr></tbody></table>
+
+		<p>透過追查，知道這個 avahi-daemon 的目的是在區域網路進行類似網芳的搜尋，因此這個服務可以協助你在區網內隨時了解隨插即用的裝置！
+		包括筆記型電腦等，只要連上你的區網，你就能夠知道誰進來了。問題是，你可能不要這個協定啊！所以，那就關閉他吧！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl stop avahi-daemon.service</span>
+[root@study ~]# <span class="term_command">systemctl stop avahi-daemon.socket</span>
+[root@study ~]# <span class="term_command">systemctl disable avahi-daemon.service avahi-daemon.socket</span>
+[root@study ~]# <span class="term_command">netstat -tlunp</span>
+Proto Recv-Q Send-Q Local Address   Foreign Address  State    PID/Program name
+tcp        0      0 0.0.0.0:22      0.0.0.0:*        LISTEN   1340/sshd
+tcp        0      0 127.0.0.1:25    0.0.0.0:*        LISTEN   2387/master
+tcp6       0      0 :::555          :::*             LISTEN   29113/vsftpd
+tcp6       0      0 :::22           :::*             LISTEN   1340/sshd
+tcp6       0      0 ::1:25          :::*             LISTEN   2387/master
+</pre></td></tr></tbody></table>
+
+		<p>一般來說，你的本機伺服器至少需要 25 號埠口，而 22 號埠口則最好加上防火牆來管理遠端連線登入比較妥當～因此，上面的埠口中，
+		除了 555 是我們上一章因為測試而產生的之外，這樣的系統能夠被爬牆的機會已經少很多了！ ^_^！OK！現在如果你的系統裡面有一堆網路埠口在監聽，
+		而你根本不知道那是幹麻用的，鳥哥建議你，現在就透過上面的方式，關閉他吧！</p>
+
+	<br></div>
+</div>
+
+
+<a id="systemd_cfg"></a>
+<div class="block1">
+<h2>17.3 systemctl 針對 service 類型的設定檔</h2>
+
+	<p>以前，我們如果想要建立系統服務，就得要到 /etc/init.d/ 底下去建立相對應的 bash shell script 來處理。那麼現在 systemd 的環境底下，
+	如果我們想要設定相關的服務啟動環境，那應該如何處理呢？這就是本小節的任務囉！</p>
+
+	<a id="systemd_cfg_dir"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.3.1 systemctl 設定檔相關目錄簡介</h2>
+
+		<p>現在我們知道服務的管理是透過 systemd，而 systemd 的設定檔大部分放置於 /usr/lib/systemd/system/ 目錄內。但是 Red Hat 官方文件指出，
+		該目錄的檔案主要是原本軟體所提供的設定，建議不要修改！而要修改的位置應該放置於 /etc/systemd/system/ 目錄內。舉例來說，如果你想要額外修改 vsftpd.service 的話，
+		他們建議要放置到哪些地方呢？</p>
+
+		<ul>
+		<li>/usr/lib/systemd/system/<span class="text_import2">vsftpd.service</span>：官方釋出的預設設定檔；</li>
+		<li>/etc/systemd/system/<span class="text_import2">vsftpd.service.d</span>/custom.conf：在 /etc/systemd/system 
+			底下建立與設定檔相同檔名的目錄，但是要加上 .d 的副檔名。然後在該目錄下建立設定檔即可。另外，設定檔最好附檔名取名為 .conf 較佳！
+			在這個目錄下的檔案會『累加其他設定』進入 /usr/lib/systemd/system/vsftpd.service 內喔！</li>
+		<li>/etc/systemd/system/<span class="text_import2">vsftpd.service.wants</span>/*：此目錄內的檔案為連結檔，設定相依服務的連結。意思是啟動了 
+			vsftpd.service 之後，最好再加上這目錄底下建議的服務。</li>
+		<li>/etc/systemd/system/<span class="text_import2">vsftpd.service.requires</span>/*：此目錄內的檔案為連結檔，設定相依服務的連結。意思是在啟動 
+			vsftpd.service 之前，需要事先啟動哪些服務的意思。</li>
+		</ul>
+
+		<p>基本上，在設定檔裡面你都可以自由設定相依服務的檢查，並且設定加入到哪些 target 裡頭去。但是如果是已經存在的設定檔，或者是官方提供的設定檔，
+		Red Hat 是建議你不要修改原設定，而是到上面提到的幾個目錄去進行額外的客製化設定比較好！當然，這見仁見智～如果你硬要修改原始的 /usr/lib/systemd/system 
+		底下的設定檔，那也是 OK 沒問題的！並且也能夠減少許多設定檔的增加～鳥哥自己認為，這樣也不錯！反正，就完全是個人喜好囉～</p>
+
+	<br></div><br>
+
+	<a id="systemd_cfg_options"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.3.2 systemctl 設定檔的設定項目簡介</h2>
+
+		<p>了解了設定檔的相關目錄與檔案之後，再來，當然得要了解一下設定檔本身的內容了！讓我們先來瞧一瞧 sshd.service 的內容好了！
+		原本想拿 vsftpd.service 來講解，不過該檔案的內容比較陽春，還是看一下設定項目多一些的 sshd.service 好了！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cat /usr/lib/systemd/system/sshd.service</span>
+[Unit]           <span class="term_note"># 這個項目與此 unit 的解釋、執行服務相依性有關</span>
+Description=OpenSSH server daemon
+After=network.target sshd-keygen.service
+Wants=sshd-keygen.service
+
+[Service]        <span class="term_note"># 這個項目與實際執行的指令參數有關</span>
+EnvironmentFile=/etc/sysconfig/sshd
+ExecStart=/usr/sbin/sshd -D $OPTIONS
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]        <span class="term_note"># 這個項目說明此 unit 要掛載哪個 target 底下</span>
+WantedBy=multi-user.target
+</pre></td></tr></tbody></table>
+
+		<p>分析上面的設定檔，我們大概能夠將整個設定分為三個部份，就是：</p>
+
+		<ul class="mylist">
+		<li>[Unit]： unit 本身的說明，以及與其他相依 daemon 的設定，包括在什麼服務之後才啟動此 unit 之類的設定值；</li>
+		<li>[Service], [Socket], [Timer], [Mount], [Path]..：不同的 unit type 就得要使用相對應的設定項目。我們拿的是 sshd.service 來當範本，所以這邊就使用 [Service] 來設定。
+			這個項目內主要在規範服務啟動的腳本、環境設定檔檔名、重新啟動的方式等等。</li>
+		<li>[Install]：這個項目就是將此 unit 安裝到哪個 target 裡面去的意思！</li>
+		</ul>
+
+		<p>至於設定檔內有些設定規則還是得要說明一下：</p>
+		<ul>
+		<li>設定項目通常是可以重複的，例如我可以重複設定兩個 After 在設定檔中，不過，後面的設定會取代前面的喔！因此，如果你想要將設定值歸零，
+			可以使用類似『 After= 』的設定，亦即該項目的等號後面什麼都沒有，就將該設定歸零了 (reset)。</li>
+		<li>如果設定參數需要有『是/否』的項目 (布林值, boolean)，你可以使用 1, yes, true, on 代表啟動，用 0, no, false, off 代表關閉！隨你喜好選擇囉！</li>
+		<li>空白行、開頭為 # 或 ; 的那一行，都代表註解！</li>
+		</ul>
+
+		<p>每個部份裡面還有很多的設定細項，我們使用一個簡單的表格來說明每個項目好了！</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td colspan="2">[Unit] 部份</td></tr>
+<tr class="theader"><td>設定參數</td><td>參數意義說明</td></tr>
+<tr>
+	<td>Description</td>
+	<td>就是當我們使用 systemctl list-units 時，會輸出給管理員看的簡易說明！當然，使用 systemctl status 輸出的此服務的說明，也是這個項目！</td></tr>
+<tr>
+	<td>Documentation</td>
+	<td>這個項目在提供管理員能夠進行進一步的文件查詢的功能！提供的文件可以是如下的資料：
+		<ul style="margin-top:0; margin-bottom: 0">
+		<li>Documentation=http://www....</li>
+		<li>Documentation=man:sshd(8)</li>
+		<li>Documentation=file:/etc/ssh/sshd_config</li></ul></td></tr>
+<tr>
+	<td>After</td>
+	<td>說明此 unit 是在哪個 daemon 啟動之後才啟動的意思！基本上僅是說明服務啟動的順序而已，並沒有強制要求裡頭的服務一定要啟動後此 unit 才能啟動。
+		以 sshd.service 的內容為例，該檔案提到 After 後面有 network.target 以及 sshd-keygen.service，但是若這兩個 unit 沒有啟動而強制啟動 sshd.service 的話，
+		那麼 sshd.service 應該還是能夠啟動的！這與 Requires 的設定是有差異的喔！</td></tr>
+<tr>
+	<td>Before</td>
+	<td>與 After 的意義相反，是在什麼服務啟動前最好啟動這個服務的意思。不過這僅是規範服務啟動的順序，並非強制要求的意思。</td></tr>
+<tr>
+	<td>Requires</td>
+	<td>明確的定義此 unit 需要在哪個 daemon 啟動後才能夠啟動！就是設定相依服務啦！如果在此項設定的前導服務沒有啟動，那麼此 unit 就不會被啟動！</td></tr>
+<tr>
+	<td>Wants</td>
+	<td>與 Requires 剛好相反，規範的是這個 unit 之後最好還要啟動什麼服務比較好的意思！不過，並沒有明確的規範就是了！主要的目的是希望建立讓使用者比較好操作的環境。
+		因此，這個 Wants 後面接的服務如果沒有啟動，其實不會影響到這個 unit 本身！</td></tr>
+<tr>
+	<td>Conflicts</td>
+	<td>代表衝突的服務！亦即這個項目後面接的服務如果有啟動，那麼我們這個 unit 本身就不能啟動！我們 unit 有啟動，則此項目後的服務就不能啟動！
+		反正就是衝突性的檢查啦！</td></tr>
+</tbody></table>
+
+		<p>接下來了解一下在 [Service] 當中有哪些項目可以使用！</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td colspan="2">[Service] 部份</td></tr>
+<tr class="theader"><td>設定參數</td><td>參數意義說明</td></tr>
+<tr>
+	<td>Type</td>
+	<td>說明這個 daemon 啟動的方式，會影響到 ExecStart 喔！一般來說，有底下幾種類型
+	<ul style="margin-top: 0; margin-bottom: 0">
+		<li>simple：預設值，這個 daemon 主要由 ExecStart 接的指令串來啟動，啟動後常駐於記憶體中。</li>
+		<li>forking：由 ExecStart 啟動的程序透過 spawns 延伸出其他子程序來作為此 daemon 的主要服務。原生的父程序在啟動結束後就會終止運作。
+		傳統的 unit 服務大多屬於這種項目，例如 httpd 這個 WWW 服務，當 httpd 的程序因為運作過久因此即將終結了，則 systemd 會再重新生出另一個子程序持續運作後，
+		再將父程序刪除。據說這樣的效能比較好！！</li>
+		<li>oneshot：與 simple 類似，不過這個程序在工作完畢後就結束了，不會常駐在記憶體中。</li>
+		<li>dbus：與 simple 類似，但這個 daemon 必須要在取得一個 D-Bus 的名稱後，才會繼續運作！因此設定這個項目時，通常也要設定 BusName= 才行！</li>
+		<li>idle：與 simple 類似，意思是，要執行這個 daemon 必須要所有的工作都順利執行完畢後才會執行。這類的 daemon 通常是開機到最後才執行即可的服務！</li>
+	</ul>
+	比較重要的項目大概是 simple, forking 與 oneshot 了！畢竟很多服務需要子程序 (forking)，而有更多的動作只需要在開機的時候執行一次(oneshot)，例如檔案系統的檢查與掛載啊等等的。
+	</td></tr>
+<tr>
+	<td>EnvironmentFile</td>
+	<td>可以指定啟動腳本的環境設定檔！例如 sshd.service 的設定檔寫入到 /etc/sysconfig/sshd 當中！你也可以使用 Environment= 後面接多個不同的 Shell 變數來給予設定！</td></tr>
+<tr style="font-weight: bolder">
+	<td>ExecStart</td>
+	<td>就是實際執行此 daemon 的指令或腳本程式。你也可以使用 ExecStartPre (之前) 以及 ExecStartPost (之後) 兩個設定項目來在實際啟動服務前，進行額外的指令行為。
+		但是你得要特別注意的是，指令串僅接受『指令  參數  參數...』的格式，不能接受 &lt;, &gt;, &gt;&gt;, |, &amp; 等特殊字符，很多的 bash 語法也不支援喔！
+		所以，要使用這些特殊的字符時，最好直接寫入到指令腳本裡面去！不過，上述的語法也不是完全不能用，亦即，若要支援比較完整的 bash 語法，那你得要使用 Type=oneshot 才行喔！
+		其他的 Type 才不能支援這些字符。</td></tr>
+<tr>
+	<td>ExecStop</td>
+	<td>與 systemctl stop 的執行有關，關閉此服務時所進行的指令。</td></tr>
+<tr>
+	<td>ExecReload</td>
+	<td>與 systemctl reload 有關的指令行為</td></tr>
+<tr>
+	<td>Restart</td>
+	<td>當設定 Restart=1 時，則當此 daemon 服務終止後，會再次的啟動此服務。舉例來說，如果你在 tty2 使用文字界面登入，操作完畢後登出，基本上，這個時候 tty2 就已經結束服務了。
+		但是你會看到螢幕又立刻產生一個新的 tty2 的登入畫面等待你的登入！那就是 Restart 的功能！除非使用 systemctl 強制將此服務關閉，否則這個服務會源源不絕的一直重複產生！</td></tr>
+<tr>
+	<td>RemainAfterExit</td>
+	<td>當設定為 RemainAfterExit=1 時，則當這個 daemon 所屬的所有程序都終止之後，此服務會再嘗試啟動。這對於 Type=oneshot 的服務很有幫助！</td></tr>
+<tr>
+	<td>TimeoutSec</td>
+	<td>若這個服務在啟動或者是關閉時，因為某些緣故導致無法順利『正常啟動或正常結束』的情況下，則我們要等多久才進入『強制結束』的狀態！</td></tr>
+<tr>
+	<td>KillMode</td>
+	<td>可以是 process, control-group, none 的其中一種，如果是 process 則 daemon 終止時，只會終止主要的程序 (ExecStart 接的後面那串指令)，如果是 control-group 時，
+		則由此 daemon 所產生的其他 control-group 的程序，也都會被關閉。如果是 none 的話，則沒有程序會被關閉喔！</td></tr>
+<tr>
+	<td>RestartSec</td>
+	<td>與 Restart 有點相關性，如果這個服務被關閉，然後需要重新啟動時，大概要 sleep 多少時間再重新啟動的意思。預設是 100ms (毫秒)。</td></tr>
+</tbody></table>
+
+	<p>最後，再來看看那麼 Install 內還有哪些項目可用？</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td colspan="2">[Install] 部份</td></tr>
+<tr class="theader"><td>設定參數</td><td>參數意義說明</td></tr>
+<tr>
+	<td>WantedBy</td>
+	<td>這個設定後面接的大部分是 *.target unit ！意思是，這個 unit 本身是附掛在哪一個 target unit 底下的！一般來說，大多的服務性質的 unit 都是附掛在 multi-user.target 底下！</td></tr>
+<tr>
+	<td>Also</td>
+	<td>當目前這個 unit 本身被 enable 時，Also 後面接的 unit 也請 enable 的意思！也就是具有相依性的服務可以寫在這裡呢！</td></tr>
+<tr>
+	<td>Alias</td>
+	<td>進行一個連結的別名的意思！當 systemctl enable 相關的服務時，則此服務會進行連結檔的建立！以 multi-user.target 為例，這個傢伙是用來作為預設操作環境 default.target 的規劃，
+		因此當你設定用成 default.target 時，這個 /etc/systemd/system/default.target 就會連結到 /usr/lib/systemd/system/multi-user.target 囉！</td></tr>
+</tbody></table>
+
+		<p>大致的項目就有這些，接下來讓我們根據上面這些資料來進行一些簡易的操作吧！</p>
+
+	<br></div><br>
+
+	<a id="systemd_cfg_vsftpd"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.3.3 兩個 vsftpd 運作的實例</h2>
+
+		<p>我們在上一章將 vsftpd 的 port 改成 555 號了。不過，因為某些原因，所以你可能需要使用到兩個埠口，分別是正常的 21 以及特殊的 555 ！
+		這兩個 port 都啟用的情況下，你可能就得要使用到兩個設定檔以及兩個啟動腳本設定了！現在假設是這樣：</p>
+
+		<ul>
+		<li>預設的 port 21：使用 /etc/vsftpd/vsftpd.conf 設定檔，以及 /usr/lib/systemd/system/vsftpd.service 設定腳本；</li>
+		<li>特殊的 port 555：使用 /etc/vsftpd/vsftpd2.conf 設定檔，以及 /etc/systemd/system/vsftpd2.service 設定腳本。</li>
+		</ul>
+
+		<p>我們可以這樣作：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 先建立好所需要的設定檔</span>
+[root@study ~]# <span class="term_command">cd /etc/vsftpd</span>
+[root@study vsftpd]# <span class="term_command">cp vsftpd.conf vsftpd2.conf</span>
+[root@study vsftpd]# <span class="term_command">vim vsftpd.conf</span>
+<span class="term_write">#listen_port=555</span>
+
+[root@study vsftpd]# <span class="term_command">diff vsftpd.conf vsftpd2.conf</span>
+128c128
+&lt; #listen_port=555
+---
+&gt; listen_port=555
+<span class="term_say"># 注意這兩個設定檔的差別喔！只有這一行不同而已！</span>
+
+<span class="term_hd"># 2. 開始處理啟動腳本設定</span>
+[root@study vsftpd]# <span class="term_command">cd /etc/systemd/system</span>
+[root@study system]# <span class="term_command">cp /usr/lib/systemd/system/vsftpd.service vsftpd2.service</span>
+[root@study system]# <span class="term_command">vim vsftpd2.service</span>
+[Unit]
+<span class="term_write">Description=Vsftpd second ftp daemon</span>
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/vsftpd <span class="term_write">/etc/vsftpd/vsftpd2.conf</span>
+
+[Install]
+WantedBy=multi-user.target
+<span class="term_say"># 重點在改了 vsftpd2.conf 這個設定檔喔！</span>
+
+<span class="term_hd"># 3. 重新載入 systemd 的腳本設定檔內容</span>
+[root@study system]# <span class="term_command">systemctl daemon-reload</span>
+[root@study system]# <span class="term_command">systemctl list-unit-files --all | grep vsftpd</span>
+vsftpd.service                              enabled
+<span class="term_write">vsftpd2.service                             disabled</span>
+vsftpd@.service                             disabled
+vsftpd.target                               disabled
+
+[root@study system]# <span class="term_command">systemctl status vsftpd2.service</span>
+vsftpd2.service - Vsftpd second ftp daemon
+   Loaded: loaded (/etc/systemd/system/vsftpd2.service; disabled)
+   Active: inactive (dead)
+
+[root@study system]# <span class="term_command">systemctl restart vsftpd.service vsftpd2.service</span>
+[root@study system]# <span class="term_command">systemctl enable  vsftpd.service vsftpd2.service</span>
+[root@study system]# <span class="term_command">systemctl status  vsftpd.service vsftpd2.service</span>
+vsftpd.service - Vsftpd ftp daemon
+   Loaded: loaded (/usr/lib/systemd/system/vsftpd.service; enabled)
+   Active: active (running) since Wed 2015-08-12 22:00:17 CST; 35s ago
+ Main PID: 12670 (vsftpd)
+   CGroup: /system.slice/vsftpd.service
+           └─12670 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+
+Aug 12 22:00:17 study.centos.vbird systemd[1]: Started Vsftpd ftp daemon.
+
+vsftpd2.service - Vsftpd second ftp daemon
+   Loaded: loaded (/etc/systemd/system/vsftpd2.service; enabled)
+   Active: active (running) since Wed 2015-08-12 22:00:17 CST; 35s ago
+ Main PID: 12672 (vsftpd)
+   CGroup: /system.slice/vsftpd2.service
+           └─12672 /usr/sbin/vsftpd /etc/vsftpd/vsftpd2.conf
+
+[root@study system]# <span class="term_command">netstat -tlnp </span>
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address  Foreign Address   State    PID/Program name
+tcp        0      0 0.0.0.0:22     0.0.0.0:*         LISTEN   1340/sshd
+tcp        0      0 127.0.0.1:25   0.0.0.0:*         LISTEN   2387/master
+<span class="term_write">tcp6       0      0 :::555         :::*              LISTEN   12672/vsftpd
+tcp6       0      0 :::21          :::*              LISTEN   12670/vsftpd</span>
+tcp6       0      0 :::22          :::*              LISTEN   1340/sshd
+tcp6       0      0 ::1:25         :::*              LISTEN   2387/master
+</pre></td></tr></tbody></table>
+
+		<p>很簡單的將你的 systemd 所管理的 vsftpd 做了另一個服務！未來如果有相同的需求，同樣的方法作一遍即可！</p>
+
+	<br></div><br>
+
+	<a id="systemd_cfg_repeat"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.3.4 多重的重複設定方式：以 getty 為例</h2>
+
+		<p>我們的 CentOS 7 開機完成後，不是說有 6 個終端機可以使用嗎？就是那個 tty1~tty6 的啊！那個東西是由 agetty 這個指令達成的。
+		OK！那麼這個終端機的功能又是從哪個項目所提供的呢？其實，那個東東涉及很多層面，主要管理的是 getty.target 這個 target unit ，
+		不過，實際產生 tty1~tty6 的則是由 getty@.service 所提供的！咦！那個 @ 是啥東西？</p>
+
+		<p>先來查閱一下 /usr/lib/systemd/system/getty@.service 的內容好了：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cat /usr/lib/systemd/system/getty@.service</span>
+[Unit]
+Description=Getty on %I
+Documentation=man:agetty(8) man:systemd-getty-generator(8)
+Documentation=http://0pointer.de/blog/projects/serial-console.html
+After=systemd-user-sessions.service plymouth-quit-wait.service
+After=rc-local.service
+Before=getty.target
+ConditionPathExists=/dev/tty0
+
+[Service]
+<span class="term_write">ExecStart=-/sbin/agetty --noclear %I $TERM</span>
+Type=idle
+Restart=always
+RestartSec=0
+UtmpIdentifier=%I
+TTYPath=/dev/%I
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+KillMode=process
+IgnoreSIGPIPE=no
+SendSIGHUP=yes
+
+[Install]
+<span class="term_write">WantedBy=getty.target</span>
+</pre></td></tr></tbody></table>
+
+		<p>比較重要的當然就是 ExecStart 項目囉！那麼我們去 man agetty 時，發現到它的語法應該是『 agetty --noclear tty1 』之類的字樣，
+		因此，我們如果要啟動六個 tty 的時候，基本上應該要有六個啟動設定檔。亦即是可能會用到 getty1.service, getty2.service...getty6.service 才對！
+		哇！這樣控管很麻煩啊～所以，才會出現這個 @ 的項目啦！咦！這個 @ 到底怎麼回事呢？我們先來看看 getty@.service 的上游，亦即是 getty.target 這個東西的內容好了！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl show getty.target</span>
+<span class="term_say"># 那個 show 的指令可以將 getty.target 的預設設定值也取出來顯示！</span>
+Names=getty.target
+Wants=getty@tty1.service
+WantedBy=multi-user.target
+Conflicts=shutdown.target
+Before=multi-user.target
+After=<span class="term_write">getty@tty1.service getty@tty2.service getty@tty3.service getty@tty4.service 
+  getty@tty6.service getty@tty5.service</span>
+<span class="term_say">.....(後面省略).....</span>
+</pre></td></tr></tbody></table>
+
+		<p>你會發現，咦！怎麼會多出六個怪異的 service 呢？我們拿 getty@tty1.service 來說明一下好了！當我們執行完 getty.target 之後，
+		他會持續要求 getty@tty1.service 等六個服務繼續啟動。那我們的 systemd 就會這麼作：</p>
+
+		<ul>
+		<li>先看 /usr/lib/systemd/system/, /etc/systemd/system/ 有沒有 getty@tty1.service 的設定，若有就執行，若沒有則執行下一步；</li>
+		<li>找 getty@.service 的設定，若有則將 @ 後面的資料帶入成 %I 的變數，進入 getty@.service 執行！</li>
+		</ul>
+
+		<p>這也就是說，其實 getty@tty1.service 實際上是不存在的！他主要是透過 getty@.service 來執行～也就是說， getty@.service 的目的是為了要簡化多個執行的啟動設定，
+		他的命名方式是這樣的：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>原始檔案：執行服務名稱@.service
+執行檔案：執行服務名稱@範例名稱.service
+</pre></td></tr></tbody></table>
+
+		<p>因此當有範例名稱帶入時，則會有一個新的服務名稱產生出來！你再回頭看看 getty@.service 的啟動腳本：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>ExecStart=-/sbin/agetty --noclear %I $TERM
+</pre></td></tr></tbody></table>
+
+		<p>上表中那個 %I 指的就是『範例名稱』！根據 getty.target 的資訊輸出來看，getty@tty1.service 的 %I 就是 tty1 囉！因此執行腳本就會變成『 /sbin/agetty --noclear tty1 』！
+		所以我們才有辦法以一個設定檔來啟動多個 tty1 給用戶登入囉！</p>
+
+		<ul class="toplist"><li>將 tty 的數量由 6 個降低到 4 個</li></ul>
+
+		<p>現在你應該要感到困擾的是，那麼『 6 個 tty 是誰規定的』為什麼不是 5 個還是 7 個？這是因為 systemd 的登入設定檔 /etc/systemd/logind.conf 裡面規範的啦！
+		假如你想要讓 tty 數量降低到剩下 4 個的話，那麼可以這樣實驗看看：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 修改預設的 logind.conf 內容，將原本 6 個虛擬終端機改成 4 個</span>
+[root@study ~]# <span class="term_command">vim /etc/systemd/logind.conf</span>
+[Login]
+<span class="term_write">NAutoVTs=4
+ReserveVT=0</span>
+<span class="term_say"># 原本是 6 個而且還註解，請取消註解，然後改成 4 吧！</span>
+
+<span class="term_hd"># 2. 關閉不小心啟動的 tty5, tty6 並重新啟動 getty.target 囉！</span>
+[root@study ~]# <span class="term_command">systemctl stop getty@tty5.service</span>
+[root@study ~]# <span class="term_command">systemctl stop getty@tty6.service</span>
+[root@study ~]# <span class="term_command">systemctl restart systemd-logind.service</span>
+</pre></td></tr></tbody></table>
+
+		<p>現在你再到桌面環境下，按下 [ctrl]+[alt]+[F1]~[F6] 就會發現，只剩下四個可用的 tty 囉！後面的 tty5, tty6 已經被放棄了！不再被啟動喔！
+		好！那麼我暫時需要啟動 tty8 時，又該如何處理呢？需要重新建立一個腳本嗎？不需要啦！可以這樣作！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl start getty@tty8.service</span>
+</pre></td></tr></tbody></table>
+
+		<p>無須額外建立其他的啟動服務設定檔喔！</p>
+
+		<ul class="toplist"><li>暫時新增 vsftpd 到 2121 埠口</li></ul>
+
+		<p>不知道你有沒有發現，其實在 /usr/lib/systemd/system 底下還有個特別的 vsftpd@.service 喔！來看看他的內容：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cat /usr/lib/systemd/system/vsftpd@.service</span>
+[Unit]
+Description=Vsftpd ftp daemon
+After=network.target
+PartOf=vsftpd.target
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/vsftpd /etc/vsftpd/<span class="term_write">%i.conf</span>
+
+[Install]
+WantedBy=vsftpd.target
+</pre></td></tr></tbody></table>
+
+		<p>根據前面 getty@.service 的說明，我們知道在啟動的腳本設定當中， %i 或 %I 就是代表 @ 後面接的範例檔名的意思！
+		那我能不能建立 vsftpd3.conf 檔案，然後透過該檔案來啟動新的服務呢？就來玩玩看！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre><span class="term_hd"># 1. 根據 vsftpd@.service 的建議，於 /etc/vsftpd/ 底下先建立新的設定檔</span>
+[root@study ~]# <span class="term_command">cd /etc/vsftpd</span>
+[root@study vsftpd]# <span class="term_command">cp vsftpd.conf vsftpd3.conf</span>
+[root@study vsftpd]# <span class="term_command">vim vsftpd3.conf</span>
+<span class="term_write">listen_port=2121</span>
+
+<span class="term_hd"># 2. 暫時啟動這個服務，不要永久啟動他！</span>
+[root@study vsftpd]# <span class="term_command">systemctl start vsftpd@vsftpd3.service</span>
+[root@study vsftpd]# <span class="term_command">systemctl status vsftpd@vsftpd3.service</span>
+vsftpd@vsftpd3.service - Vsftpd ftp daemon
+   Loaded: loaded (/usr/lib/systemd/system/vsftpd@.service; disabled)
+   Active: active (running) since Thu 2015-08-13 01:34:05 CST; 5s ago
+
+[root@study vsftpd]# <span class="term_command">netstat -tlnp</span>
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address  Foreign Address  State    PID/Program name
+<span class="term_write">tcp6       0      0 :::2121        :::*             LISTEN   16404/vsftpd</span>
+tcp6       0      0 :::555         :::*             LISTEN   12672/vsftpd
+tcp6       0      0 :::21          :::*             LISTEN   12670/vsftpd
+</pre></td></tr></tbody></table>
+
+		<p>因為我們啟用了 vsftpd@vsftpd3.service ，代表要使用的設定檔在 /etc/vsftpd/vsftpd3.conf 的意思！所以可以直接透過 vsftpd@.service 而無須重新設定啟動腳本！
+		這樣是否比前幾個小節的方法還要簡便呢？ ^_^。透過這個方式，你就可以使用到新的設定檔囉！只是你得要注意到 @ 這個東西就是了！ ^_^</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		聰明的讀者可能立刻發現一件事，為啥這次 FTP 增加了 2121 埠口卻不用修改 SELinux 呢？這是因為預設啟動小於 1024 號碼以下的埠口時，
+		需要使用到 root 的權限，因此小於 1024 以下埠口的啟動較可怕。而這次範例中，我們使用 2121 埠口，他對於系統的影響可能小一些 (其實一樣可怕！)，
+		所以就忽略了 SELinux 的限制了！
+		</fieldset><br>	<br></div><br>
+
+	<a id="systemd_cfg_custom"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top">Top</a></div>
+	<h2>17.3.5 自己的服務自己作</h2>
+
+		<p>我們來模擬自己作一個服務吧！假設我要作一隻可以備份自己系統的服務，這隻腳本我放在 /backups 底下，內容有點像這樣：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vim /backups/backup.sh</span>
+<span class="term_write">#!/bin/bash
+
+source="/etc /home /root /var/lib /var/spool/{cron,at,mail}"
+target="/backups/backup-system-$(date +%Y-%m-%d).tar.gz"
+[ ! -d /backups ] &amp;&amp; mkdir /backups
+tar -zcvf ${target} ${source} &amp;&gt; /backups/backup.log</span>
+
+[root@study ~]# <span class="term_command">chmod a+x /backups/backup.sh</span>
+[root@study ~]# <span class="term_command">ll /backups/backup.sh</span>
+<span class="term_write">-rwxr-xr-x</span>. 1 root root 220 Aug 13 01:57 /backups/backup.sh
+<span class="term_say"># 記得要有可執行的權限才可以喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>接下來，我們要如何設計一隻名為 backup.service 的啟動腳本設定呢？可以這樣做喔！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vim /etc/systemd/system/backup.service</span>
+<span class="term_write">[Unit]
+Description=backup my server
+Requires=atd.service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c " echo /backups/backup.sh | at now"
+
+[Install]
+WantedBy=multi-user.target</span>
+<span class="term_say"># 因為 ExecStart 裡面有用到 at 這個指令，因此， atd.service 就是一定要的服務！</span>
+
+[root@study ~]# <span class="term_command">systemctl daemon-reload</span>
+[root@study ~]# <span class="term_command">systemctl start backup.service</span>
+[root@study ~]# <span class="term_command">systemctl status backup.service</span>
+backup.service - backup my server
+   Loaded: loaded (/etc/systemd/system/backup.service; disabled)
+   Active: inactive (dead)
+
+Aug 13 07:50:31 study.centos.vbird systemd[1]: Starting backup my server...
+Aug 13 07:50:31 study.centos.vbird bash[20490]: job 8 at Thu Aug 13 07:50:00 2015
+Aug 13 07:50:31 study.centos.vbird systemd[1]: Started backup my server.
+<span class="term_say"># 為什麼 Active 是 inactive 呢？這是因為我們的服務僅是一個簡單的 script 啊！
+# 因此執行完畢就完畢了，不會繼續存在記憶體中喔！</span>
+</pre></td></tr></tbody></table>
+
+		<p>完成上述的動作之後，以後你都可以直接使用 systemctl start backup.service 進行系統的備份了！而且會直接丟進 atd 的管理中，
+		你就無須自己手動用 at 去處理這項任務了～好像還不賴喔！ ^_^</p>
+
+		<p>這樣自己做一個服務好像也不難啊！ ^_^！自己動手玩玩看吧！</p>
+
+	<br></div><br>
+</div>
+
+
+<a id="systemctl_timer"></a>
+<div class="block1">
+<h2>17.4 systemctl 針對 timer 的設定檔</h2>
+
+	<p>有時候，某些服務你想要定期執行，或者是開機後執行，或者是什麼服務啟動多久後執行等等的。在過去，我們大概都是使用 crond 這個服務來定期處理，
+	不過，既然現在有一直常駐在記憶體當中的 systemd 這個好用的東西，加上這 systemd 有個協力服務，名為 timers.target 的傢伙，這傢伙可以協助定期處理各種任務！
+	那麼，除了 crond 之外，如何使用 systemd 內建的 time 來處理各種任務呢？這就是本小節的重點囉！</p>
+
+	<ul class="toplist"><li>systemd.timer 的優勢</li></ul>
+
+	<p>在 archlinux 的官網 wiki 上面有提到，為啥要使用 systemd.timer 呢？</p>
+
+	<ul>
+		<li>由於所有的 systemd 的服務產生的資訊都會被紀錄 (log)，因此比 crond 在 debug 上面要更清楚方便的多；</li>
+		<li>各項 timer 的工作可以跟 systemd 的服務相結合；</li>
+		<li>各項 timer 的工作可以跟 control group (cgroup，用來取代 /etc/secure/limit.conf 的功能) 結合，來限制該工作的資源利用</li>
+	</ul>
+
+	<p>雖然還是有些弱點啦～例如 systemd 的 timer 並沒有 email 通知的功能 (除非自己寫一個)，也沒有類似 anacron 的一段時間內的隨機取樣功能 (random_delay)，
+	不過，總體來說，還是挺不錯的！此外，相對於 crond 最小的單位到分， systemd  是可以到秒甚至是毫秒的單位哩！相當有趣！</p>
+
+	<ul class="toplist"><li>任務需求</li></ul>
+
+	<p>基本上，想要使用 systemd 的 timer 功能，你必須要有幾個要件：</p>
+
+	<ul>
+	<li>系統的 timer.target 一定要啟動</li>
+	<li>要有個 sname.service 的服務存在 (sname 是你自己指定的名稱)</li>
+	<li>要有個 sname.timer 的時間啟動服務存在</li>
+	</ul>
+
+	<p>滿足上面的需求就 OK 了！有沒有什麼案例可以來實作看看？這樣說好了，我們上個小節不是才自己做了個 backup.service 的服務嗎？那麼能不能將這個 backup.service 
+	用在定期執行上面呢？好啊！那就來測試看看！</p>
+
+	<ul class="toplist"><li>sname.timer 的設定值</li></ul>
+
+	<p>你可以到 /etc/systemd/system 底下去建立這個 *.timer 檔，那這個檔案的內容要項有哪些東西呢？基本設定主要有底下這些： (man systemd.timer &amp; man systemd.time)</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td colspan="2">[Timer] 部份</td></tr>
+<tr class="theader"><td>設定參數</td><td>參數意義說明</td></tr>
+<tr>
+	<td>OnActiveSec</td>
+	<td>當 timers.target 啟動多久之後才執行這隻 unit</td></tr>
+<tr>
+	<td>OnBootSec</td>
+	<td>當開機完成後多久之後才執行</td></tr>
+<tr>
+	<td>OnStartupSec</td>
+	<td>當 systemd 第一次啟動之後過多久才執行</td></tr>
+<tr>
+	<td>OnUnitActiveSec</td>
+	<td>這個 timer 設定檔所管理的那個 unit 服務在最後一次啟動後，隔多久後再執行一次的意思</td></tr>
+<tr>
+	<td>OnUnitInactiveSec</td>
+	<td>這個 timer 設定檔所管理的那個 unit 服務在最後一次停止後，隔多久再執行一次的意思。</td></tr>
+<tr>
+	<td>OnCalendar</td>
+	<td>使用實際時間 (非循環時間) 的方式來啟動服務的意思！至於時間的格式後續再來談。</td></tr>
+<tr>
+	<td>Unit</td>
+	<td>一般來說不太需要設定，因此如同上面剛剛提到的，基本上我們設定都是 sname.server + sname.timer，那如果你的 sname 並不相同時，那在 .timer 的檔案中，
+		就得要指定是哪一個 service unit 囉！</td></tr>
+<tr>
+	<td>Persistent</td>
+	<td>當使用 OnCalendar 的設定時，指定該功能要不要持續進行的意思。通常是設定為 yes ，比較能夠滿足類似 anacron 的功能喔！</td></tr>
+</tbody></table>
+
+	<p>基本的項目僅有這些而已，在設定上其實並不困難啦！</p>
+
+	<ul class="toplist"><li>使用於 OnCalendar 的時間</li></ul>
+
+	<p>如果你想要從 crontab 轉成這個 timer 功能的話，那麼對於時間設定的格式就得要了解了解～基本上的格式如下所示：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>語法：英文周名  YYYY-MM-DD  HH:MM:SS
+範例：Thu       2015-08-13  13:40:00
+</pre></td></tr></tbody></table>
+
+	<p>上面談的是基本的語法，你也可以直接使用間隔時間來處理！常用的間隔時間單位有：</p>
+	<ul>
+		<li>us 或 usec：微秒 (10<sup>-6</sup> 秒)</li>
+		<li>ms 或 msec：毫秒 (10<sup>-3</sup> 秒)</li>
+		<li>s, sec, second, seconds</li>
+		<li>m, min, minute, minutes</li>
+		<li>h, hr, hour, hours</li>
+		<li>d, day, days</li>
+		<li>w, week, weeks</li>
+		<li>month, months</li>
+		<li>y, year, years</li>
+	</ul>
+
+	<p>常見的使用範例有：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>隔 3 小時：             3h  或 3hr 或 3hours
+隔 300 分鐘過 10 秒：   10s 300m
+隔 5 天又 100 分鐘：    100m 5day
+<span class="term_say"># 通常英文的寫法，小單位寫前面，大單位寫後面～所以先秒、再分、再小時、再天數等～</span>
+</pre></td></tr></tbody></table>
+
+	<p>此外，你也可以使用英文常用的口語化日期代表，例如 today, tomorrow 等！假設今天是 2015-08-13 13:50:00 的話，那麼：</p>
+
+<table class="news" style="width: 80%">
+<tbody><tr class="theader"><td>英文口語</td><td>實際的時間格式代表</td></tr>
+<tr>
+	<td>now</td>		<td>Thu 2015-08-13 13:50:00</td></tr>
+<tr>
+	<td>today</td>		<td>Thu 2015-08-13 00:00:00</td></tr>
+<tr>
+	<td>tomorrow</td>	<td>Thu 2015-08-14 00:00:00</td></tr>
+<tr>
+	<td>hourly</td>		<td>*-*-* *:00:00</td></tr>
+<tr>
+	<td>daily</td>		<td>*-*-* 00:00:00</td></tr>
+<tr>
+	<td>weekly</td>		<td>Mon *-*-* 00:00:00</td></tr>
+<tr>
+	<td>monthly</td>	<td>*-*-01 00:00:00</td></tr>
+<tr>
+	<td>+3h10m</td>		<td>Thu 2015-08-13 17:00:00</td></tr>
+<tr>
+	<td>2015-08-16</td>	<td>Sun 2015-08-16 00:00:00</td></tr>
+</tbody></table>
+
+	<ul class="toplist"><li>一個循環時間運作的案例</li></ul>
+
+	<p>現在假設這樣：</p>
+	<ul>
+	<li>開機後 2 小時開始執行一次這個 backup.service</li>
+	<li>自從第一次執行後，未來我每兩天要執行一次 backup.service</li>
+	</ul>
+
+	<p> 好了，那麼應該如何處理這個腳本呢？可以這樣做喔！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vim /etc/systemd/system/backup.timer</span>
+<span class="term_write">[Unit]
+Description=backup my server timer
+
+[Timer]
+OnBootSec=2hrs
+OnUnitActiveSec=2days
+
+[Install]
+WantedBy=multi-user.target</span>
+<span class="term_say"># 只要這樣設定就夠了！儲存離開吧！</span>
+
+[root@study ~]# <span class="term_command">systemctl daemon-reload</span>
+[root@study ~]# <span class="term_command">systemctl enable backup.timer</span>
+[root@study ~]# <span class="term_command">systemctl restart backup.timer</span>
+[root@study ~]# <span class="term_command">systemctl list-unit-files | grep backup</span>
+backup.service          disabled   <span class="term_note"># 這個不需要啟動！只要 enable backup.timer 即可！</span>
+backup.timer            enabled
+
+[root@study ~]# <span class="term_command">systemctl show timers.target</span>
+ConditionTimestamp=Thu 2015-08-13 14:31:11 CST      <span class="term_note"># timer 這個 unit 啟動的時間！</span>
+
+[root@study ~]# <span class="term_command">systemctl show backup.service</span>
+ExecMainExitTimestamp=Thu 2015-08-13 14:50:19 CST   <span class="term_note"># backup.service 上次執行的時間</span>
+
+[root@study ~]# <span class="term_command">systemctl show backup.timer</span>
+NextElapseUSecMonotonic=2d 19min 11.540653s         <span class="term_note"># 下一次執行距離 timers.target 的時間</span>
+</pre></td></tr></tbody></table>
+
+	<p>如上表所示，我上次執行 backup.service 的時間是在 2015-08-13 14:50 ，由於設定兩個小時執行一次，因此下次應該是 2015-08-15 14:50 執行才對！
+	由於 timer 是由 timers.target 這個 unit 所管理的，而這個 timers.target 的啟動時間是在 2015-08-13 14:31 ，
+	要注意，最終 backup.timer 所紀錄的下次執行時間，其實是與 timers.target 所紀錄的時間差！因此是『 2015-08-15 14:50 - 2015-08-13 14:31 』才對！
+	所以時間差就是 2d 19min 囉！</p>
+
+	<ul class="toplist"><li>一個固定日期運作的案例</li></ul>
+
+	<p>上面的案例是固定週期運作一次，那如果我希望不管上面如何運作了，我都希望星期天凌晨 2 點運作這個備份程式一遍呢？請注意，因為已經存在 backup.timer 了！
+	所以，這裡我用 backup2.timer 來做區隔喔！</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">vim /etc/systemd/system/backup2.timer</span>
+<span class="term_write">[Unit]
+Description=backup my server timer2
+
+[Timer]
+OnCalendar=Sun *-*-* 02:00:00
+Persistent=true
+Unit=backup.service
+
+[Install]
+WantedBy=multi-user.target</span>
+
+[root@study ~]# <span class="term_command">systemctl daemon-reload</span>
+[root@study ~]# <span class="term_command">systemctl enable backup2.timer</span>
+[root@study ~]# <span class="term_command">systemctl start backup2.timer</span>
+[root@study ~]# <span class="term_command">systemctl show backup2.timer</span>
+NextElapseUSecRealtime=45y 7month 1w 6d 10h 30min
+</pre></td></tr></tbody></table>
+
+	<p>與循環時間運作差異比較大的地方，在於這個 OnCalendar 的方法對照的時間並不是 times.target 的啟動時間，而是 Unix 標準時間！
+	亦即是 1970-01-01 00:00:00 去比較的！因此，當你看到最後出現的 NextElapseUSecRealtime 時，哇！下一次執行還要 45 年 + 7 個月 
+	+ 1 周 + 6 天 + 10 小時過 30 分～剛看到的時候，鳥哥確實因此揉了揉眼睛～確定沒有看錯...這才了解原來比對的是『日曆時間』而不是某個
+	unit 的啟動時間啊！呵呵！</p>
+
+	<p>透過這樣的方式，你就可以使用 systemd 的 timer 來製作屬於你的時程規劃服務囉！</p>
+</div>
+
+
+<a id="illustrations"></a>
+<div class="block1">
+<h2>17.5 CentOS 7.x 預設啟動的服務簡易說明</h2>
+
+		<p>隨著 Linux 上面軟體支援性越來越多，加上自由軟體蓬勃的發展，我們可以在 Linux 上面用的 daemons 
+		真的越來越多了。所以，想要寫完所有的 daemons 介紹幾乎是不可能的，因此，鳥哥這裡僅介紹幾個很常見的 daemons 而已，
+		更多的資訊呢，就得要麻煩你自己使用 systemctl list-unit-files --type=service 去查詢囉！
+		底下的建議主要是針對 Linux 單機伺服器的角色來說明的，不是桌上型的環境喔！</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td colspan="2">CentOS 7.x 預設啟動的服務內容</td></tr>
+<tr class="theader"><td style="width: 120px">服務名稱</td><td>功能簡介</td></tr>
+<tr>
+	<td class="tcenter">abrtd</td>
+	<td><span style="font-weight: bolder">(系統)</span>abrtd 服務可以提供使用者一些方式，讓使用者可以針對不同的應用軟體去設計錯誤登錄的機制，
+		當軟體產生問題時，使用者就可以根據 abrtd 的登錄檔來進行錯誤克服的行為。還有其他的 abrt-xxx.service 
+		均是使用這個服務來加強應用程式 debug 任務的。</td></tr>
+<tr>
+	<td class="tcenter">accounts-daemon<br>(可關閉)</td>
+	<td><span style="font-weight: bolder">(系統)</span>使用 accountsservice 計畫所提供的一系列 D-Bus 界面來進行使用者帳號資訊的查詢。
+		基本上是與 useradd, usermod, userdel 等軟體有關。</td></tr>
+<tr>
+	<td class="tcenter">alsa-X<br>(可關閉)</td>
+	<td><span style="font-weight: bolder">(系統)</span>開頭為 alsa 的服務有不少，這些服務大部分都與音效有關！一般來說，
+		伺服器且不開圖形界面的話，這些服務可以關閉！</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">atd</td>
+	<td><span style="font-weight: bolder">(系統)</span>單一的例行性工作排程，詳細說明請參考<a href="http://linux.vbird.org/linux_basic/0430cron.php#atjob">第十五章</a>。
+	抵擋機制的設定檔在 /etc/at.{allow,deny} 喔！</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">auditd</td>
+	<td><span style="font-weight: bolder">(系統)</span>還記得<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php#auditd">前一章的 SELinux 所需服務</a>吧？
+        這就是其中一項，可以讓系統需 SELinux 稽核的訊息寫入 /var/log/audit/audit.log 中。</td></tr>
+<tr>
+	<td class="tcenter">avahi-daemon<br>(可關閉)</td>
+	<td><span style="font-weight: bolder">(系統)</span>也是一個用戶端的服務，可以透過 Zeroconf 自動的分析與管理網路。
+        Zeroconf 較常用在筆記型電腦與行動裝置上，所以我們可以先關閉他啦！</td></tr>
+<tr>
+	<td class="tcenter">brandbot<br>rhel-*<br></td>
+	<td><span style="font-weight: bolder">(系統)</span>這些服務大多用於開機過程中所需要的各種偵測環境的腳本，同時也提供網路界面的啟動與關閉。
+		基本上，你不要關閉掉這些服務比較妥當！</td></tr>
+<tr>
+	<td class="tcenter">chronyd<br>ntpd<br>ntpdate</td>
+	<td><span style="font-weight: bolder">(系統)</span>都是網路校正時間的服務！一般來說，你可能需要的僅有 chronyd 而已！</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">cpupower</td>
+	<td><span style="font-weight: bolder">(系統)</span>提供 CPU 的運作規範～可以參考 /etc/sysconfig/cpupower 得到更多的資訊！
+		這傢伙與你的 CPU 使用情況有關喔！</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">crond</td>
+	<td><span style="font-weight: bolder">(系統)</span>系統設定檔為 /etc/crontab，詳細資料可參考<a href="http://linux.vbird.org/linux_basic/0430cron.php#cron">第十五章</a>的說明。</td></tr>
+<tr>
+	<td class="tcenter">cups<br>(可關閉)</td>
+	<td><span style="font-weight: bolder">(系統/網路)</span>用來管理印表機的服務，可以提供網路連線的功能，有點類似列印伺服器的功能哩！
+        你可以在 Linux 本機上面以瀏覽器的 http://localhost:631 來管理印表機喔！由於我們目前沒有印表機，所以可以暫時關閉他。</td></tr>
+<tr>
+	<td class="tcenter">dbus</td>
+	<td><span style="font-weight: bolder">(系統)</span>使用 D-Bus 的方式在不同的應用程式之間傳送訊息，
+	使用的方向例如應用程式間的訊息傳遞、每個使用者登入時提供的訊息資料等。</td></tr>
+<tr>
+	<td class="tcenter">dm-event<br>multipathd</td>
+	<td><span style="font-weight: bolder">(系統)</span>監控裝置對應表 (device mapper) 的主要服務，當然不能關掉啊！
+	否則就無法讓 Linux 使用我們的週邊裝置與儲存裝置了！</td></tr>
+<tr>
+	<td class="tcenter">dmraid-activation<br>mdmonitor</td>
+	<td><span style="font-weight: bolder">(系統)</span>用來啟動 Software RAID 的重要服務！最好不要關閉啦！雖然你可能沒有 RAID。</td></tr>
+<tr>
+	<td class="tcenter">dracut-shutdown</td>
+	<td><span style="font-weight: bolder">(系統)</span>用來處理 initramfs 的相關行為，這與開機流程相關性較高～</td></tr>
+<tr>
+	<td class="tcenter">ebtables</td>
+	<td><span style="font-weight: bolder">(系統/網路)</span>透過類似 iptables 這種防火牆規則的設定方式，設計網路卡作為橋接時的封包分析政策。
+		其實就是防火牆。不過與底下談到的防火牆應用不太一樣。如果沒有使用虛擬化，或者啟用了 firewalld ，這個服務可以不啟動。</td></tr>
+<tr>
+	<td class="tcenter">emergency<br>rescue<br></td>
+	<td><span style="font-weight: bolder">(系統)</span>進入緊急模式或者是救援模式的服務</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">firewalld</td>
+	<td><span style="font-weight: bolder">(系統/網路)</span>就是防火牆！以前有 iptables 與 ip6tables 等防火牆機制，新的 firewalld 搭配
+		firewall-cmd 指令，可以快速的建置好你的防火牆系統喔！因此，從 CentOS 7.1 以後，iptables 服務的啟動腳本已經被忽略了！
+		請使用 firewalld 來取代 iptables 服務喔！</td></tr>
+<tr>
+	<td class="tcenter">gdm</td>
+	<td><span style="font-weight: bolder">(系統)</span>GNOME 的登入管理員，就是圖形界面上一個很重要的登入管理服務！</td></tr>
+<tr>
+	<td class="tcenter">getty@</td>
+	<td><span style="font-weight: bolder">(系統)</span>就是要在本機系統產生幾個文字界面 (tty) 登入的服務囉！</td></tr>
+<tr>
+	<td class="tcenter">hyper*<br>ksm*<br>libvirt*<br>vmtoolsd</td>
+	<td><span style="font-weight: bolder">(系統)</span>跟建立虛擬機器有關的許多服務！如果你不玩虛擬機，
+	那麼這些服務可以先關閉。此外，如果你的 Linux 本來就在虛擬機的環境下，那這些服務對你就沒有用！因為這些服務是讓實體機器來建立虛擬機的！</td></tr>
+<tr>
+	<td class="tcenter">irqbalance</td>
+	<td><span style="font-weight: bolder">(系統)</span>如果你的系統是多核心的硬體，那麼這個服務要啟動，
+        因為它可以自動的分配系統中斷 (IRQ) 之類的硬體資源。</td></tr>
+<tr>
+	<td class="tcenter">iscsi*</td>
+	<td><span style="font-weight: bolder">(系統)</span>可以掛載來自網路磁碟機的服務！這個服務可以在系統內模擬好貴的 SAN 網路磁碟。
+	如果你確定系統上面沒有掛載這種網路磁碟，也可以將他關閉的。</td></tr>
+<tr>
+	<td class="tcenter">kdump<br>(可關閉)</td>
+	<td><span style="font-weight: bolder">(系統)</span>在安裝 CentOS 的章節就談過這東西，主要是 Linux 核心如果出錯時，用來紀錄記憶體的東西。
+	鳥哥覺得不需要啟動他！除非你是核心駭客！</td></tr>
+<tr>
+	<td class="tcenter">lvm2-*</td>
+	<td><span style="font-weight: bolder">(系統)</span>跟 LVM 相關性較高的許多服務，當然也不能關！不然系統上面的 LVM2 就沒人管了！</td></tr>
+<tr>
+	<td class="tcenter">microcode</td>
+	<td><span style="font-weight: bolder">(系統)</span>Intel 的 CPU 會提供一個外掛的微指令集提供系統運作，
+        不過，如果你沒有下載 Intel 相關的指令集檔案，那麼這個服務不需要啟動的，也不會影響系統運作。</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">ModemManager<br>network<br>NetworkManager*</td>
+	<td><span style="font-weight: bolder">(系統/網路)</span>主要就是數據機、網路設定等服務！進入 CentOS 7 之後，系統似乎不太希望我們使用 network 服務了，
+		比較建議的是使用 NetworkManager 搭配 nmcli 指令來處理網路設定～所以，反而是 NetworkManager 要開，而 network 不用開哩！</td></tr>
+<tr>
+	<td class="tcenter">quotaon</td>
+	<td><span style="font-weight: bolder">(系統)</span>啟動 Quota 要用到的服務喔！</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">rc-local</td>
+	<td><span style="font-weight: bolder">(系統)</span>相容於 /etc/rc.d/rc.local 的呼叫方式！只是，你必須要讓 /etc/rc.d/rc.local 具有 x 的權限後，
+	這個服務才能真的運作！否則，你寫入 /etc/rc.d/rc.local 的腳本還是不會運作的喔！</td></tr>
+<tr style="background-color: #dddddd;">
+	<td class="tcenter" style="font-weight: bold">rsyslog</td>
+	<td><span style="font-weight: bolder">(系統)</span>這個服務可以記錄系統所產生的各項訊息，
+        包括 /var/log/messages 內的幾個重要的登錄檔啊。</td></tr>
+<tr>
+	<td class="tcenter">smartd</td>
+	<td><span style="font-weight: bolder">(系統)</span>這個服務可以自動的偵測硬碟狀態，如果硬碟發生問題的話，
+        還能夠自動的回報給系統管理員，是個非常有幫助的服務喔！不可關閉他啊！</td></tr>
+<tr>
+	<td class="tcenter">sysstat</td>
+	<td><span style="font-weight: bolder">(系統)</span>事實上，我們的系統有隻名為 sar 的指令會記載某些時間點下，系統的資源使用情況，包括 CPU/流量/輸入輸出量等，
+		當 sysstat 服務啟動後，這些紀錄的資料才能夠寫入到紀錄檔 (log) 裡面去！</td></tr>
+<tr>
+	<td class="tcenter">systemd-*</td>
+	<td><span style="font-weight: bolder">(系統)</span>大概都是屬於系統運作過程所需要的服務，沒必要都不要更動它的預設狀態！</td></tr>
+<tr>
+	<td class="tcenter">plymount*<br>upower</td>
+	<td><span style="font-weight: bolder">(系統)</span>與圖形界面的使用相關性較高的一些服務！沒啟動圖形界面時，這些服務可以暫時不管他！</td></tr>
+</tbody></table>
+
+		<p>上面的服務是 CentOS 7.x 預設有啟動的，這些預設啟動的服務很多是針對桌上型電腦所設計的，所以囉，如果你的 Linux 
+		主機用途是在伺服器上面的話，那麼有很多服務是可以關閉的啦！如果你還有某些不明白的服務想要關閉的，
+		請務必要搞清楚該服務的功能為何喔！舉例來說，那個 rsyslog 就不能關閉，如果你關掉他的話，系統就不會記錄登錄檔，
+		那你的系統所產生的警告訊息就無法記錄起來，你將無法進行 debug 喔。</p>
+
+		<p>底下鳥哥繼續說明一些可能在你的系統當中的服務，只是預設並沒有啟動這個服務就是了。只是說明一下，
+		各服務的用途還是需要您自行查詢相關的文章囉。</p>
+
+<table class="news" style="width: 95%">
+<tbody><tr class="theader"><td colspan="2">其他服務的簡易說明</td></tr>
+<tr class="theader"><td style="width: 120px">服務名稱</td><td>功能簡介</td></tr>
+<tr>
+	<td class="tcenter">dovecot</td>
+	<td><span style="font-weight: bolder">(網路)</span>可以設定 POP3/IMAP 等收受信件的服務，如果你的 Linux 主機是 email server
+        才需要這個服務，否則不需要啟動他啦！</td></tr>
+<tr>
+	<td class="tcenter">httpd</td>
+	<td><span style="font-weight: bolder">(網路)</span>這個服務可以讓你的 Linux 伺服器成為 www server 喔！</td></tr>
+<tr>
+	<td class="tcenter">named</td>
+	<td><span style="font-weight: bolder">(網路)</span>這是領域名稱伺服器 (Domain Name System) 的服務，
+        這個服務非常重要，但是設定非常困難！目前應該不需要這個服務啦！</td></tr>
+<tr>
+	<td class="tcenter">nfs<br>nfs-server</td>
+	<td><span style="font-weight: bolder">(網路)</span>這就是 Network Filesystem，是 Unix-Like 之間互相作為網路磁碟機的一個功能。</td></tr>
+<tr>
+	<td class="tcenter">smb<br>nmb</td>
+	<td><span style="font-weight: bolder">(網路)</span>這個服務可以讓 Linux 模擬成為 Windows 上面的網路上的芳鄰。
+        如果你的 Linux 主機想要做為 Windows 用戶端的網路磁碟機伺服器，這玩意兒得要好好玩一玩。</td></tr>
+<tr>
+	<td class="tcenter">vsftpd</td>
+	<td><span style="font-weight: bolder">(網路)</span>作為檔案傳輸伺服器 (FTP) 的服務。</td></tr>
+<tr>
+	<td class="tcenter">sshd</td>
+	<td><span style="font-weight: bolder">(網路)</span>這個是遠端連線伺服器的軟體功能，
+        這個通訊協定比 telnet 好的地方在於 sshd 在傳送資料時可以進行加密喔！這個服務不要關閉他啦！</td></tr>
+<tr>
+	<td class="tcenter">rpcbind</td>
+	<td><span style="font-weight: bolder">(網路)</span>達成 RPC 協定的重要服務！包括 NFS, NIS 等等都需要這東西的協助！</td></tr>
+<tr>
+	<td class="tcenter">postfix</td>
+	<td><span style="font-weight: bolder">(網路)</span>寄件的郵件主機～因為系統還是會產生很多 email 訊息！例如 crond / atd 就會傳送 email 給本機用戶！
+	所以這個服務千萬不能關！即使你不是 mail server 也是要啟用這服務才行！</td></tr>
+</tbody></table>
+
+</div>
+
+
+<a id="hint"></a>
+<div class="block1">
+<h2>17.6 重點回顧</h2>
+<ul class="text_import2">
+	<li>早期的服務管理使用 systemV 的機制，透過 /etc/init.d/*, service, chkconfig, setup 等指令來管理服務的啟動/關閉/預設啟動；</li>
+	<li>從 CentOS 7.x 開始，採用 systemd 的機制，此機制最大功能為平行處理，並採單一指令管理 (systemctl)，開機速度加快！</li>
+	<li>systemd 將各服務定義為 unit，而 unit 又分類為 service, socket, target, path, timer 等不同的類別，方便管理與維護</li>
+	<li>啟動/關閉/重新啟動的方式為： systemctl [start|stop|restart] unit.service</li>
+	<li>設定預設啟動/預設不啟動的方式為： systemctl [enable|disable] unit.service</li>
+	<li>查詢系統所有啟動的服務用 systemctl list-units --type=service 而查詢所有的服務 (含不啟動) 使用 systemctl list-unit-files --type=service</li>
+	<li>systemd 取消了以前的 runlevel 概念 (雖然還是有相容的 target)，轉而使用不同的 target 操作環境。常見操作環境為 multi-user.targer 與 graphical.target。
+		不重新開機而轉不同的操作環境使用 systemctl isolate unit.target，而設定預設環境則使用 systemctl set-default unit.target</li>
+	<li>systemctl 系統預設的設定檔主要放在 /usr/lib/systemd/system，管理員若要修改或自行設計時，則建議放在 /etc/systemd/system/ 目錄下。</li>
+	<li>管理員應使用 man systemd.unit, man systemd.service, man systemd.timer 查詢 /etc/systemd/system/ 底下設定檔的語法，
+		並使用 systemctl daemon-reload 載入後，才能自行撰寫服務與管理服務喔！</li>
+	<li>除了 atd 與 crond 之外，可以 透過 systemd.timer 亦即 timers.target 的功能，來使用 systemd 的時間管理功能。</li>
+	<li>一些不需要的服務可以關閉喔！</li>
+</ul>
+</div>
+
+
+<a id="ex"></a>
+<div class="block1">
+<h2>17.7 本章習題</h2>
+( 要看答案請將滑鼠移動到『答：』底下的空白處，按下左鍵圈選空白處即可察看 )
+<ul>
+	<li>情境模擬題：透過設定、啟動、觀察等機制，完整的瞭解一個服務的啟動與觀察現象。<br><br>
+	<ul>
+		<li>目標：瞭解 daemon 的控管機制，以 sshd daemon 為例；</li>
+		<li>前提：需要對本章已經瞭解，尤其是 systemd 的管理 部分；</li>
+		<li>需求：已經有 sshd 這個服務，但沒有修改過埠口！</li>
+	</ul><br>
+
+	在本情境中，我們使用 sshd 這個服務來觀察，主要是假設 sshd 要開立第二個服務，這個第二個服務的 port 放行於 222 ，那該如何處理？
+	可以這樣做看看：<br><br>
+
+	<ol>
+		<li>基本上 sshd 幾乎是一定會安裝的服務！只是我們還是來確認看看好了！<br>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">systemctl status sshd.service</span>
+sshd.service - OpenSSH server daemon
+   Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+   Active: active (running) since Thu 2015-08-13 14:31:12 CST; 20h ago
+
+[root@study ~]# <span class="term_command">cat /usr/lib/systemd/system/sshd.service</span>
+[Unit]
+Description=OpenSSH server daemon
+After=network.target sshd-keygen.service
+Wants=sshd-keygen.service
+
+[Service]
+EnvironmentFile=/etc/sysconfig/sshd
+<span class="term_write">ExecStart=/usr/sbin/sshd -D $OPTIONS</span>
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+</pre></td></tr></tbody></table><br></li>
+
+		<li>透過觀察 man sshd，我們可以查詢到 sshd 的設定檔位於 /etc/ssh/sshd_config 這個檔案內！再 man sshd_config 也能知道原來埠口是使用 Port 來規範的！
+		因此，我想要建立第二個設定檔，檔名假設為 /etc/ssh/sshd2_config 這樣！<br>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cd /etc/ssh</span>
+[root@study ssh]# <span class="term_command">cp sshd_config sshd2_config</span>
+[root@study ssh]# <span class="term_command">vim sshd2_config</span>
+<span class="term_write">Port 222</span>
+<span class="term_say"># 隨意找個地方加上這個設定值！你可以在檔案的最下方加入這行也 OK 喔！</span>
+</pre></td></tr></tbody></table><br></li>
+
+		<li>接下來開始修改啟動腳本服務檔！<br>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@study ~]# <span class="term_command">cd /etc/systemd/system</span>
+[root@study system]# <span class="term_command">cp /usr/lib/systemd/system/sshd.service sshd2.service</span>
+[root@study system]# <span class="term_command">vim sshd2.service</span>
+[Unit]
+<span class="term_write">Description=OpenSSH server daemon 2</span>
+After=network.target sshd-keygen.service
+Wants=sshd-keygen.service
+
+[Service]
+EnvironmentFile=/etc/sysconfig/sshd
+<span class="term_write">ExecStart=/usr/sbin/sshd -f /etc/ssh/sshd2_config -D $OPTIONS</span>
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+
+[root@study system]# <span class="term_command">systemctl daemon-reload</span>
+[root@study system]# <span class="term_command">systemctl enable sshd2</span>
+[root@study system]# <span class="term_command">systemctl start sshd2</span>
+[root@study system]# <span class="term_command">tail -n 20 /var/log/messages</span>
+# semanage port -a -t PORT_TYPE -p tcp 222
+    where PORT_TYPE is one of the following: ssh_port_t, vnc_port_t, xserver_port_t.
+<span class="term_say"># 認真的看！你會看到上面這兩句！也就是 SELinux 的埠口問題！請解決！</span>
+
+[root@study system]# <span class="term_command">semanage port -a -t ssh_port_t -p tcp 222</span>
+[root@study system]# <span class="term_command">systemctl start sshd2</span>
+[root@study system]# <span class="term_command">netstat -tlnp | grep ssh</span>
+tcp        0      0 0.0.0.0:22    0.0.0.0:*     LISTEN      1300/sshd
+tcp        0      0 0.0.0.0:<span class="term_write">222</span>   0.0.0.0:*     LISTEN      15275/sshd
+tcp6       0      0 :::22         :::*          LISTEN      1300/sshd
+tcp6       0      0 :::<span class="term_write">222</span>        :::*          LISTEN      15275/sshd
+</pre></td></tr></tbody></table></li>
+
+	</ol></li>
+</ul>
+<hr>簡答題部分：
+<ul>
+	<li>使用 netstat -tul 與 netstat -tunl 有什麼差異？為何會這樣？
+	<div class="blockex">
+		使用 n 時， netstat 就不會使用主機名稱與服務名稱 (hostname &amp; service_name) 來顯示，
+		取而代之的則是以 IP 及 port number 來顯示的。IP 的分析與 /etc/hosts 及 /etc/resolv.conf 有關，
+		這個在未來伺服器篇才會提到。至於 port number 則與 /etc/services 有關，請自行參考喔！ ^_^
+	</div></li>
+
+	<li>你能否找出來，啟動 port 3306 這個埠口的服務為何？
+	<div class="blockex">
+		透過搜尋 /etc/services 內容，得到 port 3306 為 mysql 所啟動的埠口喔！查詢 google，
+		可得到 mysql 為一種網路資料庫系統軟體。
+	</div></li>
+
+	<li>你可以透過哪些指令查詢到目前系統預設開機會啟動的服務？
+	<div class="blockex">
+		systemctl list-units 以及 systemctl list-unit-files
+	</div></li>
+
+	<li>承上，那麼哪些服務『目前』是在啟動的狀態？
+	<div class="blockex">
+		結果同上！只是若要進一步的資訊，應該使用 systemctl status [unit.service] 一項一項查詢！
+	</div></li>
+</ul>
+</div>
+
+
+<a id="reference"></a>
+<div class="block1">
+<h2>17.8 參考資料與延伸閱讀</h2>
+<ul>
+	<li>freedesktop.org 的重要介紹：<a href="http://www.freedesktop.org/wiki/Software/systemd/" target="_blank">http://www.freedesktop.org/wiki/Software/systemd/</a></li>
+	<li>Red Hat 官網的介紹：<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/chap-Managing_Services_with_systemd.html" target="_blank">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7<br>/html/System_Administrators_Guide/chap-Managing_Services_with_systemd.html</a></li>
+	<li>man systemd.unit, man systemd.service, man systemd.kill, man systemd.timer, man systemd.time</li>
+	<li>關於 timer 的相關介紹：
+		<ul>
+		<li>archlinux.org: <a href="https://wiki.archlinux.org/index.php/Systemd/Timers" target="_blank">https://wiki.archlinux.org/index.php/Systemd/Timers</a></li>
+		<li>Janson's Blog: <a href="http://jason.the-graham.com/2013/03/06/how-to-use-systemd-timers/" target="_blank">http://jason.the-graham.com/2013/03/06/how-to-use-systemd-timers/</a></li>
+		<li>freedesktop.org: <a href="http://www.freedesktop.org/software/systemd/man/systemd.timer.html" target="_blank">http://www.freedesktop.org/software/systemd/man/systemd.timer.html</a></li>
+		</ul></li>
+</ul>
+</div>
+
+
+<div class="block1" style="margin-bottom: 32px; padding-left: 10px; line-height: 1">
+<span class="text_history">
+2002/07/10：第一次完成<br>
+2003/02/11：重新編排與加入 FAQ<br>
+2005/10/03：將原本舊版的資料移動到 <a href="http://linux.vbird.org/linux_basic/0560daemons/0560daemons.php">此處</a> 。<br>
+2005/10/12：經過一段時間的修訂，將原本在 <a href="http://linux.vbird.org/linux_basic/9999old/0550setup.php">系統設定工具</a> 的內容移動到此，並新增完畢！<br>
+2009/03/25：將原本舊的基於 FC4 的資料移動到<a href="http://linux.vbird.org/linux_basic/0560daemons/0560daemons-fc4.php">此處</a>。<br>
+2009/04/02：加入一些預設啟動的服務說明。<br>
+2009/09/14：加入情境模擬，並且修訂課後練習題的部分了。<br>
+2015/08/10：將舊的基於 CentOS 5 的版本移動到<a href="http://linux.vbird.org/linux_basic/0560daemons//0560daemons-centos5.php">這裡</a>。<br>
+</span>
+<span class="text_date">2002/07/10以來統計人數</span><br>
+<img src="./鳥哥的 Linux 私房菜 -- 第17章、認識系統服務 (daemons)_files/Count(3).cgi" style="height: 15px; width: 60px; " alt="計數器" title="計數器"><br>
+</div>
+
+
+<div class="rightarea">
+<a href="http://linux.vbird.org/linux_basic/0570syslog.php">&gt;&gt;</a>
+</div>
+
+<div style="position: relative; text-align:center; margin-top: -20px; margin-bottom: 40px; width: 100%;">
+	<div style="width: 100px; text-align:center; display: inline-block;">
+		<a href="http://linux.vbird.org/linux_basic/index.php">HOME</a>
+	</div>
+		<div style="width: 100px; float: left;">
+		<a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">PrePage</a>
+	</div>
+			<div style="width: 100px; float: right;">
+		<a href="http://linux.vbird.org/linux_basic/0570syslog.php">NextPage</a>
+	</div>
+	</div>
+
+</div>	<!-- mainarea -->
+</div>  <!-- tablearea -->
+
+<div class="bottomarea">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php#top" title="Top">Top</a></li>
+	<li><a href="http://linux.vbird.org/index_old.php" title="前往鳥哥的 Linux 私房菜首頁">前往舊站</a></li>
+	<!--li><a href="http://vbird.dic.ksu.edu.tw" target="_blank" title="前往鳥哥的 Linux 私房菜首頁">簡體主站</a></li-->
+	<li><a href="http://phorum.vbird.org/" target="_blank" title="鳥站新手討論板">討論板</a></li>
+	<li><a href="http://phorum.study-area.org/" target="_blank" title="酷！學園討論板">酷學園</a></li>
+	<li><a href="http://www.dic.ksu.edu.tw/" target="_blank" title="崑山資傳">崑山資傳</a></li>
+</ul>
+&nbsp;&nbsp; <a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的首頁">http://linux.vbird.org</a>
+	is designed by <a href="mailto:vbird@mail.vbird.idv.tw" title="聯絡鳥哥(我不要廣告信！)">VBird</a>
+		during 2001-2017. <!--a href="http://www.ksu.edu.tw" target="_blank">ksu.edu</a-->
+
+</div>
+
+
+
+</body></html>

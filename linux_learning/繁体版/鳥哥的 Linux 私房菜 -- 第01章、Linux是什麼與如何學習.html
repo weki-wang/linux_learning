@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://linux.vbird.org/linux_basic/0110whatislinux.php -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="Author" content="VBird, 鳥哥">
+	<meta name="Description" content="要學習Linux之前，還是得要瞭解一下Linux的相關歷史才行喔！">
+	<title>鳥哥的 Linux 私房菜 -- 第一章、Linux是什麼與如何學習</title>
+	<style>
+	</style>
+	<link href="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/style_2013.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<!--最上方的一些連結與網站介紹 -->
+<div class="toparea">
+<span style="text-shadow: 1px 1px 2px black;">鳥哥的 Linux 私房菜</span>
+<ul>
+		<li class="topareali"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#">第一章、Linux是什麼與如何學習</a></li>
+		<li><a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的 Linux 私房菜首頁">繁體主站</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/" title="Linux 基礎學習篇，從頭學習 Linux">基礎篇</a></li>
+	<li><a href="http://linux.vbird.org/linux_server/" title="Linux 伺服器架設篇">伺服器</a></li>
+	<li><a href="http://linux.vbird.org/linux_enterprise/" title="Linux 企業應用篇">企業應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_desktop/" title="Linux 桌面應用篇">桌面應用</a></li>
+	<li><a href="http://linux.vbird.org/linux_security/" title="Linux 安全管理篇">安全管理</a></li>
+	<li><a href="http://linux.vbird.org/book/" title="書籍勘誤">書籍勘誤</a></li>
+	<li><a href="http://linux.vbird.org/vbird/" title="關於鳥哥的一些事情">鳥哥我</a></li>
+</ul>
+<iframe src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/index_2013.html" style="height: 29px; width: 150px; border:0; padding:0; margin: 0;
+		position: relative; float: right; overflow: hidden"></iframe>
+</div>
+
+<div class="leftarea">
+<a href="http://linux.vbird.org/linux_basic/0105computers.php">&lt;&lt;</a>
+</div>
+
+<!-- 正中央的 1000 像素的內容 -->
+<div class="tablearea">
+<!-- 左邊的連結東東 -->
+<div class="nav">
+	<div style="text-align:center; line-height:1; font-size: 9pt; font-family: &#39;Times New Roman&#39;; color: #ff6600;
+	padding: 5px; margin: 2px;">
+		<img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/Count.cgi" alt="鳥站的上線人數統計" height="26" width="110"><br>
+		since 2002/01/01
+	</div>
+<ul>
+	<li><a href="http://linux.vbird.org/new_linux.php">新手建議</a></li>
+	<li><a href="http://linux.vbird.org/howtoread.php">開始閱讀之前</a></li>
+	<li><a href="http://linux.vbird.org/aboutmysite.php">網站導覽</a></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic">Linux 基礎文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/">基礎文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0105computers.php">0.計算機概論</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php">1.Linux是什麼</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0130designlinux.php">2.主機規劃與磁碟分割</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0157installcentos7.php">3.安裝CentOS 7.x</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0160startlinux.php">4.首次登入與man page</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0210filepermission.php">5.檔案權限與目錄配置</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0220filemanager.php">6.檔案與目錄管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php">7.磁碟與檔案系統</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0240tarcompress.php">8.壓縮指令的運用</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0310vi.php">9.vim程式編輯器</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0320bash.php">10.認識與學習BASH</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0330regularex.php">11.正規表示法與文件格式化</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0340bashshell-scripts.php">12.學習shell scripts</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">13.帳號管理與ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0420quota.php">14.Quota, RAID, LVM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0430cron.php">15.at, crontab, anacron</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">16.程序管理與 SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0560daemons.php">17.認識系統服務(daemon)</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0570syslog.php">18.認識與分析登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0510osloader.php">19.開機流程模組管理與Loader</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0610hardware.php">20.基礎系統設定與備份策略</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520source_code_and_tarball.php">21.原始碼與 Tarball</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0520rpm_and_srpm.php">22.RPM/YUM/SRPM</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0590xwindow.php">23.X-Window 設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0540kernel.php">24.Linux 核心編譯</a></li>
+		<li>底下尚未更新</li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010index.php">27.快速索引</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_A.php">附錄 A: GPL 條文</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/1010appendix_B.php">附錄 B: ext2/ext3</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0140spfdisk.php">SPFDISK 範例</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0150installredhat.php">安裝 RedHat 7.2</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0155installmdk.php">安裝 Mandrake 9</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0156installfc4.php">安裝 Fedora IV</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/9999questions.php">Linux 練習題</a></li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/centos5.php">CentOS 5.x(2009-2014)</a>
+		</li>
+
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/fc4.php">Fedora-4(2005-2008)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/mandrake9.0.php">Mandrake9.0(2001-2004)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_basic/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_basic_train">Linux 基礎訓練</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic_train/">課程章節、授課方式、評分方式</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit01.php">第 01 堂課：指令列模式初探</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit02.php">第 02 堂課：指令下達與檔案管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit03.php">第 03 堂課：檔案管理與 vim</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit04.php">第 04 堂課：檔案權限與帳號管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit05.php">第 05 堂課：權限應用與程序觀察</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit06.php">第 06 堂課：基礎檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit07.php">第 07 堂課：bash 與系統救援</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice1.php">期中練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit08.php">第 08 堂課：連續指令與資料流導向</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit09.php">第 09 堂課：正規表示法與 script</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit10.php">第 10 堂課：使用者管理與 ACL</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit11.php">第 11 堂課：基礎設定、壓縮、排程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit12.php">第 12 堂課：管理管理與登錄檔</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit13.php">第 13 堂課：服務管理與開機流程</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit14.php">第 14 堂課：進階檔案系統管理</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/practice2.php">期末練習</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic_train/unit15.php">第 15 堂課：Linux系統的準備</a></li>
+	</ul></li>
+
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_server/">Linux 架站文件</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_server/">伺服器篇文件彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0104mytalking.php">0. 說說笑笑談 Linux server 規劃</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0107cloudandvm.php">1. 小型雲系統與主機安全強化流程</a></li>
+
+
+
+		<li><a href="http://linux.vbird.org/linux_server/0103introduce.php">序篇</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0105beforeserver.php">1.架設伺服器前的準備工作</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0110network_basic.php">2.基礎網路概念</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0120intranet.php">3.區域網路設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0130internet_connect.php">4.連上 Internet</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0140networkcommand.php">5.Linux網路指令</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0150detect_network.php">6.Linux網路偵錯</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0210network-secure.php">7.網路安全,port限制,網路升級,SELinux</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0230router.php">8.路由概念與路由器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0250simple_firewall.php">9.防火牆與 NAT 伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0270dynamic_dns.php">10.申請合法主機名稱</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0310telnetssh.php">11.遠端連線伺服器</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0340dhcp.php">12.DHCP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0330nfs.php">13.NFS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0430nis.php">14.NIS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0440ntp.php">15.NTP Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0370samba.php">16.SAMBA Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0420squid.php">17.Proxy Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0460iscsi.php">18.iSCSI Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0350dns.php">19.DNS Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0360apache.php">20.WWW Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0410vsftpd.php">21.vsFTPD Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0380mail.php">22.Mail Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0450apt.php">APT/YUM Server</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0520openwebmail.php">OpenWebMail</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/0600cluster.php">Cluster System</a></li>
+		<li><a href="http://linux.vbird.org/linux_server/1000results.php">來做練習</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat6.1/">RH6.1文件(2001前)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/redhat9.php">Red Hat 9(2002-2005)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos4.php">CentOS 4(2006-2010)</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_server/centos5.php">CentOS 5(2010-2011)</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_enterprise/">Linux 企業應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_enterprise/">企業應用篇彙整表</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0110network.php">1. 區域網路軟硬體設定</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/0120installation.php">2. PXE 安裝伺服器與 kickstart</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/xen.php">Xen 虛擬機器</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/cputune.php">CPU 效能優化</a></li>
+		<li><a href="http://linux.vbird.org/linux_enterprise/kerberos.php">kerberos 與 NFS 加密</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_security/">Linux 安全管理</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_security/0420rkhunter.php">rkhunter 檢測</a></li>
+		<li><a href="http://linux.vbird.org/linux_security/knockd.php">knockd</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/linux_security/old/">舊的安全文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/linux_desktop/">Linux 桌面應用</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_desktop/0110linuxbasic.php">Linux 基礎概念</a></li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/resources.php">鳥哥彙整的資料</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/resources.php">Linux 資料庫</a></li>
+		<li><a href="http://linux.vbird.org/problem">一些問題彙整</a></li>
+		<li><a href="http://linux.vbird.org/othersites">網路連結</a></li>
+		<li class="nav_more"><a href="http://linux.vbird.org/solaris/">Solaris</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/apache_packages/">Apache 套件安裝</a>
+		</li>
+		<li class="nav_more"><a href="http://linux.vbird.org/adsl">ADSL 相關文件</a>
+		</li>
+	</ul></li>
+	<li class="nav_more"><a href="http://linux.vbird.org/vbird/index.php">關於鳥哥</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/vbird/vbird3.php">Why 鳥哥?</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird.php">關於鳥哥</a></li>
+		<li><a href="http://linux.vbird.org/vbird/vbird2.php">關於鳥哥-2</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070718-1.php">2007-07-xx</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070520.php">2007-05-20</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20070328.php">2007-03-28</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060701.php">2006-07-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20060122.php">2006-01-24</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050412.php">2005-04-12</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20050401.php">2005-04-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20041101.php">2004-11-01</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040829.php">2004-08-29</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040417.php">2004-04-17</a></li>
+		<li><a href="http://linux.vbird.org/vbird/20040221.php">2004-02-21</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/somepaper">網友分享</a></li>
+	<li><a href="http://linux.vbird.org/faq.php">特殊問題解決</a></li>
+	<!--li><a href="/download">檔案下載中心</a></li-->
+	<li><a href="http://linux.vbird.org/Searching.php">網站資料搜尋</a></li>
+</ul>
+
+<p style="text-align:center; margin: 0 0 0 0 ;">
+<a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+<img style="border:0;width:66px;height:24px" src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vcss-blue" alt="Valid CSS!">
+</a>
+<a href="http://validator.w3.org/check?uri=referer" target="_blank">
+<img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/valid-html401" style="border:0;width:66px;height:24px" alt="Valid HTML 5" title="Valid HTML 5"></a>
+</p>
+<p style="text-align:center; margin: 0 0 0 0 ; line-height:1; font-size: 9pt;color: #333333; ">
+今日 <img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/Count(1).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+昨日 <img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/yestoday.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+本月 <img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/Count(2).cgi" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+上月 <img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/lastmonth.gif" style="height:12px; width:60px; vertical-align:middle;" alt="人數統計"><br>
+</p>
+</div>
+
+<a id="top"></a>
+<div class="mainarea">
+<div class="block1">
+<!-- 本文的檔頭部分 -->
+<h1>第一章、Linux是什麼與如何學習</h1>
+<div style="text-align:right">
+	<span class="text_history">最近更新日期：2015/04/23</span>
+</div>
+
+
+<!-- 本文的檔頭部分 -->
+<div class="abstract">
+	<p>眾所皆知的，Linux的核心原型是1991年由托瓦茲(Linus Torvalds)寫出來的，但是托瓦茲為何可以寫出Linux這個作業系統？
+	為什麼他要選擇386的電腦來開發？為什麼Linux的發展可以這麼迅速？又為什麼Linux是免費且可以自由學習的？
+	以及目前為何有這麼多的Linux套件版本(distributions)呢？瞭解這些東西後，才能夠知道為何Linux可以免除專利軟體之爭，
+	並且瞭解到Linux為何可以同時在個人電腦與大型主機上面大放異彩！
+	所以，在實際進入Linux的世界前，就讓我們來談一談這些有趣的歷史故事吧！ ^_^</p>
+</div>
+
+<!-- 本文的連結區部分 -->
+<div class="links">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#whatislinux">1.1 Linux是什麼</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#whatislinux_os">1.1.1 Linux是什麼？作業系統/應用程式？</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#whatislinux_unix">1.1.2 Linux之前，Unix的歷史</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#whatislinux_gnu">1.1.3 關於GNU計畫、自由軟體與開放原始碼</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds">1.2 Torvalds的Linux發展</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds_minix">1.2.1 與Minix之間</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds_multi">1.2.2 對386硬體的多工測試</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds_first">1.2.3 初次釋出Linux 0.02</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds_team">1.2.4 Linux的發展：虛擬團隊的產生</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds_version">1.2.5 Linux 的核心版本</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#torvalds_dist">1.2.6 Linux distributions</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#uselinux">1.3 Linux當前應用的角色</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#uselinux_enterprise">1.3.1 企業環境的利用</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#uselinux_person">1.3.2 個人環境的使用</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#uselinux_cloud">1.3.3 雲端運用</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#learn">1.4 Linux 該如何學習</a>
+	<ul>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#learn_follow">1.4.1 從頭學習Linux基礎</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#learn_book">1.4.2 選擇一本易讀的工具書</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#learn_real">1.4.3 實作再實作</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#learn_faq">1.4.4 發生問題怎麼處理啊？建議流程是這樣...</a></li>
+		<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#learn_vbird">1.4.5 鳥哥的建議(重點在solution的學習)</a></li>
+	</ul></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#hint">1.5 重點回顧</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ex">1.6 本章習題</a></li>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#reference">1.7 參考資料與延伸閱讀</a></li>
+	<li><a href="http://phorum.vbird.org/viewtopic.php?t=23871" target="_blank">針對本文的建議：http://phorum.vbird.org/viewtopic.php?t=23871</a></li>
+</ul>
+</div>
+</div>
+
+<!-- 本文的正式部分 -->
+<a id="whatislinux"></a>
+<div class="block1">
+<h2>1.1 Linux是什麼</h2>
+
+	<p>我們知道Linux這玩意兒是在電腦上面運作的，所以說Linux就是一組軟體。問題是這個軟體是作業系統還是應用程式？
+	且Linux可以在哪些種類的電腦硬體上面運作？而Linux源自哪裡？為什麼 Linux 還不用錢？這些我們都得來談一談先！免得下次人家問妳，
+	為什麼複製軟體不會違法時，你會答不出來啊！^_^</p>
+
+	<a id="whatislinux_os"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.1.1 Linux是什麼？作業系統/應用程式？</h2>
+
+		<p>我們在<a href="http://linux.vbird.org/linux_basic/0105computers.php">第零章、計算機概論</a>裡面有提到過整個電腦系統的概念，
+		電腦主機是由一堆硬體所組成的，為了有效率的控制這些硬體資源，於是乎就有作業系統的產生了。
+		作業系統除了有效率的控制這些硬體資源的分配，並提供電腦運作所需要的功能(如網路功能)之外，
+		為了要提供程式設計師更容易開發軟體的環境，所以作業系統也會提供一整組系統呼叫介面來給軟體設計師開發用喔！</p>
+
+		<p>知道為什麼要講這些了嗎？嘿嘿！沒錯，因為<span class="text_import2">Linux就是一套作業系統</span>！如同下圖所示，
+		Linux就是核心與系統呼叫介面那兩層。至於應用程式算不算Linux呢？當然不算啦！這點要特別注意喔！</p>
+
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/os_01.gif" alt="作業系統的角色" title="作業系統的角色" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖1.1.1、作業系統的角色</div>
+
+		<p>由上圖中我們可以看到其實核心與硬體的關係非常的強烈。早期的Linux是針對386來開發的，
+		由於Linux只是一套作業系統並不含有其他的應用程式，因此很多工程師在下載了 Linux
+		核心並且實際安裝之後，就只能看著電腦開始運作了！接下來這些高級工程師為了自己的需求，再在Linux上面安裝他們所需要的軟體就是了。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		Torvalds先生在 1991 年寫出Linux 核心的時候，其實該核心僅能『驅動386所有的硬體』而已，
+		所謂的『讓386電腦開始運作，並且等待使用者指令輸入』而已，事實上，當時能夠在Linux上面跑的軟體還很少呢！
+		</fieldset><br>
+		<p>由於不同的硬體他的功能函數並不相同，例如IBM的Power CPU與Intel的x86架構就是不一樣！
+		所以同一套作業系統是無法在不同的硬體平台上面運作的！舉例來說，如果你想要讓x86上面跑的那套作業系統也能夠在Power 
+		CPU上運作時，就得要將該作業系統進行修改才行。如果能夠參考硬體的功能函數並據以修改你的作業系統程式碼，
+		那經過改版後的作業系統就能夠在另一個硬體平台上面運作了。
+		這個動作我們通常就稱為『<span class="text_import2">軟體移植</span>』了！</p>
+
+<table class="exam"><tbody><tr><td>
+例題：
+<div>
+請問Windows作業系統能否在蘋果公司的麥金塔電腦(MAC)上面安裝與運作？
+</div>
+答：
+<div>
+由上面的說明中，我們知道硬體是由『核心』來控制的，而每種作業系統都有他自己的核心。
+在2006年以前的蘋果電腦公司是請IBM公司幫忙開發硬體(所謂的Power CPU)，
+而蘋果電腦公司則在該硬體架構上發展自家的作業系統(就是俗稱的麥金塔，MAC是也)。Windows則是開發在x86架構上的作業系統之一，
+因此Windows是沒有辦法安裝到麥金塔電腦硬體上面的。<br><br>
+
+不過，在2006年以後，蘋果電腦轉而請Intel設計其硬體架構，亦即其硬體架構已經轉為x86系統，
+因此在2006年以後的蘋果電腦若使用x86架構時，其硬體則『可能』可以安裝Windows作業系統了。
+不過，你可能需要自己想些方式來處理該硬體的相容性囉！
+</div>
+</td></tr></tbody></table><br>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		Windows作業系統本來就是針對個人電腦x86架構的硬體去設計的，所以他當然只能在x86的個人電腦上面運作，
+		在不同的硬體平台當然就無法運行了。也就是說，每種作業系統都是在他專門的硬體機器上面運行的喔！這點得要先瞭解。
+		不過，Linux由於是Open Source的作業系統，所以他的程式碼可以被修改成適合在各種機器上面運行的，
+		也就是說，Linux是具有『可移植性』，這可是很重要的一個功能喔！ ^_^
+		</fieldset><br>
+		<p>Linux提供了一個完整的作業系統當中最底層的硬體控制與資源管理的完整架構，
+		這個架構是沿襲Unix良好的傳統來的，所以相當的穩定而功能強大！此外，
+		由於這個優良的架構可以在目前的個人電腦(x86系統)上面跑，
+		所以很多的軟體開發者漸漸的將他們的工作心血移轉到這個架構上面，所以 Linux 作業系統也有很多的應用軟體啦！</p>
+
+		<p>雖然Linux僅是其核心與核心提供的工具，不過由於核心、核心工具與這些軟體開發者提供的軟體的整合，
+		使得Linux成為一個更完整的、功能強大的作業系統囉！約略瞭解Linux是何物之後，接下來，我們要談一談，
+		『<span class="text_import2">為什麼說Linux是很穩定的作業系統呢？他是如何來的？</span>』</p>
+	<br></div><br>
+
+	<a id="whatislinux_unix"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.1.2 Linux之前，Unix的歷史</h2>
+
+		<p>早在Linux出現之前的二十年(大約在1970 年代)，就有一個相當穩定而成熟的作業系統存在了！
+		那就是Linux的老大哥『Unix』是也！怎麼這麼說呢？他們這兩個傢伙有什麼關係呀？這裡就給他說一說囉！</p>
+
+		<p>眾所皆知的，<span class="text_import2">Linux的核心是由Linus Torvalds在1991年的時候給他開發出來的，</span>
+		並且丟到網路上提供大家下載，後來大家覺得這個小東西(Linux Kernel)相當的小而精巧，
+		所以慢慢的就有相當多的朋友投入這個小東西的研究領域裡面去了！
+		但是為什麼這個小東西這麼棒呢？又為什麼大家都可以免費的下載這個東西呢？
+		嗯！等鳥哥慢慢的唬xx....喔不！聽我慢慢的道來！</p>
+
+		<ul class="toplist">
+		<li>1969年以前：一個偉大的夢想--Bell,MIT與GE的『Multics』系統</li></ul>
+
+		<p>早期的電腦並不像現在的個人電腦一樣普遍，他可不是一般人碰的起的呢～
+		除非是軍事或者是高科技用途，或者是學術單位的前瞻性研究，否則真的很難接觸到。
+		非但如此，早期的電腦架構還很難使用，除了運算速度並不快之外，操作介面也很困擾的！
+		<span class="text_import2">因為那個時候的輸入設備只有讀卡機、輸出設備只有印表機，
+		使用者也無法與作業系統互動(批次型作業系統)。</span></p>
+
+		<p>在那個時候，寫程式是件很可憐的事情，因為程式設計者，必須要將程式相關的資訊在讀卡紙上面打洞，
+		然後再將讀卡紙插入讀卡機來將資訊讀入主機中運算。光是這樣就很麻煩了，如果程式有個小地方寫錯，
+		哈哈！光是重新打卡就很慘，加上主機少，使用者眾多，光是等待，就耗去很多的時間了！</p>
+
+		<p>在那之後，由於硬體與作業系統的改良，使得後來可以使用鍵盤來進行資訊的輸入。
+		不過，在一間學校裡面，主機畢竟可能只有一部，如果多人等待使用，那怎麼辦？大家還是得要等待啊！
+		好在1960年代初期麻省理工學院(MIT)發展了所謂的：
+		『<span class="text_import2">相容分時系統(Compatible Time-Sharing System, CTSS)</span>』，
+		它可以讓大型主機透過提供數個終端機(terminal)以連線進入主機，來利用主機的資源進行運算工作。
+		架構有點像這樣：</p>
+
+		<a id="fig2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/0110whatislinux_2.jpg" alt="早期主機與終端機的相關性圖示" title="早期主機與終端機的相關性圖示" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖1.1.2、早期主機與終端機的相關性圖示</div>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		這個相容分時系統可以說是近代作業系統的始祖呢！他可以讓多個使用者在某一段時間內分別使用CPU的資源，
+		感覺上你會覺得大家是同時使用該主機的資源！事實上，是CPU在每個使用者的工作之間進行切換，
+		在當時，這可是個劃時代的技術喔！
+		</fieldset><br>
+		<p>如此一來，無論主機在哪裡，只要在終端機前面進行輸入輸出的作業，就可利用主機提供的功能了。
+		不過，需要注意的是，此時終端機只具有輸入/輸出的功能，本身完全不具任何運算或者軟體安裝的能力。
+		而且，比較先進的主機大概也只能提供30個不到的終端機而已。</p>
+
+		<p>為了更加強化大型主機的功能，以讓主機的資源可以提供更多使用者來利用，所以在1965年前後，
+		由貝爾實驗室(Bell)、麻省理工學院(MIT)及奇異公司(GE, 或稱為通用電器)共同發起了Multics的計畫 (<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps1">註1</a>)，
+		Multics計畫的目的是想要讓大型主機可以達成提供300個以上的終端機連線使用的目標。
+		不過，到了1969年前後，計畫進度落後，資金也短缺，所以該計畫雖然繼續在研究，但貝爾實驗室還是退出了該計畫的研究工作。
+		(註：Multics有複雜、多數的意思存在。)</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		最終Multics還是有成功的發展出他們的系統，完整的歷史說明可以參考：
+		<a href="http://www.multicians.org/" target="_blank">http://www.multicians.org/</a>網站內容。
+		Multics計畫雖然後來沒有受到很大的重視，但是他培養出來的人材是相當優秀的！ ^_^
+		</fieldset><br>
+		<ul class="toplist">
+		<li>1969年：Ken Thompson的小型file server system</li></ul>
+
+		<p>在認為Multics計畫不可能成功之後，<a href="http://www.bell-labs.com/" target="_blank">貝爾研究室</a>就退出該計畫。不過，原本參與Multics計畫的人員中，已經從該計畫當中獲得一些點子，
+		<a href="http://en.wikipedia.org/wiki/Ken_Thompson" target="_blank">Ken Thompson</a> (<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps2">註2</a>)
+		就是其中一位！</p>
+
+		<p>Thompson因為自己的需要，希望開發一個小小的作業系統以提供自己的需求。
+		在開發時，有一部DEC (Digital Equipment Corporation)公司推出的PDP-7剛好沒人使用，
+		於是他就準備針對這部主機進行作業系統核心程式的撰寫。本來Thompson應該是沒時間的(有家有小孩的宿命？)，
+		無巧不巧的是，在1969年八月份左右，剛好Thompson的妻兒去了美西探親，
+		於是他有了額外的一個月的時間好好的待在家將一些構想實現出來！</p>
+
+		<p>經過四個星期的奮鬥，他終於以組合語言(Assembler)寫出了一組核心程式，同時包括一些核心工具程式，
+		以及一個小小的檔案系統。那個系統就是<span class="text_import2">Unix</span>的原型！
+		當時Thompson將Multics龐大的複雜系統簡化了不少，於是同實驗室的朋友都戲稱這個系統為：Unics。(當時尚未有Unix的名稱)</p>
+
+		<p>Thompson 的這個檔案系統有兩個重要的概念，分別是：</p>
+		<ul>
+		<li class="text_import2">所有的程式或系統裝置都是檔案</li>
+		<li class="text_import2">不管建構編輯器還是附屬檔案，所寫的程式只有一個目的，且要有效的完成目標。</li>
+		</ul>
+		<p>這些概念在後來對於Linux的發展有相當重要的影響喔！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		套一句常聽到的廣告詞：『科技始終來自於人性』，當初Thompson會寫這套Unix核心程式，
+		卻是想要移植一套名為『太空旅遊』的遊戲呢！ ^_^
+		</fieldset><br>
+		<ul class="toplist">
+		<li>1973年：Unix的正式誕生，Ritchie等人以C語言寫出第一個正式Unix核心</li></ul>
+
+		<p>由於Thompson寫的那個作業系統實在太好用了，所以在貝爾實驗室內部廣為流傳，並且數度經過改版。
+		但是因為Unics本來是以組合語言寫成的，而如<a href="http://linux.vbird.org/linux_basic/0105computers.php">第零章計算機概論</a>談到的，
+		組合語言具有專一性，加上當時的電腦機器架構都不太相同，所以<span class="text_import2">每次要安裝到不同的機器都得要重新編寫組合語言</span>，真不方便！</p>
+
+		<p>後來Thompson與Ritchie合作想將Unics改以高階程式語言來撰寫。當時現成的高階程式語言有B語言。
+		但是由B語言所編譯出來的核心效能不是很好。後來<a href="http://en.wikipedia.org/wiki/Dennis_Ritchie" target="_blank">Dennis Ritchie</a> (<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps3">註3</a>) 將B語言重新改寫成C語言，再以C語言重新改寫與編譯Unics的核心，
+		最後正名與發行出Unix的正式版本！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		這群高級駭客實在很厲害！因為自己的需求來開發出這麼多好用的工具！
+		C程式語言開發成功後，甚至一直沿用至今呢！你說厲不厲害啊！這個故事也告訴我們，不要小看自己的潛能喔！
+		你想作的，但是現實生活中沒有的，就動手自己搞一個來玩玩吧！
+		</fieldset><br>
+		<p>由於貝爾實驗室是隸屬於美國電信大廠<a href="http://www.att.com/" target="_blank">AT&amp;T</a>公司的，
+		只是AT&amp;T當時忙於其他商業活動，對於Unix並不支持也不排斥。此外，Unix在這個時期的發展者都是貝爾實驗室的工程師，
+		這些工程師對於程式當然相當有研究，所以，Unix在此時當然是不容易被一般人所接受的！不過對於學術界的學者來說，
+		這個 Unix 真是學者們進行研究的福音！因為程式碼可改寫並且可作為學術研究之用嘛！</p>
+
+		<p>需要特別強調的是，由於Unix是以較高階的C語言寫的，相對於組合語言需要與硬體有密切的配合，
+		高階的C語言與硬體的相關性就沒有這麼大了！所以，<span class="text_import2">這個改變也使得Unix很容易被移植到不同的機器上面喔！</span></p>
+
+		<ul class="toplist">
+		<li>1977年：重要的Unix分支--BSD的誕生</li></ul>
+
+		<p>雖然貝爾屬於AT&amp;T，但是AT&amp;T此時對於Unix是採取較開放的態度，此外，Unix是以高階的C語言寫成的，
+		理論上是具有可移植性的！亦即只要取得Unix的原始碼，並且針對大型主機的特性加以修訂原有的原始碼(Source Code)，
+		就可能將Unix移植到另一部不同的主機上頭了。所以在1973年以後，Unix便得以與學術界合作開發！
+		最重要的接觸就是與加州柏克萊(Berkeley)大學的合作了。</p>
+
+		<p>柏克萊大學的<a href="http://en.wikipedia.org/wiki/Bill_Joy" target="_blank">Bill Joy</a> 
+		(<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps4">註4</a>)在取得了Unix的核心原始碼後，著手修改成適合自己機器的版本，
+		並且同時增加了很多工具軟體與編譯程式，最終將它命名為<span class="text_import2">Berkeley Software 
+		Distribution (BSD)</span>。這個BSD是Unix很重要的一個分支，Bill Joy也是Unix業者『Sun(昇陽)』這家公司的創辦者！
+		Sun公司即是以BSD發展的核心進行自己的商業Unix版本的發展的。
+		(後來可以安裝在x86硬體架構上面FreeBSD即是BSD改版而來！)</p>
+
+		<ul class="toplist">
+		<li>1979年：重要的 System V 架構與版權宣告</li></ul>
+
+		<p>由於Unix的高度可移植性與強大的效能，加上當時並沒有版權的糾紛，
+		所以讓很多商業公司開始了Unix作業系統的發展，例如AT&amp;T自家的System V、IBM的AIX以及HP與DEC等公司，
+		都有推出自家的主機搭配自己的Unix作業系統。</p>
+
+		<p>但是，如同我們前面提到的，<span class="text_import2">作業系統的核心(Kernel)必須要跟硬體配合，
+		以提供及控制硬體的資源進行良好的工作！</span>而在早期每一家生產電腦硬體的公司還沒有所謂的『協定』的概念，
+		所以每一個電腦公司出產的硬體自然就不相同囉！因此他們必須要為自己的電腦硬體開發合適的Unix系統。
+		例如在學術機構相當有名的Sun、Cray與HP就是這一種情況。
+		他們開發出來的Unix作業系統以及內含的相關軟體並沒有辦法在其他的硬體架構下工作的！
+		另外，由於沒有廠商針對個人電腦設計Unix系統，因此，在早期並沒有支援個人電腦的Unix作業系統的出現。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		如同相容分時系統的功能一般，Unix強調的是多人多工的環境！
+		但早期的286個人電腦架構下的CPU是沒有能力達到多工的作業，因此，並沒有人對移植Unix到x86的電腦上有興趣。
+		</fieldset><br>
+		<p>每一家公司自己出的Unix雖然在架構上面大同小異，但是卻真的僅能支援自身的硬體，
+		所以囉，<span class="text_import2">早先的Unix只能與伺服器(Server)或者是大型工作站(Workstation)劃上等號</span>！
+		但到了 1979 年時，AT&amp;T推出 System V 第七版 Unix 後，這個情況就有點改善了。
+		這一版最重要的特色是可以支援x86架構的個人電腦系統，也就是說 System V 可以在個人電腦上面安裝與運作了。</p>
+
+		<p>不過因為AT&amp;T由於商業的考量，以及在當時現實環境下的思考，於是想將Unix的版權收回去。因此，
+		AT&amp;T在1979年發行的第七版Unix中，特別提到了
+		『<span class="text_import2">不可對學生提供原始碼</span>』的嚴格限制！
+		同時，也造成Unix業界之間的緊張氣氛，並且也引爆了很多的商業糾紛～</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		目前被稱為純種的Unix指的就是System V以及BSD這兩套囉！
+		</fieldset><br>
+		<ul class="toplist">
+		<li>1984年之一：x86架構的Minix作業系統開始撰寫並於兩年後誕生</li></ul>
+
+		<p>關於1979年的版權聲明中，影響最大的當然就是學校教Unix核心原始碼相關學問的教授了！
+		想一想，如果沒有核心原始碼，那麼如何教導學生認識Unix呢？這問題對於 
+		<a href="http://en.wikipedia.org/wiki/Andrew_S._Tanenbaum" target="_blank">Andrew Tanenbaum</a> (譚寧邦, 
+		<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps5">註5</a>)教授來說，實在是很傷腦筋的！不過，學校的課程還是得繼續啊！那怎麼辦？</p>
+
+		<p><span class="text_import2">既然1979年的Unix第七版可以在Intel的x86架構上面進行移植，
+		那麼是否意味著可以將Unix改寫並移植到x86上面了呢？</span>在這個想法上，
+		譚寧邦教授於是乎自己動手寫了Minix這個Unix Like的核心程式！
+		在撰寫的過程中，為了避免版權糾紛，譚寧邦完全不看Unix核心原始碼！
+		並且強調他的Minix必須能夠與Unix相容才行！譚寧邦在1984年開始撰寫核心程式，
+		到了1986年終於完成，並於次年出版Minix相關書籍，同時與新聞群組(BBS及News)相結合～</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		之所以稱為Minix的原因，是因為他是個Mini (微小的) 的Unix系統囉！^_^
+		</fieldset><br>
+		<p>這個Minix版本比較有趣的地方是，他並不是完全免費的，無法在網路上提供下載！
+		必須要透過磁片/磁帶購買才行！雖然真的很便宜～不過，畢竟因為沒有在網路上流傳，
+		所以Minix的傳遞速度並沒有很快速！此外，購買時，隨磁片還會附上Minix的原始碼！
+		這意味著使用者可以學習Minix的核心程式設計概念喔！
+		(<span class="text_import2">這個特色對於Linux的啟始開發階段，可是有很大的關係喔！</span>)</p>
+
+		<p>此外，Minix作業系統的開發者僅有譚寧邦教授，因為學者很忙啊 (鳥哥當了老師之後，才發現，真的忙...)！加上譚寧邦始終認為Minix主要用在教育用途上面，
+		所以對於Minix是點到為止！沒錯，Minix是很受歡迎，不過，使用者的要求/需求的聲音可能就比較沒有辦法上升到比較高的地方了！
+		這樣說，你明白吧？^_^ </p>
+
+		<ul class="toplist">
+		<li>1984年之二：GNU計畫與FSF基金會的成立</li></ul>
+
+		<p>Richard Mathew Stallman(史托曼)在1984年發起的GNU計畫，對於現今的自由軟體風潮，
+		真有不可磨滅的地位！目前我們所使用的很多自由軟體或開源軟體，幾乎均直接或間接受益於GNU這個計畫呢！
+		那麼史托曼是何許人也？為何他會發起這個GNU計畫呢？</p>
+
+		<div class="illus">
+		<ul><li>一個分享的環境：</li></ul>
+
+		<p><a href="http://www.stallman.org/" target="_blank">Richard Mathew Stallman</a>(生於1953年，
+		網路上自稱的ID為RMS, <a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps6">註6</a>)從小就很聰明！他在1971年的時候，進入駭客圈中相當出名的人工智慧實驗室(AI Lab.)，
+		這個時候的駭客專指電腦功力很強的人，而非破壞電腦的怪客(cracker)喔！</p>
+
+		<p>當時的駭客圈對於軟體的著眼點幾乎都是在『分享』，駭客們都認為互相學習對方的程式碼，這樣才是產生更優秀的程式碼的最佳方式！
+		所以 AI 實驗室的駭客們通常會將自己的程式碼公佈出來跟大家討論喔！這個特色對於史托曼的影響很大！</p>
+
+		<p>不過，後來由於管理階層以及駭客群們自己的生涯規劃等問題，導致實驗室的優秀駭客離開該實驗室，
+		並且進入其他商業公司繼續發展優秀的軟體。但史托曼並不服輸，仍然持續在原來的實驗室開發新的程式與軟體。
+		後來，他發現到，自己一個人並無法完成所有的工作，於是想要成立一個開放的團體來共同努力！</p>
+
+		<ul><li>使用Unix開發階段：</li></ul>
+
+		<p>1983年以後，因為實驗室硬體的更換，使得史托曼無法繼續以原有的硬體與作業系統繼續自由程式的撰寫～
+		而且他進一步發現到，過去他所使用的Lisp作業系統，是麻省理工學院的專利軟體，
+		是無法共享的，這對於想要成立一個開放團體的史托曼是個阻礙。於是他便放棄了Lisp這個系統。
+		後來，他接觸到Unix這個系統，並且發現，Unix在理論與實際上，都可以在不同的機器間進行移植。雖然 Unix 依舊是專利軟體，
+		但至少 Unix 架構上還是比較開放的！於是他開始轉而使用Unix系統。</p>
+
+		<p>因為Lisp與Unix是不同的系統，所以，他原本已經撰寫完畢的軟體是無法在Unix上面運行的！為此，
+		他就開始將軟體移植到Unix上面。並且，為了讓軟體可以在不同的平台上運作，
+		因此，史托曼將他發展的軟體均撰寫成可以移植的型態！也就是他都會將程式的原始碼公佈出來！</p>
+
+		<ul><li>GNU計畫的推展(<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps7">註7</a>)：</li></ul>
+
+		<p>1984年，史托曼開始<a href="http://www.gnu.org/" target="_blank">GNU</a>計畫，
+		<span class="text_import2">這個計畫的目的是：建立一個自由、開放的Unix作業系統(Free Unix)。</span>
+		但是建立一個作業系統談何容易啊！而且在當時的GNU是僅有自己一個人單打獨鬥的史托曼～
+		這實在太麻煩，但又不想放棄這個計畫，那可怎麼辦啊？</p>
+
+		<p>聰明的史托曼乾脆反其道而行～『既然作業系統太複雜，我就先寫可以在Unix上面運行的小程式，這總可以了吧？』在這個想法上，
+		史托曼開始參考Unix上面現有的軟體，並依據這些軟體的作用開發出功能相同的軟體，且開發期間史托曼絕不看其他軟體的原始碼，
+		以避免吃上官司。後來一堆人知道免費的GNU軟體，並且實際使用後發現與原有的專利軟體也差不了太多，於是便轉而使用GNU軟體，
+		於是GNU計畫逐漸打開知名度。</p>
+
+		<p>雖然GNU計畫漸漸打開知名度，但是能見度還是不夠。這時史托曼又想：不論是什麼軟體，
+		都得要進行編譯成為二進位檔案(binary program)後才能夠執行，如果能夠寫出一個不錯的編譯器，那不就是大家都需要的軟體了嗎？
+		因此他便開始撰寫C語言的編譯器，那就是現在相當有名的GNU C Compiler(gcc)！
+		這個點相當的重要！這是因為C語言編譯器版本眾多，但都是專利軟體，
+		如果他寫的C編譯器夠棒，效能夠佳，那麼將會大大的讓GNU計畫出現在眾人眼前！如果忘記啥是編譯器，
+		請回到<a href="http://linux.vbird.org/linux_basic/0105computers.php#program_mechin">第零章</a>去瞧瞧編譯程式吧！</p>
+
+		<p>但開始撰寫GCC時並不順利，為此，他先轉而將他原先就已經寫過的Emacs編輯器寫成可以在Unix上面跑的軟體，並公布原始碼。
+		Emacs是一種程式編輯器，他可以在使用者撰寫程式的過程中就進行程式語法的檢驗，此一功能可以減少程式設計師除錯的時間！
+		因為Emacs太優秀了，因此，很多人便直接向他購買。</p>
+
+		<p>此時網際網路尚未流行，所以，<span class="text_import2">史托曼便藉著Emacs以磁帶(tape)出售，賺了一點錢</span>
+		，進而開始全力撰寫其他軟體。並且成立<span class="text_import2">自由軟體基金會(FSF, 
+		Free Software Foundation)</span>，請更多工程師與志工撰寫軟體。終於還是完成了GCC，這比Emacs還更有幫助！
+		此外，他還撰寫了更多可以被呼叫的C函式庫(GNU C library)，以及可以被使用來操作作業系統的基本介面BASH shell！
+		這些都在1990年左右完成了！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		如果純粹使用文字編輯器來編輯程式的話，那麼程式語法如果寫錯時，只能利用編譯時發生的錯誤訊息來修訂了，這樣實在很沒有效率。
+		Emacs則是一個很棒的編輯器！注意！是編輯(editor)而非編譯(compiler)！
+		他可以很快的立刻顯示出你寫入的語法可能有錯誤的地方，這對於程式設計師來說，
+		實在是一個好到不能再好的工具了！所以才會這麼的受到歡迎啊！
+		</fieldset><br>
+		<a id="gpl"></a>
+		<ul><li>GNU的通用公共許可證：</li></ul>
+
+		<p>到了1985年，為了避免GNU所開發的自由軟體被其他人所利用而成為專利軟體，
+		所以他與律師草擬了有名的<span class="text_import2">通用公共許可證(General Public License, GPL)</span>，
+		並且稱呼他為<span class="text_import2">copyleft</span>(相對於專利軟體的copyright！)。
+		關於GPL的相關內容我們在下一個小節繼續談論，在這裡，必須要說明的是，
+		由於有GNU所開發的幾個重要軟體，如：</p>
+
+		<ul class="text_import2" style="list-style-type: square; margin-left: 40px;">
+		<li>Emacs</li>
+		<li>GNU C (GCC)</li>
+		<li>GNU C Library (glibc)</li>
+		<li>Bash shell</li>
+		</ul>
+
+		<p>造成後來很多的軟體開發者可以藉由這些基礎的工具來進行程式開發！
+		進一步壯大了自由軟體團體！這是很重要的！不過，對於GNU的最初構想
+		『建立一個自由的Unix作業系統』來說，有這些優秀的程式是仍無法滿足，
+		因為，當下並沒有『自由的Unix核心』存在...所以這些軟體仍只能在那些有專利的 
+		Unix平台上工作～～一直到Linux的出現...更多的FSF開發的軟體可以參考如下網頁：</p>
+
+		<ul class="text_import2" style="list-style-type: square; margin-left: 40px;">
+		<li><a href="https://www.fsf.org/resources" target="_blank">https://www.fsf.org/resources</a></li></ul>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		事實上，GNU 自己開發的核心稱為 <a href="https://www.gnu.org/software/hurd/hurd.html" target="_blank">hurd</a>，
+		是一個架構相當先進的核心。不過由於開發者在開發的過程中對於系統的要求太過於嚴謹，因此推出的時程一再延後，所以才有後來 Linux 的開發！
+		</fieldset><br>
+		</div>
+
+		<ul class="toplist">
+		<li>1988年：圖形介面XFree86計畫</li></ul>
+
+		<p>有鑑於圖形使用者介面(<span class="text_import2">Graphical User Interface, GUI</span>)
+		的需求日益加重，在1984年由MIT與其他協力廠商首次發表了X Window System
+		，並且更在1988年成立了非營利性質的XFree86這個組織。所謂的XFree86其實是
+		<span class="text_import2">X Window System + Free + x86</span>的整合名稱呢！
+		而這個XFree86的GUI介面更在Linux的核心1.0版於1994年釋出時，整合於Linux作業系統當中！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		為什麼稱圖形使用者介面為X呢？因為由英文單字來看，Window的W接的就是X啦！意指Window的下一版就是了！
+		需注意的是，X Window並不是X Window<b>s</b>喔！
+		</fieldset><br>
+		<ul class="toplist">
+		<li>1991年：芬蘭大學生Linus Torvalds的一則簡訊</li></ul>
+
+		<p>到了1991年，芬蘭的赫爾辛基大學的Linus Torvalds在BBS上面貼了一則消息，
+		宣稱他以bash, gcc等 GNU 的工具寫了一個小小的核心程式，該核心程式單純是個玩具，不像 GNU 那麼專業。
+		不過該核心程式可以在Intel的386機器上面運作就是了。這讓很多人很感興趣！從此開始了Linux不平凡的路程！</p>
+	<br></div><br>
+
+	<a id="whatislinux_gnu"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.1.3 關於GNU計畫、自由軟體與開放原始碼</h2>
+
+		<p>GNU計畫對於整個自由軟體與開放原始碼軟體來說是佔有非常重要的角色！底下我們就來談談這咚咚吧！</p>
+
+		<ul class="toplist">
+		<li>自由軟體的活動：</li></ul>
+
+		<p>1984年創立GNU計畫與FSF基金會的Stallman先生認為，寫程式最大的快樂就是讓自己發展的良好的軟體讓大家來使用了！
+		另外，如果使用方撰寫程式的能力比自己強，那麼當對方修改完自己的程式並且回傳修改後的程式碼給自己，那自己的程式撰寫功力無形中就更往上爬了！
+		這就是最早之前 AI 實驗室的駭客風格！</p>
+
+		<p>而既然程式是想要分享給大家使用的，不過，每個人所使用的電腦軟硬體並不相同，
+		既然如此的話，那麼該程式的原始碼(Source code)就應該要同時釋出，
+		這樣才能方便大家修改而適用於每個人的電腦中呢！這個將原始碼連同軟體程式釋出的舉動，在 GNU 計畫的範疇之內就稱為自由軟體(Free Software)運動！</p>
+
+		<p>此外，史托曼同時認為，如果你將你程式的Source code分享出來時，若該程式是很優秀的，那麼將會有很多人使用，
+		而每個人對於該程式都可以查閱source code，無形之中，就會有一票人幫你除錯囉！
+		你的這支程式將會越來越壯大！越來越優秀呢！</p>
+
+		<ul class="toplist">
+		<li>自由軟體的版權GNU GPL：</li></ul>
+
+		<p>而為了避免自己的開發出來的Open source自由軟體被拿去做成專利軟體，
+		於是Stallman同時將GNU與FSF發展出來的軟體，都掛上GPL的版權宣告～
+		這個FSF的核心觀念是『<span class="text_import2">版權制度是促進社會進步的手段，
+		版權本身不是自然權力。</span>』對於FSF有興趣或者對於GNU想要更深入的瞭解時，請參考<a href="http://www.cyut.edu.tw/~ckhung/" target="_blank">朝陽科技大學洪朝貴教授</a>的網站
+		<a href="http://people.ofset.org/~ckhung/a/c_83.php" target="_blank">http://people.ofset.org/~ckhung/a/c_83.php</a>，或直接到GNU去：
+		<a href="http://www.gnu.org/" target="_blank">http://www.gnu.org</a> 裡面有更為深入的解說！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		為什麼要稱為GNU呢？其實GNU是GNU's Not Unix的縮寫，意思是說，GNU並不是Unix啊！那麼GNU又是什麼呢？
+		就是GNU's Not Unix嘛！.....如果你寫過程式就會知道，這個GNU = GNU's Not Unix可是無窮迴圈啊！忙碌～<br><br>
+		另外，什麼是Open Source呢？所謂的source code是程式發展者寫出的原始程式碼，
+		Open Source就是，軟體在發佈時，同時將作者的原始碼一起公布的意思！
+		</fieldset><br>
+		<ul class="toplist">
+		<li>自由(Free)的真諦：</li></ul>
+
+		<p>那麼這個GPL(GNU General Public License, GPL)是什麼玩意兒？
+		為什麼要將自由軟體掛上GPL的『版權宣告』呢？這個版權宣告對於作者有何好處？
+		首先，Stallman對GPL一直是強調Free的，這個Free的意思是這樣的：</p>
+
+		<p><span class="text_import2">"Free software" is a matter of liberty, not price. 
+		To understand the concept, you should think of "free speech", not "free beer".  
+		"Free software" refers to the users' freedom to run, copy, distribute, 
+		study, change, and improve the software </span></p>
+
+		<p>大意是說，Free Software(自由軟體)是一種自由的權力，並非是『價格！』
+		舉例來說，你可以擁有自由呼吸的權力、你擁有自由發表言論的權力，
+		但是，這並不代表你可以到處喝『免費的啤酒！(free beer)』，也就是說，
+		<span class="text_import2">自由軟體的重點並不是指『免費』的，而是指具有『自由度, freedom』的軟體</span>，
+		史托曼進一步說明了自由度的意義是：<span class="text_import2">
+		使用者可以自由的執行、複製、再發行、學習、修改與強化自由軟體</span>。</p>
+
+		<p>這無疑是個好消息！因為如此一來，你所拿到的軟體可能原先只能在Unix上面跑，
+		但是經過原始碼的修改之後，你將可以拿他在Linux或者是Windows上面來跑！總之，
+		一個軟體掛上了GPL版權宣告之後，他自然就成了自由軟體！這個軟體就具有底下的特色：</p>
+
+		<ul class="text_import2" style="list-style-type: circle">
+		<li>取得軟體與原始碼：你可以根據自己的需求來執行這個自由軟體；</li>
+		<li>複製：你可以自由的複製該軟體；</li>
+		<li>修改：你可以將取得的原始碼進行程式修改工作，使之適合你的工作；</li>
+		<li>再發行：你可以將你修改過的程式，再度的自由發行，而不會與原先的撰寫者衝突；</li>
+		<li>回饋：你應該將你修改過的程式碼回饋於社群！</li></ul>
+
+		<p>但請特別留意，你所修改的任何一個自由軟體都不應該也不能這樣：</p>
+
+		<ul class="text_import2" style="list-style-type: circle">
+		<li>修改授權：你不能將一個GPL授權的自由軟體，在你修改後而將他取消GPL授權～</li>
+		<li>單純販賣：你不能單純的販賣自由軟體。</li></ul>
+
+		<p>也就是說，既然GPL是站在互助互利的角度上去開發的，你自然不應該將大家的成果佔為己有，
+		對吧！因此你當然不可以將一個GPL軟體的授權取消，即使你已經對該軟體進行大幅度的修改！
+		那麼自由軟體也不能販賣嗎？當然不是！還記得上一個小節裡面，
+		我們提到史托曼藉由販賣Emacs取得一些經費，讓自己生活不至於匱乏吧？是的！
+		自由軟體是可以販售的，不過，不可僅販售該軟體，應同時搭配售後服務與相關手冊～
+		這些可就需要工本費了呢！</p>
+
+		<ul class="toplist">
+		<li>自由軟體與商業行為：</li></ul>
+
+		<p>很多人還是有疑問，目前不是有很多Linux開發商嗎？為何他們可以販售Linux這個GPL授權的軟體？
+		原因很簡單，因為他們大多都是販售『售後服務！』所以，他們所使用的自由軟體，
+		都可以在他們的網站上面下載！(當然，每個廠商他們自己開發的工具軟體就不是GPL的授權軟體了！)
+		但是，你可以購買他們的Linux光碟，如果你購買了光碟，他們會提供相關的手冊說明文件，
+		同時也會提供你數年不等的諮詢、售後服務、軟體升級與其他協力工作等等的附加價值！</p>
+
+		<p>所以說，目前自由軟體工作者，他們所賴以維生的，幾乎都是在『服務』這個領域呢！
+		畢竟自由軟體並不是每個人都會撰寫，有人有需要你的自由軟體時，他就會請求你的協助，
+		此時，你就可以透過服務來收費了！這樣來說，
+		<span class="text_import2">自由軟體確實還是具有商業空間的喔！</span></p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		很多人對於GPL授權一直很疑惑，對於GPL的商業行為更是無法接受！
+		關於這一點，鳥哥在這裡還是要再次的申明，GPL是可以從事商業行為的！
+		而很多的作者也是藉由這些商業行為來得以取得生活所需，更進一步去發展更優秀的自由軟體！
+		千萬不要聽到『商業』就排斥！這對於發展優良軟體的朋友來說，是不禮貌的！
+		</fieldset><br>
+		<p>上面提到的大多是與使用者有關的項目，那麼 GPL 對於自由軟體的作者有何優點呢？大致的優點有這些：</p>
+		<ul style="list-style-type: circle">
+		<li>軟體安全性較佳；</li>
+		<li>軟體執行效能較佳；</li>
+		<li>軟體除錯時間較短；</li>
+		<li>貢獻的原始碼永遠都存在。</li></ul>
+
+		<p>這是因為既然是提供原始碼的自由軟體，那麼你的程式碼將會有很多人幫你查閱，
+		如此一來，程式的漏洞與程式的優化將會進展的很快！所以，在安全性與效能上面，
+		自由軟體一點都不輸給商業軟體喔！此外，因為GPL授權當中，修改者並不能修改授權，
+		因此，你如果曾經貢獻過程式碼，嘿嘿！你將名留青史呢！不錯吧！ ^_^</p>
+
+		<p>對於程式開發者來說，GPL實在是一個非常好的授權，因為大家可以互相學習對方的程式撰寫技巧，
+		而且自己寫的程式也有人可以幫忙除錯。那你會問啊，對於我們這些廣大的終端用戶，GPL有沒有什麼好處啊？有啊！當然有！
+		雖然終端用戶或許不會自己編譯程式碼或者是幫人家除錯，但是終端用戶使用的軟體絕大部分就是GPL的軟體，
+		全世界有一大票的工程師在幫你維護你的系統，這難道不是一件非常棒的事嗎？ ^_^</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		就跟人類社會的科技會進步一樣，授權也會進步喔！因應原始碼分割與重組的問題，與其他開源軟體的授權包容性，以及最重要的數位版權管理 
+		(Digital Rights Management, DRM) 等問題，GPL 目前已經出到第三版 GPLv3。但是，目前使用最廣泛的，還是 GPLv2 喔！包括 Linux 
+		核心就還是使用 GPLv2 的說！
+		</fieldset><br>
+		<ul class="toplist">
+		<li>開放原始碼：</li></ul>
+
+		<p>由於自由軟體使用的英文為 free software，這個 free 在英文是有兩種以上不同的意義，除了自由之外，免費也是這個單字！
+		因為有這些額外的聯想，因此許多的商業公司對於投入自由軟體方面確實是有些疑慮存在的！許多人對於這個情況總是有些擔心～</p>
+
+		<p>為了解決這個困擾，1998 年成立的『開放原始碼促進會 (Open Source Initiative)』提出了開放原始碼 (Open Source，亦可簡稱開源軟體) 這一名詞！
+		另外，並非軟體可以被讀取原始碼就可以被稱為開源軟體喔！該軟體的授權必須要符合底下的基本需求，才可以算是 open source 的軟體哩！(<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps8">註8</a>)</p>
+
+		<ul>
+		<li>公佈原始碼且用戶具有修改權：用戶可以任意的修改與編譯程式碼，這點與自由軟體差異不大；</li>
+		<li>任意的再散佈：該程式碼全部或部份可以被販售，且程式碼可成為其他軟體的元件之一，作者不該宣稱具有擁有權或收取其他額外費用。</li>
+		<li>必須允許修改或衍生的作品，且可讓再發佈的軟體使用相似的授權來發表即可。</li>
+		<li>承上，用戶可使用與原本軟體不同的名稱或編號來散佈。</li>
+		<li>不可限制某些個人或團體的使用權</li>
+		<li>不可限制某些領域的應用：例如不可限制不能用於商業行為或者是學術行為等特殊領域等等</li>
+		<li>不可限制在某些產品當中，亦即程式碼可以應用於多種不同產品中。</li>
+		<li>不可具有排他條款，例如不可限制本程式碼不能用於教育類的研究中，諸如此類。</li>
+		</ul>
+
+		<p>根據上面的定義，GPL 自由軟體也可以算是開源軟體的一個，只是對於商業應用的限止稍微多一些而已。
+		與 GPL 自由軟體相比，其他開源軟體的授權可能比較輕鬆喔！比較輕鬆的部份包括：再發佈的授權可以跟原本的軟體不同；
+		另外，開源軟體的全部或部份可作為其他軟體的一部分，且其他軟體無須使用與開源軟體相同的授權來發佈！這跟GPL自由軟體差異就大了！
+		自由軟體的GPL授權規定，任何軟體只要用了GPL的全部或部份程式碼，那麼該軟體就得要使用GPL的授權！這對於自由軟體的保障相當大！
+		但對於想要保有商業公司自己的商業機密的專屬軟體來說，要使用GPL授權還是怕怕的！這也是後來商業公司擁抱其他 open source 
+		開源軟體授權的緣故！因為可以用於商業行為囉！更多的差異或許可以參考一下開源促進會的說明(<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps8">註8</a>)。</p>
+
+		<p>另外，Open source 這個名詞只是一個指引，而實際上並不是先有 open source 才有相關的授權。早在 open source 出來之前就有些開源軟體的授權存在了 (例如 GPL 啊！)！
+		不過有 open source 這個名詞之後，大家才更了解到開源軟體授權的意義就是了。那常見的開放原始碼授權有哪些呢？</p>
+
+		<ul class="text_import2">
+		<li>Apache License 2.0</li>
+		<li>BSD 3-Clause "New" or "Revised" license</li>
+		<li>BSD 2-Clause "Simplified" or "FreeBSD" license</li>
+		<li>GNU General Public License (GPL)</li>
+		<li>GNU Library or "Lesser" General Public License (LGPL)</li>
+		<li>MIT license</li>
+		<li>Mozilla Public License 2.0</li>
+		<li>Common Development and Distribution License</li>
+		</ul>
+
+		<p>鳥哥也不是軟體授權的高手！每個授權詳細的內容也可以參考 OSI 協會的介紹啦(<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps9">註9</a>)。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		如前所述，GPL 也是合乎 Open source 所定義的授權之一，只是它更著重於保護自由軟體本身的學習與發展就是了！那如果你想要開發開源軟體時，
+		到底使用哪種授權比較好呢？其實跟妳對這個軟體的未來走向的定義有關啦！簡單的來說，<span style="font-weight: bolder">如果你的軟體未來你允許它用於商業活動中，
+		可以考慮 BSD 之類的授權，如果你的軟體希望少一些商業色彩，GPLv2 大概是不二選擇囉</span>！那如果你的軟體允許分支開發，
+		甚至可以考慮分成兩種版本分別授權哩！ ^_^
+		</fieldset><br>
+		<ul class="toplist">
+		<li>專屬軟體/專利軟體 (close source)</li></ul>
+
+		<p>相對於Open Source的軟體會釋出原始碼，Close source的程式則僅推出可執行的二進位程式(binary program)而已。
+		這種軟體的優點是有專人維護，你不需要去更動他；缺點則是靈活度大打折扣，使用者無法變更該程式成為自己想要的樣式！
+		此外，若有木馬程式或者安全漏洞，將會花上相當長的一段時間來除錯！這也是所謂專利軟體(copyright)常見的軟體出售方式。</p>
+
+		<p>雖然專利軟體常常代表就是需要花錢去購買，不過有些專利軟體還是可以『免費』提供大眾使用的！免費的專利軟體代表的授權模式有：</p>
+
+		<ul>
+		<li><span class="text_import2">Freeware</span>：<br>
+		<a href="http://en.wikipedia.org/wiki/Freeware" target="_blank">http://en.wikipedia.org/wiki/Freeware</a><br>
+		不同於Free software，Freeware為『免費軟體』而非『自由軟體！』雖然它是免費的軟體，但是不見得要公布其原始碼，
+		端看釋出者的意見囉！這個東西與Open Source畢竟是不太相同的東西喔！此外，目前很多標榜免費軟體的程式很多都有小問題！
+		例如假藉免費軟體的名義，實施使用者資料竊取的目的！
+		所以『<span class="text_import2">來路不明的軟體請勿安裝</span>！』<br><br></li>
+
+		<li><span class="text_import2">Shareware</span>：<br>
+		<a href="http://en.wikipedia.org/wiki/Shareware" target="_blank">http://en.wikipedia.org/wiki/Shareware</a><br>
+		共享軟體這個名詞就有趣了！與免費軟體有點類似的是，Shareware在使用初期，它也是免費的，但是，
+		到了所謂的『試用期限』之後，你就必須要選擇『付費後繼續使用』或者『將它移除』的宿命～
+		通常，這些共享軟體都會自行撰寫失效程式，讓你在試用期限之後就無法使用該軟體。</li>
+		</ul>
+	<br></div>
+</div>
+
+
+<a id="torvalds"></a>
+<div class="block1">
+<h2>1.2 Torvalds的Linux發展</h2>
+
+	<p>我們前面一節當中，提到了Unix的歷史，也提到了Linux是由Torvalds這個芬蘭人所發明的。那麼為何托瓦茲可以發明Linux呢？
+	憑空想像而來的？還是有什麼淵源？這裡我們就來談一談囉！</p>
+
+	<a id="torvalds_minix"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.2.1 與Minix之間</h2>
+
+		<p><a href="http://en.wikipedia.org/wiki/Linus_Torvalds" target="_blank">Linus Torvalds</a>(托瓦茲, 1969年出生, <a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps10">註10</a>)的外祖父是赫爾辛基大學的統計學家，
+		他的外祖父為了讓自己的小孫子能夠學點東西，所以從小就將托瓦茲帶到身邊來管理一些微電腦。
+		在這個時期，托瓦茲接觸了組合語言(Assembly Language)，那是一種直接與晶片對談的程式語言，也就是所謂的低階語言。
+		必須要很瞭解硬體的架構，否則很難以組合語言撰寫程式的。</p>
+
+		<p>在1988年間，托瓦茲順利的進入了赫爾辛基大學，並選讀了電腦科學系。在就學期間，因為學業的需要與自己的興趣，
+		托瓦茲接觸到了Unix這個作業系統。當時整個赫爾辛基只有一部最新的Unix系統，同時僅提供16個終端機(terminal)。
+		還記得我們上一節剛剛提過的，早期的電腦僅有主機具有運算功能，terminal僅負責提供Input/Output而已。在這種情況下，
+		實在很難滿足托瓦茲的需求，因為.....光是等待使用Unix的時間，就很耗時～為此，他不禁想到：
+		『我何不自己搞一部Unix來玩？』不過，就如同Stallman當初的GNU計畫一樣，要寫核心程式，談何容易～</p>
+
+		<p>不過，幸運之神並未背離托瓦茲，因為不久之後，他就知道有一個類似Unix的系統，
+		並且與Unix完全相容，還可以在Intel 386機器上面跑的作業系統，
+		那就是我們上一節提過的，譚寧邦教授為了教育需要而撰寫的Minix系統！
+		他在購買了最新的Intel 386的個人電腦後，就立即安裝了Minix這個作業系統。
+		另外，上個小節當中也談到，Minix這個作業系統是有附上原始碼的，
+		所以托瓦茲也經由這個原始碼學習到了很多的核心程式設計的設計概念喔！</p>
+	<br></div><br>
+
+	<a id="torvalds_multi"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.2.2 對386硬體的多工測試</h2>
+
+		<p>事實上，托瓦茲對於個人電腦的CPU其實並不滿意，因為他之前碰的電腦都是工作站型的電腦，
+		這類電腦的CPU特色就是可以進行『多工處理』的能力。什麼是多工呢？理論上，
+		<span class="text_import2">一個CPU在一個時間內僅能進行一個程式</span>，
+		那如果有兩個以上的程式同時出現到系統中呢？舉例來說，
+		你可以在現今的電腦中同時開啟兩個以上的辦公軟體，例如電子試算表與文書處理軟體。
+		這個同時開啟的動作代表著這兩個程式同時要交給CPU來處理～</p>
+
+		<p>啊！CPU一個時間點內僅能處理一個程式，那怎麼辦？沒關係，這個時候<span class="text_import2">如果具有多工能力的CPU就會在不同的程式間切換</span>～
+		還記得前一章談到的CPU時脈吧？假設CPU時脈為1GHz的話，那表示CPU一秒鐘可以進行10<sup>9</sup>次工作。
+		假設CPU對每個程式都只進行1000次運作週期，然後就得要切換到下個程式的話，那麼CPU一秒鐘就能夠切換10<sup>6</sup>次呢！
+		(當然啦，切換工作這件事情也會花去一些CPU時間，不過這裡暫不討論)。這麼快的處理速度下，你會發現，
+		兩個程式感覺上幾乎是同步在進行啦！</p>
+
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		為什麼有的時候我同時開兩個檔案(假設為A, B檔案)所花的時間，
+		要比開完A再去開B檔案的時間還要多？現在是否稍微可以理解？
+		因為如果同時開啟的話，CPU就必須要在兩個工作之間不停的切換～
+		而切換的動作還是會耗去一些CPU時間的！所以囉，同時啟用兩個以上的工作在一個CPU上，
+		要比一個一個的執行還要耗時一點。這也是為何現在CPU開發商要整合多個CPU於一個晶片中！
+		也是為何在運作情況比較複雜的伺服器上，需要比較多的CPU負責的原因！
+		</fieldset><br>
+		<p>早期Intel x86架構電腦不是很受重視的原因，就是因為x86的晶片對於多工的處理不佳，
+		CPU在不同的工作之間切換不是很順暢。但是這個情況在386電腦推出後，有很大的改善。
+		托瓦茲在得知新的386晶片的相關資訊後，他認為，以性能價格比的觀點來看，
+		Intel的386相當的便宜，所以在性能上也就稍微可以將就將就 ^_^。最終他就貸款去買了一部Intel的386來玩。</p>
+
+		<p>早期的電腦效能沒有現在這麼好，所以壓榨電腦效能就成了工程師的一項癖好！
+		托瓦茲本人早期是玩組合語言的，組合語言對於硬體有很密切的關係，托瓦茲自己也說：『我始終是個性能癖』^_^。
+		為了徹底發揮386的效能，於是托瓦茲花了不少時間在測試386機器上！
+		他的重要測試就是在測試386的多功性能。首先，他寫了三個小程式，一個程式會持續輸出A、一個會持續輸出B，
+		最後一個會將兩個程式進行切換。他將三個程式同時執行，結果，他看到螢幕上很順利的一直出現ABABAB......
+		他知道，他成功了！ ^_^</p>
+
+	<a id="fig1.2.1"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/abprogram.gif" alt="386電腦的多工測試" title="386電腦的多工測試" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖1.2.1、386電腦的多工測試</div>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		要達到多工(multitasking)的環境，除了硬體(主要是CPU)需要能夠具有多工的特性外，作業系統也需要支援這個功能喔！
+		一些不具有多工特性的作業系統，想要同時執行兩個程式是不可能的。除非先被執行的程式執行完畢，否則，
+		後面的程式不可能被主動執行。<br><br>
+
+		至於多工的作業系統中，每個程式被執行時，都會有一個最大CPU使用時間，若該工作運作的時間超過這個CPU使用時間時，
+		該工作就會先被丟出CPU的運作中，而再度的進入核心工作排程中等待下一次被CPU取用來運作。<br><br>
+
+		這有點像在開記者會啦，主持人(CPU)會問『誰要發問』？一群記者(工作程式)
+		就會舉手(看誰的工作重要！)，先舉手的自然就被允許發問，問完之後，
+		主持人又會問一次誰要發問，當然，所有人(包括剛剛那個記者)都可以舉手！
+		如此一次一次的將工作給他完成啊！ ^_^
+		多工的環境對於複雜的工作情況，幫助很大喔！
+		</fieldset><br>	</div><br>
+
+	<a id="torvalds_first"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.2.3 初次釋出Linux 0.02</h2>
+
+		<p>探索完386的硬體性能之後，終於拿到Minix並且安裝在托瓦茲的386電腦上之後，托瓦茲跟BBS上面一堆工程師一樣，
+		他發現Minix雖然真的很棒，但是譚寧邦教授就是不願意進行功能的加強，導致一堆工程師在作業系統功能上面的欲求不滿！
+		這個時候年輕的托瓦茲就想：『既然如此，那我何不自己來改寫一個我想要的作業系統？』
+		於是他就開始了核心程式的撰寫了。</p>
+
+		<p>撰寫程式需要什麼呢？首先需要的是能夠進行工作的環境，再來則是可以將原始碼編譯成為可執行檔的編譯器。
+		<span class="text_import2">好在有GNU計畫提供的bash工作環境軟體以及gcc編譯器等自由軟體</span>，
+		讓托瓦茲得以順利的撰寫核心程式。他參考Minix的設計理念與書上的程式碼，然後仔細研究出386個人電腦的效能最佳化，
+		然後使用GNU的自由軟體將核心程式碼與386緊緊的結合在一起，最終寫出他所需要的核心程式。
+		而這個小玩意竟然真的可以在386上面順利的跑起來～還可以讀取Minix的檔案系統。
+		真是太好了！不過還不夠，他希望這個程式可以獲得大家的一些修改建議，
+		於是他便將這個核心放置在網路上提供大家下載，同時在BBS上面貼了一則消息：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>Hello everybody out there using minix-
+I'm doing a (free) operation system (just a hobby,
+won't be big and professional like gnu) for <u>386(486) AT clones</u>.
+
+I've currently ported <u>bash (1.08) and gcc (1.40)</u>, 
+and things seem to work. This implies that i'll get 
+something practical within a few months, and <u>I'd like to know 
+what features most people want. Any suggestions are welcome</u>, 
+but I won't promise I'll implement them :-) 
+</pre></td></tr></tbody></table>
+
+		<p>他說，他完成了一個小小的作業系統，這個核心是用在386機器上的，
+		同時，他真的僅是好玩，並不是想要做一個跟GNU一樣大的計畫！
+		另外，他希望能夠得到更多人的建議與回饋來發展這個作業系統！這個概念跟Minix剛好背道而馳呢！
+		這則新聞引起很多人的注意，他們也去托瓦茲提供的網站上下載了這個核心來安裝。
+		有趣的是，因為托瓦茲放置核心的那個FTP網站的目錄為：Linux，
+		從此，大家便稱這個核心為Linux了。(請注意，此時的Linux就是那個kernel喔！
+		另外，托瓦茲所丟到該目錄下的第一個核心版本為0.02呢！)</p>
+
+		<p>同時，為了讓自己的Linux能夠相容於Unix系統，於是托瓦茲開始將一些能夠在Unix上面運作的軟體拿來在Linux上面跑。
+		不過，他發現到有很多的軟體無法在Linux這個核心上運作。這個時候他有兩種作法，
+		<span class="text_import2">一種是修改軟體，讓該軟體可以在Linux上跑，
+		另一種則是修改Linux，讓Linux符合軟體能夠運作的規範！</span>
+		由於Linux希望能夠相容於Unix，於是托瓦茲選擇了第二個作法『修改Linux』！
+		為了讓所有的軟體都可以在Linux上執行，於是托瓦茲開始參考標準的<a href="http://en.wikipedia.org/wiki/POSIX" target="_blank">POSIX</a>規範。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		POSIX是可攜式作業系統介面(Portable Operating System Interface)的縮寫，重點在規範核心與應用程式之間的介面，
+		這是由美國電器與電子工程師學會(IEEE)所發佈的一項標準喔！
+		</fieldset><br>
+		<p>這個正確的決定讓Linux在起步的時候體質就比別人優良～因為POSIX標準主要是針對Unix與一些軟體運行時候的標準規範，
+		只要依據這些標準規範來設計的核心與軟體，理論上，就可以搭配在一起執行了。
+		而Linux的發展就是依據這個POSIX的標準規範，Unix上面的軟體也是遵循這個規範來設計的，
+		如此一來，讓Linux很容易就與Unix相容共享互有的軟體了！同時，因為Linux直接放置在網路下，提供大家下載，
+		所以在流通的速度上相當的快！導致Linux的使用率大增！這些都是造成Linux大受歡迎的幾個重要因素呢！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		其實托瓦茲有意無意之間常常會透露他自己是個只喜歡玩 (Just for Fun) 的怪人！Linux 一開始也只是托瓦茲的一個作業發展出來的玩具而已。
+		他也說，如果 Minix 或 hurd 這兩個中的任何一個系統可以提早開發出他想要的功能與環境，也許他根本不會想要自己開發一個 Linux 哩！
+		哇！人類智慧真是沒有極限！各位啊： 1)要先有基礎知識與技能、2)有了第一點後，要勇於挑戰權威、3)把你們的玩具發揚光大吧！ ^_^
+		</fieldset><br>	<br></div><br>
+
+	<a id="torvalds_team"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.2.4 Linux 的發展：虛擬團隊的產生</h2>
+
+		<p>Linux能夠成功除了托瓦茲個人的理念與力量之外，其實還有個最重要的團隊！</p>
+
+		<ul class="toplist">
+		<li>單一個人維護階段</li></ul>
+
+		<p>Linux雖然是托瓦茲發明的，而且內容還絕不會涉及專利軟體的版權問題。不過，如果單靠托瓦茲自己一個人的話，那麼Linux要茁壯實在很困難～
+		因為一個人的力量是很有限的。好在托瓦茲選擇Linux的開發方式相當的務實！首先，他將釋出的Linux核心放置在FTP上面，並請告知大家新的版本資訊，
+		等到使用者下載了這個核心並且安裝之後，如果發生問題，或者是由於特殊需求亟需某些硬體的驅動程式，那麼這些使用者就會主動回報給托瓦茲。
+		在托瓦茲能夠解決的問題範圍內，他都能很快速的進行Linux核心的更新與除錯。</p>
+
+		<ul class="toplist">
+		<li>廣大駭客志工加入階段</li></ul>
+
+		<p>不過，托瓦茲總是有些硬體無法取得的啊，那麼他當然無法幫助進行驅動程式的撰寫與相關軟體的改良。
+		這個時候，就會有些志工跳出來說：『這個硬體我有，我來幫忙寫相關的驅動程式。』
+		因為Linux的核心是Open Source的，駭客志工們很容易就能夠跟隨Linux的原本設計架構，
+		並且寫出相容的驅動程式或者軟體。志工們寫完的驅動程式與軟體托瓦茲是如何看待的呢？
+		首先，他將該驅動程式/軟體帶入核心中，並且加以測試。
+		只要測試可以運行，並且沒有什麼主要的大問題，那麼他就會很樂意的將志工們寫的程式碼加入核心中！</p>
+
+		<p>總之，托瓦茲是個很務實的人，對於Linux核心所欠缺的項目，他總是『先求有且能跑，
+		再求進一步改良』的心態！這讓Linux使用者與志工得到相當大的鼓勵！
+		因為Linux的進步太快了！使用者要求虛擬記憶體，結果不到一個星期推出的新版Linux就有了！
+		這不得不讓人佩服啊！</p>
+
+		<p>另外，<span class="text_import2">為因應這種隨時都有程式碼加入的狀況，於是Linux便逐漸發展成具有模組的功能</span>！
+		亦即是將某些功能獨立出於核心外，在需要的時候才載入到核心中。如此一來，
+		如果有新的硬體驅動程式或者其他協定的程式碼進來時，就可以模組化，
+		大大的增加了Linux核心的可維護能力！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		核心是一組程式，如果這組程式每次加入新的功能都得要重新編譯與改版的話會變成如何？
+		想像一下，如果你只是換了顯示卡就得要重新安裝新的Windows作業系統，會不會傻眼？
+		模組化之後，原本的核心程式不需要更動，你可以直接將他想成是『驅動程式』即可！ ^_^
+		</fieldset><br>
+		<ul class="toplist">
+		<li>核心功能細部分工發展階段</li></ul>
+
+		<p>後來，因為Linux核心加入了太多的功能，光靠托瓦茲一個人進行核心的實際測試並加入核心原始程式實在太費力～
+		結果，就有很多的朋友跳出來幫忙這個前置作業！例如考克斯(Alan Cox)、與崔迪(Stephen Tweedie)等等，
+		這些重要的副手會先將來自志工們的修補程式或者新功能的程式碼進行測試，
+		並且結果上傳給托瓦茲看，讓托瓦茲作最後核心加入的原始碼的選擇與整併！
+		這個分層負責的結果，讓Linux的發展更加的容易！</p>
+
+		<p>特別值得注意的是，這些托瓦茲的Linux發展副手，以及自願傳送修補程式的駭客志工，
+		其實都沒有見過面，而且彼此在地球的各個角落，大家群策群力的共同發展出現今的Linux，
+		我們稱這群人為虛擬團隊！而為了虛擬團隊資料的傳輸，於是Linux便成立的核心網站：
+		<a href="http://www.kernel.org/" target="_blank">http://www.kernel.org</a>！</p>
+
+		<p>而這群素未謀面的虛擬團隊們，在1994年終於完成的Linux的核心正式版！version 1.0。
+		這一版同時還加入了X Window System的支援呢！且於1996年完成了2.0版、2011 年釋出 3.0 版，更於 2015 年 4 月釋出了 4.0 版哩！
+		發展相當迅速喔！此外，托瓦茲指明了企鵝為Linux的吉祥物。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		奇怪的是，托瓦茲是因為小時候去動物園被企鵝咬了一口念念不忘，
+		而正式的2.0推出時，大家要他想一個吉祥物。他在想也想不到什麼動物的情況下，
+		就將這個念念不忘的企鵝當成了Linux的吉祥物了......
+		</fieldset><br>
+		<p>Linux由於托瓦茲是針對386寫的，跟386硬體的相關性很強，所以，
+		早期的Linux確實是不具有移植性的。不過，大家知道Open source的好處就是，
+		可以修改程式碼去適合作業的環境。因此，在1994年以後，Linux便被開發到很多的硬體上面去了！
+		目前除了x86之外，IBM、HP等等公司出的硬體也都有被Linux所支援呢！甚至於小型單板電腦
+		(樹莓派/香蕉派等) 與手持裝置 (智慧型手機、平板電腦) 的 ARM 架構系統，大多也是使用 Linux 核心喔！</p>
+	<br></div><br>
+
+	<a id="torvalds_version"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.2.5 Linux的核心版本</h2>
+
+		<p>Linux的核心版本編號有點類似如下的樣子：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>3.10.0-123.el7.x86_64
+主版本.次版本.釋出版本-修改版本
+</pre></td></tr></tbody></table>
+
+		<p>雖然編號就是如上的方式來編的，不過依據 Linux 核心的發展期程，核心版本的定義有點不太相同喔！</p>
+
+		<ul class="toplist">
+		<li>奇數、偶數版本分類</li></ul>
+
+		<p>在 2.6.x 版本以前，托瓦茲將核心的發展趨勢分為兩股，並根據這兩股核心的發展分別給予不同的核心編號，那就是：</p>
+
+		<ul>
+		<li><span class="text_import2">主、次版本為奇數</span>：發展中版本(development)<br>
+		如2.5.xx，這種核心版本主要用在測試與發展新功能，所以通常這種版本僅有核心開發工程師會使用。
+		如果有新增的核心程式碼，會加到這種版本當中，等到眾多工程師測試沒問題後，才加入下一版的穩定核心中；<br><br></li>
+		<li><span class="text_import2">主、次版本為偶數</span>：穩定版本(stable)<br>
+		如2.6.xx，等到核心功能發展成熟後會加到這類的版本中，主要用在一般家用電腦以及企業版本中。
+		重點在於提供使用者一個相對穩定的Linux作業環境平台。</li></ul>
+
+		<p>至於釋出版本則是在主、次版本架構不變的情況下，新增的功能累積到一定的程度後所新釋出的核心版本。
+		而由於Linux核心是使用GPL的授權，因此大家都能夠進行核心程式碼的修改。因此，如果你有針對某個版本的核心修改過部分的程式碼，
+		那麼那個被修改過的新的核心版本就可以加上所謂的修改版本了。</p>
+
+		<ul class="toplist">
+		<li>主線版本、長期維護版本(longterm version)</li></ul>
+
+		<p>不過，這種奇數、偶數的編號格式在 3.0 推出之後就失效了。從 3.0 版開始，核心主要依據主線版本 (MainLine) 來開發，開發完畢後會往下一個主線版本進行。
+		例如 3.10 就是在 3.9 的架構下繼續開發出來的新的主線版本。通常新一版的主線版本大約在 2~3 個月會被提出喔！
+		之所以會有新的主線版本，是因為有加入新功能之故。現在 (2015/04) 最新的主線版本已經來到 4.0 版了喔！好快！</p>
+
+		<p>而舊的版本在新的主線版本出現之後，會有兩種機制來處理，一種機制為結束開發 (End of Live, EOL)，亦即該程式碼已經結束，不會有繼續維護的狀態。
+		另外一種機制為保持該版本的持續維護，亦即為長期維護版本 (Longterm)！例如 3.10 即為一個長期維護版本，這個版本的程式碼會被持續維護，若程式碼有 bug 或其他問題，
+		核心維護者會持續進行程式碼的更新維護喔！</p>
+
+		<p>所以囉，如果你想要使用 Linux 核心來開發你的系統，那麼當然要選擇長期支援的版本才行！要判斷你的 Linux 核心是否為長期支援的版本，
+		可以使用『 uname -r 』來查閱核心版本，然後對照下列連結來了解其對應值喔！</p>
+
+		<ul><li><a href="https://www.kernel.org/releases.html" target="_blank">https://www.kernel.org/releases.html</a></li></ul>
+
+		<ul class="toplist">
+		<li>Linux 核心版本與 Linux 發佈商版本</li></ul>
+
+		<p>Linux核心版本與distribution (下個小節會談到) 的版本並不相同，很多朋友常常上網問到：『我的Linux是7.x版，請問....』之類的留言，
+		這是不對的提問方式，因為所謂的Linux版本指的應該是核心版本，
+		而目前最新的核心版本應該是4.0.0(2015/04) 才對，並不會有7.x的版本出現的。</p>
+
+
+		<p>妳常用的Linux系統則應該說明為distribution才對！因此，如果以CentOS這個distribution來說，
+		妳應該說：『我用的Linux是CentOS這個 distribution，版本為7.x 版，請問....』才對喔！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		當妳有任何問題想要在Linux論壇發言時，請務必仔細的說明妳的distribution版本，
+		因為雖然各家distributions使用的都是Linux核心，不過每家distributions所選用的軟體以及他們自己發展的工具並不相同，
+		多少還是有點差異，所以留言時得要先聲明distribution的版本才行喔！ ^_^
+		</fieldset><br>	</div><br>
+
+	<a id="torvalds_dist"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.2.6 Linux distributions</h2>
+
+		<p>好了，經過上面的說明，我們知道了Linux其實就是一個作業系統最底層的核心及其提供的核心工具。
+		他是GNU GPL授權模式，所以，任何人均可取得原始碼與可執行這個核心程式，並且可以修改。
+		此外，因為Linux參考POSIX設計規範，於是相容於Unix作業系統，故亦可稱之為Unix Like的一種。</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		鳥哥曾在上課的時候問過同學：『什麼是Unix Like啊』？可愛的同學們回答的答案是：『就是很喜歡(like)Unix啦！』
+		囧rz...那個like是『很像』啦！所以Unix like是『很像Unix的作業系統』哩！
+		</fieldset><br>
+		<ul class="toplist">
+		<li>可完整安裝的Linux發佈套件</li></ul>
+
+		<p>Linux的出現讓GNU計畫放下了心裡的一塊大石頭，因為GNU一直以來就是缺乏了核心程式，
+		導致他們的GNU自由軟體只能在其他的Unix上面跑。既然目前有Linux出現了，且 
+		Linux也用了很多的GNU相關軟體，所以<span class="text_import2">Stallman認為Linux的全名應該稱之為GNU/Linux呢</span>！
+		不管怎麼說，Linux實在很不錯，讓GNU軟體大多以Linux為主要作業系統來進行開發，
+		此外，很多其他的自由軟體團隊，例如postfix, vsftpd, apache等等也都有以Linux 
+		為開發測試平台的計畫出現！如此一來，Linux除了主要的核心程式外，可以在Linux 
+		上面運行的軟體也越來越多，如果有心，就能夠將一個完整的Linux作業系統搞定了！</p>
+
+		<p>雖然由Torvalds負責開發的Linux僅具有Kernel與Kernel提供的工具，
+		不過，如上所述，很多的軟體已經可以在Linux上面運作了，因此，
+		<span class="text_import2">『Linux + 各種軟體』就可以完成一個相當完整的作業系統了</span>。
+		不過，要完成這樣的作業系統......還真難～
+		因為Linux早期都是由駭客工程師所開發維護的，他們並沒有考慮到一般使用者的能力......</p>
+
+		<p>為了讓使用者能夠接觸到Linux，於是很多的商業公司或非營利團體，
+		就將Linux Kernel(含tools)與可運行的軟體整合起來，加上自己具有創意的工具程式，
+		這個工具程式可以讓使用者以光碟/DVD或者透過網路直接安裝/管理Linux系統。<span class="text_import2">
+		這個『Kernel + Softwares + Tools + 可完整安裝程序』的咚咚，我們稱之為Linux distribution</span>，
+		一般中文翻譯成可完整安裝套件，或者Linux發佈商套件等。</p>
+
+	<a id="fig1.2.2"></a>
+	<div style="text-align:center; margin: 0 auto 0 auto; "><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/distribution.gif" alt="Linux可完整安裝發佈套件" title="Linux可完整安裝發佈套件" style="border: 1px solid black; padding: 10px "></div>
+	<div style="text-align: center;">圖1.2.2、Linux可完整安裝發佈套件</div>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		由於Linux核心是由駭客工程師寫的，要由原始碼安裝到x86電腦上面成為可以執行的binary檔案，
+		這個過程可不是人人都會的～所以早期確實只有工程師對Linux有興趣。
+		一直到一些社群與商業公司將Linux核心配合自由軟體，並提供完整的安裝程序，
+		且製成光碟/DVD後，對於一般使用者來說，Linux才越來越具有吸引力！
+		因為只要一直『下一步』就可以將Linux安裝完成啊！ ^_^
+		</fieldset><br>
+		<p>由於GNU的GPL授權並非不能從事商業行為，於是很多商業公司便成立來販售Linux distribution。
+		而由於Linux的GPL版權宣告，因此，商業公司所販售的Linux distributions通常也都可以從Internet上面來下載的！
+		此外，如果你想要其他商業公司的服務，那麼直接向該公司購買光碟來安裝，也是一個很不錯的方式的！</p>
+
+		<a id="fhs"></a>
+		<ul class="toplist">
+		<li>各大Linux Distributions的主要異同：支援標準！</li></ul>
+
+		<p>不過，由於發展Linux distributions的社群與公司實在太多了，例如在台灣有名的Red Hat, SuSE, Ubuntu,
+		Fedora, Debian等等，所以很多人都很擔心，如此一來<span class="text_import2">每個distribution是否都不相同呢？</span>
+		這就不需要擔心了，因為每個Linux distributions使用的kernel都是<a href="http://www.kernel.org/" target="_blank">http://www.kernel.org</a>所釋出的，而他們所選擇的軟體，幾乎都是目前很知名的軟體，重複性相當的高，
+		例如網頁伺服器的Apache，電子郵件伺服器的Postfix/sendmail，檔案伺服器的Samba等等。</p>
+
+		<p>此外，為了讓所有的Linux distributions開發不致於差異太大，且讓這些開發商在開發的時候有所依據，還有<span class="text_import2">Linux Standard Base (LSB)</span>等標準來規範開發者，以及目錄架構的<span class="text_import2">File system Hierarchy Standard (FHS)</span>標準規範！
+		唯一差別的，可能就是該開發者自家所開發出來的管理工具，以及套件管理的模式吧！
+		所以說，基本上，每個Linux distributions除了架構的嚴謹度與選擇的套件內容外，
+		其實差異並不太大啦！ ^_^ 。大家可以選擇自己喜好的distribution來安裝即可！</p>
+
+		<ul>
+		<li><a href="http://www.pathname.com/fhs/" target="_blank">FHS: http://www.pathname.com/fhs/</a></li>
+		<li><a href="http://www.linuxbase.org/" target="_blank">LSB: http://www.linuxbase.org/</a></li></ul>
+
+		<p>事實上鳥哥認為distributions主要分為兩大系統，一種是使用RPM方式安裝軟體的系統，包括Red Hat, Fedora, SuSE等都是這類；
+		一種則是使用Debian的dpkg方式安裝軟體的系統，包括Debian, Ubuntu, B2D等等。若是加上商業公司或社群單位的分類，那麼我們可以簡單的用下表來做個解釋喔！</p>
+<table class="news">
+<tbody><tr style="background-color: lightblue"><td></td><td>RPM 軟體管理</td><td>DPKG 軟體管理</td><td>其他未分類</td></tr>
+<tr>
+	<td style="background-color: lightblue">商業公司</td>
+	<td>RHEL (Red Hat 公司)<br>SuSE (Micro Focus)</td>
+	<td>Ubuntu (Canonical Ltd.)</td>
+	<td></td></tr>
+<tr>
+	<td style="background-color: lightblue">社群單位</td>
+	<td>Fedora<br>CentOS<br>OpenSuSE</td>
+	<td>Debian<br>B2D</td>
+	<td>Gentoo</td></tr>
+</tbody></table>
+
+		<p>底下列出幾個主要的Linux distributions發行者網址：</p>
+
+		<ul>
+		<li><a href="http://www.redhat.com/" target="_blank">Red Hat: http://www.redhat.com</a></li>
+		<li><a href="https://www.suse.com/" target="_blank">SuSE: https://www.suse.com</a></li>
+		<li><a href="https://getfedora.org/" target="_blank">Fedora: https://getfedora.org/</a></li>
+		<li><a href="http://www.centos.org/" target="_blank">CentOS: http://www.centos.org/</a></li>
+		<li><a href="http://www.debian.org/" target="_blank">Debian: http://www.debian.org/</a></li>
+		<li><a href="http://www.ubuntu.com/" target="_blank">Ubuntu: http://www.ubuntu.com/</a></li>
+		<li><a href="http://www.gentoo.org/" target="_blank">Gentoo: http://www.gentoo.org/</a></li>
+		</ul>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		到底是要買商業版還是社群版的Linux distribution呢？如果是要裝在個人電腦上面做為桌上型電腦用的，建議使用社群版，
+		包括Fedora, Ubuntu, OpenSuSE等等。如果是用在伺服器上面的，建議使用商業版本，包括Red Hat, SuSE等。
+		這是因為社群版通常開發者會加入最新的軟體，這些軟體可能會有一些bug存在。至於商業版則是經過一段時間的磨合後，
+		才將穩定的軟體放進去。<br><br>
+		舉例來說，Fedora兜出來的軟體套件經過一段時間的維護後，等到該軟體穩定到不容易發生錯誤後，
+		Red Hat才將該軟體放到他們最新的釋出版本中。所以，Fedora的軟體比較經常改版，Red Hat的軟體就較少更版。
+		</fieldset><br>
+		<ul class="toplist">
+		<li>Linux在台灣</li></ul>
+
+		<p>當然發行套件者不僅於此。但是值得大書特書的，是中文Linux的延伸計畫：CLE這個套件！
+		早期的Linux因為是工程師發展的，而這些工程師大多以英文語系的國家為主，
+		所以Linux對於國人的學習是比較困擾一點。後來由國人發起的CLE計畫，
+		開發很多的中文套件及翻譯了很多的英文文件，使得我們目前得以使用中文的Linux呢！
+		另外，目前正在開發中的還有台南縣臥龍小三等老師們發起的眾多自由軟體計畫，
+		真是造福很多的朋友啊！</p>
+
+		<a id="20120220"></a><ul>
+		<li><a href="http://freesf.tw/" target="_blank">自由軟體技術交流網： http://freesf.tw/</a></li>
+		<li><a href="http://b2d-linux.com/" target="_blank">B2D: http://b2d-linux.com/</a></li>
+		</ul>
+
+		<p>此外，如果只想看看Linux的話，還可以選擇所謂的可光碟開機進入Linux的Live CD版本，
+		亦即是KNOPPIX這個Linux distributions呢！台灣也有阿里巴巴兄維護的中文Live CD喔！</p>
+
+		<ul>
+		<li><a href="http://www.knoppix.net/" target="_blank">http://www.knoppix.net/</a></li>
+		<li><a href="http://people.ofset.org/~ckhung/b/sa/knoppix.php" target="_blank">洪老師解釋  KNOPPIX: http://people.ofset.org/~ckhung/b/sa/knoppix.php</a></li>
+		</ul>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		對於沒有額外的硬碟或者是沒有額外的主機的朋友來說，KNOPPIX這個可以利用光碟開機而進入Linux作業系統的Live CD 
+		真的是一個不錯的選擇！你只要下載了KNOPPIX的映象檔，然後將他燒錄成為CD，
+		放入你主機的光碟機，並在BIOS內設定光碟為第一個開機選項，就可以使用Linux系統了呢！
+		</fieldset><br>
+		<p>如果你還想要知道更多的Linux distributions的下載與使用資訊，可以參考：</p>
+
+		<ul>
+		<li><a href="http://distrowatch.com/" target="_blank">http://distrowatch.com/</a></li>
+		</ul>
+
+		<ul class="toplist">
+		<li>選擇適合你的Linux distribution</li></ul>
+
+		<p>那我到底應該要選擇哪一個distributions？就如同我們上面提到的，其實每個distributions差異性並不大！
+		不過，由於套件管理的方式主要分為Debian的dpkg及Red Hat系統的RPM方式，
+		目前鳥哥的建議是，先學習以RPM套件管理為主的RHEL/Fedora/SuSE/CentOS等台灣使用者較多的版本，
+		這樣一來，發生問題時，可以提供解決的管道比較多。如果你已經接觸過Linux了，
+		還想要探討更嚴謹的Linux版本，那可以考慮使用Debian，如果你是以效能至上來考量，
+		那麼或許Gentoo是不錯的建議！</p>
+
+		<p>總之，版本很多，但是各版本差異其實不大，建議你一定要先選定一個版本後，
+		先徹頭徹尾的瞭解他，那再繼續玩其他的版本時，就可以很快的進入狀況。
+		鳥哥的網站僅提供一個版本，不過是以比較基礎的方式來介紹的，
+		因此，如果能夠熟練俺這個網站的話，呵呵！哪一個distributions對你來說，都不成問題啦！</p>
+
+		<p>不過，如果依據電腦主機的用途來分的話，在台灣鳥哥會這樣建議：</p>
+
+		<ul style="padding-left: 20px; ">
+		<li>用於企業環境：建議使用商業版本，例如Red Hat的RHEL或者是SuSE都是很不錯的選擇！
+			畢竟企業的環境強調的是永續的經營，你可不希望網管人員走了之後整個機房的主機都沒有人管理吧！
+			由於商業版本都會提供客戶服務，所以可以降低企業的風險喔！<br><br></li>
+		<li>用於個人或教學的伺服器環境：要是你的伺服器所在環境如果當機還不會造成太大的問題的話，
+			加上你的環境是在教學的場合當中時(就是說，唔！經費不足的環境啦！)那麼可以使用『號稱』完全相容商業版RHEL的CentOS。
+			因為CentOS是抓RHEL的原始碼來重新兜起來的一個Linux distribution，所以號稱相容於RHEL。
+			這一版的軟體完全與RHEL相同，在改版的幅度較小，適合於伺服器系統的環境；<br><br></li>
+		<li>用於個人的桌上型電腦：想要嘗鮮嗎？建議使用很炫的Fedora/Ubuntu等Desktop(桌面環境)使用的版本！
+			如果不想要安裝Linux的話，那麼Fedora或CentOS也有推出Live CD了！也很容易學習喔！</li>
+		</ul>
+	<br></div>
+</div>
+
+<a id="uselinux"></a>
+<div class="block1">
+<h2>1.3 Linux當前應用的角色</h2>
+
+	<p>了解了什麼是 Linux 之後，再來談談，那目前 Linux 用在哪裡呢？由於Linux kernel實在是非常的小巧精緻，可以在很多強調省電以及較低硬體資源的環境底下執行；
+	此外，由於Linux distributions整合了非常多非常棒的軟體(不論是專利軟體或自由軟體)，
+	因此也相當適合目前個人電腦的使用呢！傳統上，Linux常見的應用可約略分為企業應用與個人應用兩方面，但這幾年很流行的雲端運算機制中，
+	讓 Linux 似乎又更有著力點囉！</p>
+
+	<a id="uselinux_enterprise"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.3.1 企業環境的利用</h2>
+
+		<p>企業對於數位化的目標在於提供消費者或員工一些產品方面的資訊 (例如網頁介紹)，以及整合整個企業內部的資料統一性
+		(例如統一的帳號管理/文件管理系統等)。另外，某些企業例如金融業等，則強調在資料庫、安全強化等重大關鍵應用。
+		學術單位則很需要強大的運算能力等。所以企業環境運用Linux作些什麼呢？</p>
+
+		<ul class="toplist">
+		<li>網路伺服器：</li></ul>
+
+		<p><span class="text_import2">這是Linux當前最熱門的應用了！</span>承襲了Unix高穩定性的良好傳統，Linux上面的網路功能特別的穩定與強大！
+		此外，由於GNU計畫與Linux的GPL授權模式，讓很多優秀的軟體都在Linux上面發展，
+		且這些在Linux上面的伺服器軟體幾乎都是自由軟體！因此，做為一部網路伺服器，例如WWW, Mail Server, File 
+		Server等等，Linux絕對是上上之選！當然，這也是Linux的強項！由於 Linux server 的需求強烈，因此許多硬體廠商推出產品時，
+		還得要特別說明有支援的 Linux distributions 呢！方便提供企業採購部門的規劃喔！例如底下的連結可以瞧瞧：</p>
+
+		<ul>
+		<li>Dell 公司的 Server 對 OS 的支援度：<br>
+		<a href="http://www.dell.com/support/contents/us/en/04/article/Product-Support/Self-support-Knowledgebase/enterprise-resource-center/server-operating-system-support" target="_blank">http://www.dell.com/support/contents/tw/en/twbsd1/article/Product-Support/<br>Self-support-Knowledgebase/enterprise-resource-center/server-operating-system-support</a></li>
+
+		<li>HP 公司的支援： <br>
+		<a href="http://www8.hp.com/us/en/business-services/it-services.html?compURI=1078888#tab=TAB1" target="_blank">http://www8.hp.com/us/en/business-services/it-services.html?compURI=1078888#tab=TAB1</a></li>
+
+		<li>IBM 公司的支援：<br>
+		<a href="http://www-03.ibm.com/systems/hardware/browse/linux/" target="_blank">http://www-03.ibm.com/systems/hardware/browse/linux/</a></li>
+
+		<li>VMWare 的虛擬化支援：<br>
+		<a href="https://www.vmware.com/support/ws55/doc/intro_supguest_ws.html" target="_blank">https://www.vmware.com/support/ws55/doc/intro_supguest_ws.html</a></li>
+		</ul>
+
+		<p>從上面的幾個大廠的 Linux 支援情況來看，目前 (2015) 支援度比較廣泛的依舊是 Red Hat 以及 SuSU 兩個大廠喔！
+		提估給企業採購的時候參考參考！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		前一陣子參加一個座談會，會上許多企業界的前輩們在聊，如果想要選擇某個 Linux distribution 時，哪個 distribution 會是企業採購時的最愛呢？
+		與會的朋友說，要採購嗎？看看伺服器大廠對於該 distribution 的支援度就知道了！答案是什麼？就是上面許多連結的結果囉！ ^_^
+		</fieldset><br>
+		<ul class="toplist">
+		<li>關鍵任務的應用(金融資料庫、大型企業網管環境)：</li></ul>
+
+		<p>由於個人電腦的效能大幅提昇且價格便宜，所以金融業與大型企業的環境為了要精實自己機房的機器設備，
+		因此很多企業漸漸的走向Intel相容的x86主機環境。而這些企業所使用的軟體大多使用Unix作業系統平台的軟體，
+		總不能連過去發展的軟體都一口氣全部換掉吧！所以囉，這個時候符合Unix作業系統標準並且可以在x86上運作的Linux就漸漸嶄露頭角了！^_^</p>
+
+		<p>目前很多金融業界都已經使用Linux做為他們的關鍵任務應用。所謂的關鍵任務就是該企業最重要的業務啦！
+		舉例來說，金融業最重要的就是那些投資者、帳戶的資料了，這些資料大多使用資料庫系統來作為存取介面，
+		這些資料很重要吧！很多金融業將這麼重要的任務交給了Linux了！你說Linux厲不厲害啊？</p>
+
+		<ul class="toplist">
+		<li>學術機構的高效能運算任務：</li></ul>
+		<p>學術機構的研究常常需要自行開發軟體，所以對於可作為開發環境的作業系統需求非常的迫切！舉例來說，
+		非常多技職體系的科技大學就很需要這方面的環境，好進行一些畢業專題的製作呢！
+		又例如工程界流體力學的數值模式運算、娛樂事業的特效功能處理、軟體開發者的工作平台等等。
+		由於Linux的創造者本身就是個電腦性能癖，所以Linux有強大的運算能力；並且Linux具有支援度相當廣泛的GCC編譯軟體，
+		因此Linux在這方面的優勢可是相當明顯的！</p>
+
+		<p>舉個鳥哥自己的案例好了，鳥哥之前待的研究室有跑一套空氣品質模式的數值模擬軟體。
+		這套軟體原本只能在Sun的SPARC機器上面跑。後來該軟體轉向Linux作業系統平台發展，
+		鳥哥也將自己實驗室的數值模式程式由Sun的Solaris平台移植到Linux上面呢！
+		據美國環保署內部人員的測試，發現Linux平台的整體硬體費用不但比較便宜(x86系統嘛！)而且速度還比較快呢！</p>
+
+		<p>另外，為了加強整體系統的效能，叢集電腦系統(Cluster)的平行運算能力在近年來一直被拿出來討論(<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps11">註11</a>)。
+		所謂的平行運算指的是『將原本的工作分成多份，然後交給多部主機去運算，最終再將結果收集起來』的一種方式。
+		由於透過高速網路使用到多部主機，將能夠讓原本需要很長運算時間的工作，大幅的降低等待的時間！
+		例如中央氣象局的氣象預報就很需要這樣的系統來幫忙！而Linux作業系統則是這種架構下相當重要的一個環境平台呢！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		由於伺服器的 CPU 數量可以增加許多，而且也能夠達到比較省電的功能，因此鳥哥最近更換了崑山科大資傳系的模式運算伺服器組，
+		透過 20 核心 40 超執行續的以及 12 核心 24 超執行續的兩部系統，搭配 10G 網卡來處理模式的運作！用的是本書談到的 CentOS Linux，
+		跑得模式是美國環保署公佈，現行於世界最流行的 CMAQ 空品模式喔！
+		</fieldset><br>
+	</div><br>
+
+	<a id="uselinux_person"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.3.2 個人環境的使用</h2>
+
+		<p>你知道你平時接觸的電子用品中，哪些咚咚裡面有Linux系統存在呢？其實相當的多呢！我們就來談一談吧！</p>
+
+		<ul class="toplist">
+		<li>桌上型電腦：</li></ul>
+
+		<p>所謂的桌上型電腦，其實就是你我在辦公室使用的電腦啦。一般我們稱之為Desktop的系統。那麼這個 Desktop
+		的系統平時都在做什麼呢？大概都是這些工作吧：</p>
+		<ul>
+		<li>上網瀏覽+即時通訊(Skype, FB, Google, Yahoo...)；</li>
+		<li>文書處理；</li>
+		<li>網路介面之公文處理系統；</li>
+		<li>辦公室軟體(Office Software)處理資料；</li>
+		<li>收發電子郵件；</li>
+		</ul>
+
+		<p>想進行這些電腦工作時，你的Desktop環境需要什麼咚咚？很簡單，『<span class="text_import2">就是需要視窗</span>』！
+		因為上網瀏覽、文書編排的所見即所得介面，以及電子公文系統等等，
+		如果沒有視窗介面的輔助，那麼將對使用者造成很大的困擾。而眾所皆知的，
+		Linux早期都是由工程師所發展的，對於視窗介面並沒有很需要，所以造成Linux不太親和的印象。</p>
+
+		<p>好在，為了要強化桌上型電腦的使用率，Linux與X Window System結合了！
+		要注意的是，<span class="text_import2">X Window System僅只是Linux上面的一套軟體，
+		而不是核心喔！所以即使X Window掛了，對Linux也可能不會有直接的影響呢</span>！
+		更多關於 X window system 的詳細資訊我們留待<a href="http://linux.vbird.org/linux_basic/0590xwindow.php">第二十三章</a>再來介紹。</p>
+
+		<p>近年來在各大社群的團結合作之下，Linux的視窗系統上面能夠跑的軟體實在是多的嚇人！而且也能夠應付的了企業的辦公環境！
+		例如美觀的KDE與GNOME視窗介面，搭配可相容微軟Office的 OpenOffice / LibreOffice (<a href="https://www.openoffice.org/zh-tw/" target="_blank">https://www.openoffice.org/zh-tw/</a>, <a href="https://zh-tw.libreoffice.org/" target="_blank">https://zh-tw.libreoffice.org/</a>) 等軟體，
+		這些自由的辦公室軟體包含了文書處理、電子試算表、簡報軟體等等，功能齊全啊！然後配合功能強大速度又快的Firefox瀏覽器，
+		以及可下載信件的雷鳥(ThunderBird)軟體(類似微軟的Outlook Express)，還有可連上多種即時通訊的Pidgin！
+		Linux能夠做到企業所需要的各項功能啦！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		鳥哥真的垂垂老已～前一陣子 (2014) 上課時，跟學生說：『各位啊！你們考取的證照也轉一份給老師來備份嘛！用 emai 寄給鳥哥喔！』
+		結果有幾個學生竟然舉手說：『老師！我知道 email 啊！不過，從來沒有用過 email 寄附件耶！所以才沒有傳給你啊！』哇！！
+		瞎密？『那你們怎麼傳送檔案啊？用 FTP 喔？』鳥哥問，他說『沒啊！就用 FB 或者是 Line 啊！或者 dropbox！真沒用過 email 耶！』...時代不同了...
+		</fieldset><br>
+		<ul class="toplist">
+		<li>手持系統(PDA、手機)：</li></ul>
+
+		<p>自從 iphone4 在 2010 年面世之後，整個手機市場開始大搬風！智慧型手機市場將原本商務用的 PDA 市場整個吃掉！然後原本在 2010 
+		年前後很熱門的小筆電也被平板電腦打趴了！在這個潮流下，Google 成立了開放手機聯盟 (Open Handset Alliance)，並且推出 Android 手機專用作業系統！
+		而 Android 其實就是 Linux 核心的一支，只是專門用來針對手機/平板這類的 ARM 機器所設計的 (<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps12">註12</a>)！
+
+		</p><p>2015 最新的 Android 系統 5.x 使用的就是 Linux kernel 3.4.x 版本，另外，調查中也顯示，從 2013 年之後，Android 
+		系統已經是全球最多人使用的手機系統 (<a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#ps12">註12</a>)。也就是說，現在手機市場的主流作業系統是 Linux 分支出來的 Android 喔！
+		那怎麼能說 Linux 很少人用呢？哈哈！天天都在用耶各位！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		如果你的手機是 Android 系統的話，請拿出來，然後點選『設定』--&gt; 『關於(手機)』 --&gt; 『軟體資訊』，你就會看到 Android 版本，然後又點選『更多』，
+		這時你就會看到類似 3.4.10-xxx 的代號，那是什麼？查一查上頭提到的 Linux 版本，就知道那是啥鬼東西囉！ ^_^
+		</fieldset><br>
+		<ul class="toplist">
+		<li>嵌入式系統：</li></ul>
+
+		<p>在<a href="http://linux.vbird.org/linux_basic/0105computers.php">第零章</a>當中我們談到過硬體系統，
+		而要讓硬體系統順利的運作就得要撰寫合適的作業系統才行。那硬體系統除了我們常看到的電腦之外，
+		其實家電產品、PDA、手機、數位相機以及其他微型的電腦配備也是硬體系統啦！
+		這些電腦配備也都是需要作業系統來控制的！而作業系統是直接嵌入於產品當中的，理論上你不應該會更動到這個作業系統，
+		所以就稱為嵌入式系統啦！</p>
+
+		<p>包括路由器、防火牆、手機、IP分享器、交換器、機器人控制晶片、家電用品的微電腦控制器等等，都可以是Linux作業系統喔！
+		<a href="http://phorum.study-area.org/" target="_blank">酷學園</a>內的Hoyo大大就曾經介紹過如何在嵌入式設備上面載入Linux！
+		你桌面上用來備份的 NAS 說不定內部也是精簡化過的 Linux 系統啊！</p>
+
+		<p>雖然嵌入式設備很多，大家也想要轉而使用Linux作業系統，不過在台灣，這方面的人才還是太少了！
+		要玩嵌入式系統必須要很熟悉Linux Kernel與驅動程式的結合才行！這方面的學習可就不是那麼簡單喔！ ^_^</p>
+	<br></div><br>
+
+	<a id="uselinux_cloud"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.3.3 雲端運用</h2>
+
+		<p>自從個人電腦的 CPU 內建的核心數越來越多，單一主機的能力太過強大，導致硬體資源經常閒置，這個現象讓虛擬化技術得以快速發展！
+		而由於硬體資源大量集中化，然後行動辦公室之類的需求越來越多，因此讓辦公資料集中於雲程序中，讓企業員工僅須透過端點設備連線到雲去取用運算資源，
+		這樣就變成無時無地都可以辦公啦 (其實很慘...永遠不得休息啊！真可憐～)！</p>
+
+		<p>這就是三國演義裡面談到的『天下大勢，分久必合、合久必分』的名言啊！
+		從(1)早期的貴森森的大型主機分配數個終端機的集中運算機制，到 (2)2010 年前個人電腦運算能力增強後，大部分的運算都是在桌機或筆電上自行達成，
+		再也不需要跑去大型主機取得運算資源了！到現在(3)由於行動裝置的發達，產生的龐大數據需要集中處理，因而產生雲端系統的需求！讓資訊/資源集中管理！
+		這不是分分合合的過程嗎？^_^</p>
+
+		<ul class="toplist">
+		<li>雲程序</li></ul>
+
+		<p>許多公司都有將資源集中管理的打算，之前參與一場座談會，有幸遇到阿里巴巴的架構師，鳥哥偷偷問他說，他們機房裡面有多少電腦主機啊？
+		他說不多！差不多才 2 萬部主機而已...鳥哥正在搞的可提供 200 個左右的虛擬機器的系統，使用大約 7 部主機就覺得麻煩了，他們家至少有 2 萬部耶！
+		這麼多的設備底層使用的就是 Linux 作業系統來統一管理。</p>
+
+		<p>另外，除了公司自己內部的私有雲之外，許多大型網際網路供應商 (ISP) 也提供了所謂的公有雲來讓企業用戶或個人用戶來使用 ISP 的虛擬化產品。
+		因此，如果公司內部缺乏專業管理維護人才，很有可能就將自家所需要的關鍵應用如 Web、Mail、系統開發環境等作業系統交由 ISP 代管，
+		自家公司僅須遠端登入該系統進行網站內容維護或程式開發而已。那這些虛擬化後的系統，也經常是 Linux 啊！因為跟上頭企業環境利用提到的功能是相同的！</p>
+
+		<p>所以說雲程序的底層就是 Linux ，而雲程序搭建出來的虛擬機器，內容也是 Linux 作業系統哩！用的越來越多啊！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		所謂的『虛擬化』指的是：在一部實體主機上面模擬出多個邏輯上完全獨立的硬體，這個假的虛擬出來的硬體主機，可以用來安裝一部邏輯上完全獨立的作業系統！
+		因此，透過虛擬化技術，你可以將一部實體主機安裝多個同時運作的作業系統 (非多重開機)，以達到將硬體資源完整利用的效果。
+		很多 ISP 就是透過販售這個虛擬機器的使用權來賺錢的喔！
+		</fieldset><br>
+		<ul class="toplist">
+		<li>端設備</li></ul>
+
+		<p>既然運算資源都集中在雲裡面了，那我需要連線到雲程序的設備應該可以越來越輕量吧？當然沒錯！所以智慧型手機才會這麼熱門啊！
+		很多時候你只要有智慧型手機或者是平板，連線到公司的雲裡面去，就可以開始辦公了哩！</p>
+
+		<p>此外，還有更便宜的端點設備喔！那就是近年來很熱門又流行的樹莓派 (Raspberry Pi) 與香蕉派 (Banana Pi)，這兩個小東西售價都不到 50 美元，
+		有的甚至台幣 1000 塊有找！這個 Raspberry Pi 其實就是一部小型的電腦，只要加上 USB 鍵盤、滑鼠與 HDMI 的螢幕，立刻就是可以讓小朋友學習程式語言的環境！
+		如果加上透過網路去取得具有更強大運算資源的雲端虛擬機，不就可以做任何事了嗎？所以，端點設備理論上會越來越輕量化的！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		鳥哥近幾年來做的主要研究，就是透過一組沒很貴的 server 系統達成開啟多個虛擬機的環境，然後讓學生可以在教室利用類似 banana pi 的設備來連線到伺服器，
+		這時學生就可以透過網路來取得一套完整的作業系統，可以拿來上課、回家實作練習、上機考試等等！相當有趣！鳥哥稱為虛擬電腦教室！
+		而 server 與 banana pi 的內部作業系統當然就是 Linux 啊！
+		</fieldset><br>	</div>
+</div>
+
+<a id="learn"></a>
+<div class="block1">
+<h2>1.4 Linux 該如何學習</h2>
+
+	<p>為什麼大家老是建議學習Linux最好能夠先捨棄X Window的環境呢？
+	這是因為X window了不起也只是Linux內的『一套軟體』而不是『Linux核心』。
+	此外，目前發展出來的X-Window對於系統的管理上還是有無法掌握的地方，舉個例子來說，如果
+	Linux本身捉不到網路卡的時候，請問如何以X Window來捉這個硬體並且驅動他呢？</p>
+
+	<p>還有，如果需要以Tarball(原始碼)的方式來安裝軟體並加以設定的時候，請以X Window 
+	來架設他！這可能嗎？當然可能，但是這是在考驗『X Window開發商』的技術能力，
+	對於瞭解Linux架構與核心並沒有多大的幫助的！所以說，如果只是想要『會使用Linux』的角度來看，
+	那麼確實使用X Window也就足夠了，反正搞不定的話，花錢請專家來搞定即可；但是如果想要更深入
+	Linux的話，那麼指令列模式才是不二的學習方式！</p>
+
+	<p>以伺服器或者是嵌入式系統的應用來說，X Window是非必備的軟體，因為伺服器是要提供用戶端來連線的，
+	並不是要讓使用者直接在這部伺服器前面按鍵盤或滑鼠來操作的！所以圖形介面當然就不是這麼重要了！
+	更多的時候甚至大家會希望你不要啟動X window在伺服器主機上，這是因為X Window通常會吃掉很多系統資源的緣故！</p>
+
+	<p>再舉個例子來說，假如你是個軟體服務的工程師，你的客戶人在台北，而你人在遠方的台南。某一天客戶來電說他的Linux伺服器出了問題，
+	要你馬上解決他，請問：要您親自上台北去修理？還是他搬機器下來讓你修理？或者是直接請他開個帳號給你進去設定即可？
+	想當然爾，就會選擇開帳號給你進入設定即可囉！因為這是最簡單而且迅速的方法！這個方法通常使用文字介面會較為單純，
+	使用圖形介面則非常麻煩啦！所以啦！這時候就得要學學文字介面來操作Linux比較好啦！</p>
+
+	<p>另外，在伺服器的應用上，檔案的安全性、人員帳號的管理、軟體的安裝/修改/設定、
+	登錄檔的分析以及自動化工作排程與程式的撰寫等等，都是需要學習的，
+	而且這些東西都還未涉及伺服器軟體呢！對吧！這些東西真的很重要，所以，建議你得要依據底下的介紹來學習才好。</p>
+
+	<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">	這裡是站在要讓 Linux 成為自己的好用的工具 (伺服器或開發軟體的程式學習平台) 為出發點去介紹如何學習的喔！所以，不要以舊有的 Windows 角度來思考！
+	也不要說『你都只有碰過觸控式設備』的角度來思考！加油囉！
+	</fieldset><br>
+	<a id="learn_follow"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.4.1 從頭學習Linux基礎</h2>
+
+		<p>其實，不論學什麼系統，『從頭學起』是很重要的！還記得你剛剛接觸微軟的Windows都在幹什麼？
+		還不就是由檔案總管學起，然後慢慢的玩到控制台、玩到桌面管理，
+		然後還去學辦公室軟體，我想，你總該不會直接就跳過這一段學習的歷程吧？那麼
+		Linux的學習其實也差不多，就是要從頭慢慢的學起啦！不能夠還不會走路之前就想要學飛了吧！^_^！</p>
+
+		<p>常常有些朋友會寫信來問鳥哥一些問題，不過，信件中大多數的問題都是很基礎的！
+		例如：『為什麼我的使用者個人網頁顯示我沒有權限進入？』、
+		『為什麼我下達一個指令的時候，系統告訴我找不到該指令？』、
+		『我要如何限制使用者的權限』等等的問題，這些問題其實都不是很難的，只要瞭解了
+		Linux的基礎之後，應該就可以很輕易的解決掉這方面的問題呢！
+		所以請耐心的，慢慢的，將後面的所有章節內容都看完。自然你就知道如何解決了！</p>
+
+		<p>此外，網路基礎與安全也很重要，例如TCP/IP的基礎知識，網路路由的相關概念等等。
+		很多的朋友一開始問的問題就是『<span class="text_import2">為什麼我的郵件伺服器主機無法收到信件</span>？』
+		這種問題相當的困擾，因為發生的原因太多了，而朋友們常常一接觸Linux就是希望
+		『<span class="text_import2">架站！</span>』根本沒有想到要先瞭解一下Linux的基礎！這是相當傷腦筋的！
+		尤其近來電腦怪客(Cracker)相當多，(真奇怪，閒閒沒事幹的朋友還真是不少....) ，一個不小心您的主機就被當成怪客跳板了！
+		甚至發生被警告的事件也層出不窮！這些都是沒能好好的注意一下網路基礎的原因呀！</p>
+
+		<p>所以，鳥哥希望大家能夠更瞭解Linux，好讓他可以為你做更多的事情喔！
+		而且這些基礎知識是學習更深入的技巧的必備條件呀！因此建議：</p>
+		<ol>
+		<li><span class="text_import2">計算機概論與硬體相關知識：</span><br>
+		因為既然想要走Linux這門路，資訊相關的基礎技能也不能沒有啊！
+		所以先理解一下基礎的硬體知識，不用一定要全懂啦！又不是真的要你去組電腦～^_^，
+		但是至少要『聽過、有概念』即可；<br><br></li>
+
+		<li><span class="text_import2">先從Linux的安裝與指令學起：</span><br>
+		沒有Linux怎麼學習Linux呢？所以好好的安裝起一套你需要的Linux吧！雖然說Linux distributions很多，
+		不過基本上架構都是大同小異的，差別在於介面的親和力與軟體的選擇不同罷了！
+		選擇一套你喜歡的就好了，倒是沒有哪一套特別好說～<br><br></li>
+
+		<li><span class="text_import2">Linux作業系統的基礎技能：</span><br>
+		這些包含了『使用者、群組的概念』、『權限的觀念』，『程序的定義』等等，尤其是權限的概念，
+		由於不同的權限設定會妨礙你的使用者的便利性，但是太過於便利又會導致入侵的可能！
+		所以這裡需要瞭解一下你的系統呦！<br><br></li>
+
+		<li><span class="text_import2">務必學會vi文書編輯器：</span><br>
+		Linux的文書編輯器多到會讓你數到生氣！不過，vi卻是強烈建議要先學習的！
+		這是因為vi會被很多軟體所呼叫，加上所有的Unix like系統上面都有vi，所以你一定要學會才好！<br><br></li>
+
+		<li><span class="text_import2">Shell與Shell Script的學習：</span><br>
+		其實鳥哥上面一直談到的『文字介面』說穿了就是一個名為shell的軟體啦！既然要玩文字介面，當然就是要會使用shell的意思。
+		但是shell上面的資料太多了，包括『正規表示法』、『管線命令』與『資料流重導向』等等，真的需要瞭解比較好呦！
+		此外，為了幫助你未來的管理伺服器的便利性，shell scripts也是挺重要的！要學要學！<br><br></li>
+
+		<li><span class="text_import2">一定要會軟體管理員：</span><br>
+		因為玩Linux常常會面臨得要自己安裝驅動程式或者是安裝額外軟體的時候，尤其是嵌入式設備或者是學術研究單位等。
+		這個時候Tarball/RPM/DPKG/YUM/APT等軟體管理員的安裝方式的瞭解，對你來說就重要到不行了！<br><br></li>
+
+		<li><span class="text_import2">網路基礎的建立：</span><br>
+		如果上面你都通過了，那麼網路的基礎就是下一階段要接觸的咚咚，這部份包含了『IP概念』『路由概念』等等；<br><br></li>
+
+		<li>如果連網路基礎都通過了，那麼網站的架設對你來說，簡直就是『太簡單啦！』</li>
+		</ol>
+
+		<p>在一些基礎知識上，可能的話，當然得去書店找書來讀啊！
+		如果您想要由網路上面閱讀的話，那麼這裡推薦一下由Netman大哥主筆的Study-Area裡面的基礎文章，相當的實用！</p>
+		<ul>
+		<li><a href="http://www.study-area.org/compu/compu.htm" target="_blank">電腦基礎 (http://www.study-area.org/compu/compu.htm)</a></li>
+		<li><a href="http://www.study-area.org/network/network.htm" target="_blank">網路基礎 (http://www.study-area.org/network/network.htm)</a></li>
+		</ul>
+	<br></div><br>
+
+	<a id="learn_book"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.4.2 選擇一本易讀的工具書</h2>
+
+		<p>正所謂這：『好的書本帶你上天堂、壞的書本讓你窮瞎忙...』一本好的工具書是需要的，不論是未來作為查詢之用，還是在正確的學習方法上。
+		可惜的是，目前坊間的書大多強調速成的Linux教育，或者是強調Linux的網路功能，
+		卻欠缺了大部分的Linux基礎管理～鳥哥在這裡還是要再次的強調，Linux的學習歷程並不容易，
+		他需要比較長的時間來適應、學習與熟悉，但是只要能夠學會這些簡單的技巧，
+		這些技巧卻可以幫助您在各個不同的OS之間遨遊！</p>
+
+		<p>您既然看到這裡了，應該是已經取得了<a href="http://findbook.tw/search?q=%E9%B3%A5%E5%93%A5&amp;keyword_type=author" target="_blank">鳥哥的 Linux 私房菜 -- 基礎學習篇</a>了吧！ ^_^ 。
+		希望這本書可以幫助您縮短基礎學習的歷程，也希望能夠帶給您一個有效的學習觀念！
+		而在這本書看完之後，或許還可以參考一下Netman推薦的相關網路書籍：</p>
+		<ul><li><a href="http://linux.vbird.org/linux_basic/0120howtolinux/0120howtolinux_1.php" target="_blank">請推薦有關網路的書： http://linux.vbird.org/linux_basic/0120howtolinux/0120howtolinux_1.php</a></li></ul>
+
+		<p>不過，要強調的是，<span class="text_import2">每個人的閱讀習慣都不太一樣，所以，除了大家推薦的書籍之外，
+		您必須要親眼看過該本書籍，確定您可以吸收的了書上的內容，再下去購買喔</span>！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		其實鳥哥買科技類書籍比較喜歡買基礎書耶，因為基礎學好了，其他的部份大概找個 keyword ，再 google 一下，一大堆資料就可以讓你去分析判斷了！
+		你會說，既然如此，那基礎書籍內的項目不是 google 也是一大堆？不要忘記了，『最開始你是要用什麼關鍵字去 google 啊？』！
+		所以，閱讀基礎書籍的重點，就是讓自己能夠掌握住那些『 keyword 』囉！加油！
+		</fieldset><br>	<br></div><br>
+
+	<a id="learn_real"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.4.3 實作再實作</h2>
+
+		<p>要增加自己的體力，就是只有運動；要增加自己的知識，就只有讀書；當然，要增加自己對於Linux的認識，
+		大概就只有實作經驗了！所以，趕快找一部電腦，趕快安裝一個Linux distribution，然後快點進入Linux的世界裡面晃一晃！
+		相信對於你自己的Linux能力必然大有斬獲！除了自己的實作經驗之外，也可以參考網路上一些善心人士整理的實作經驗分享喔！
+		例如最有名的Study-Area(<a href="http://www.study-area.org/" target="_blank">http://www.study-area.org</a>)等網站。</p>
+
+		<p>此外，人腦不像電腦的硬碟一樣，除非硬碟壞掉了或者是資料被你抹掉了，
+		否則儲存的資料將永遠而且立刻的記憶在硬碟中！在人類記憶的曲線中，
+		<span class="text_import2">你必須要『不斷的重複練習』才會將一件事情記得比較熟</span>！同樣的，學習Linux也一樣，
+		如果你無法經常摸索的話，那麼，抱歉的是，學了後面的，
+		前面的忘光光！學了等於沒學，這也是為什麼鳥哥當初要寫『鳥哥的私房菜』這個網站的主要原因，
+		因為，鳥哥的忘性似乎比一般人還要好～～呵呵！所以，除了要實作之外，還得要常摸！才會熟悉Linux而且不會怕他呢！</p>
+
+		<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">		鳥哥上課時，常常有學生問到：『老師，到底要聽過你的課幾次之後，才能學的會？』鳥哥的標準答案是：『你永遠學不會！』
+		因為你是用『聽』的，沒有動手做，那麼永遠不會知道『經驗』兩個字怎麼寫！很多時候電腦/網路都會有一些莫名其妙的突發狀況，
+		沒有實際碰觸過，怎麼可能會理解呢？所以『永遠是不可能聽會的！』為啥要實驗？因為實驗過後你才會有經驗來記下來？
+		否則實驗結果課本都有啊！不是背一背就好了，幹麻實驗呢？浪費錢嗎？ ^_^
+		</fieldset><br>
+	<br></div><br>
+
+	<a id="learn_fag"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.4.4 發生問題怎麼處理啊？建議流程是這樣...</h2>
+
+		<p>我們是『人』不是『神』，所以在學習的過程中發生問題是很常見的啦！重點是，我們該如何處理在自身所發生的Linux問題呢？
+		在這裡鳥哥的建議是這樣的流程：</p>
+
+		<div class="illus">
+		<ol class="text_import1"><li>在自己的主機/網路資料庫上查詢How-To或FAQ</li></ol>
+
+		<p>其實，在Linux主機及網路上面已經有相當多的FAQ整理出來了！所以，當你發生任何問題的時候，除了自己檢查，
+		或者到上述的實作網站上面查詢一下是否有設定錯誤的問題之外，最重要的當然就是到各大FAQ的網站上查詢囉！
+		以下列出一些有用的FAQ與How-To網站給您參考一下：</p>
+
+		<ul style="margin-left: 50px;">
+		<li>Linux自己的文件資料： /usr/share/doc (在你的Linux系統中)</li>
+		<li><a href="http://www.linux.org.tw/CLDP/" target="_blank">CLDP 中文文件計畫 http://www.linux.org.tw/CLDP/</a></li>
+		<li><a href="http://www.tldp.org/" target="_blank">The Linux Documentation Project：http://www.tldp.org/</a></li>
+		</ul>
+
+		<p>上面比較有趣的是那個TLDP(The Linux Documentation Project)，
+		他幾乎列出了所有Linux上面可以看到的文獻資料，各種How-To的作法等等，雖然是英文的，不過，很有參考價值！</p>
+
+		<p>除了這些基本的FAQ之外，其實，還有更重要的問題查詢方法，那就是利用酷狗(Google)幫您去搜尋答案呢！
+		在鳥哥學習Linux的過程中，如果有什麼奇怪的問題發生時，第一個想到的，
+		就是去<a href="http://www.google.com.tw/" target="_blank">http://www.google.com.tw</a>搜尋是否有相關的議題。
+		舉例來說，我想要找出Linux底下的NAT，只要在上述的網站內，輸入Linux跟NAT，
+		立刻就有一堆文獻跑出來了！真的相當的優秀好用喔！您也可以透過酷狗來找鳥哥網站上的資料呢！</p>
+
+		<ul style="margin-left: 50px;">
+		<li>Google： <a href="http://www.google.com.tw/" target="_blank">http://www.google.com.tw</a></li>
+		<li>鳥哥網站： <a href="http://linux.vbird.org/Searching.php" target="_blank">http://linux.vbird.org/Searching.php</a></li>
+		</ul>
+
+		<ol class="text_import1" start="2"><li>注意訊息輸出，自行解決疑難雜症：</li></ol>
+
+		<p>一般而言，Linux在下達指令的過程當中，或者是log file裡頭就可以自己查得錯誤資訊了，舉個例子來說，當你下達：</p>
+
+<table class="term"><tbody><tr><td class="term"><pre>[root@centos ~]# <span class="term_command">ls -l /vbird</span>
+</pre></td></tr></tbody></table>
+
+		<p>由於系統並沒有 /vbird 這個目錄，所以會在螢幕前面顯示：</p>
+<table class="term"><tbody><tr><td class="term"><pre>ls: /vbird: No such file or directory
+</pre></td></tr></tbody></table>
+
+		<p>這個錯誤訊息夠明確了吧！系統很完整的告訴您『查無該資料』！
+		呵呵！所以囉，請注意，發生錯誤的時候，請先自行以螢幕前面的資訊來進行
+		debug(除錯)的動作，然後，如果是網路服務的問題時，請到/var/log/這個目錄裡頭去查閱一下
+		log file(登錄檔)，這樣可以幾乎解決大部分的問題了！</p>
+
+		<ol class="text_import1" start="3"><li>搜尋過後，注意網路禮節，討論區大膽的發言吧：</li></ol>
+
+		<p>一般來說，如果發生錯誤現象，一定會有一些訊息對吧！那麼當您要請教別人之前，就得要將這些訊息整理整理，
+		否則網路上人家也無法告訴您解決的方法啊！這一點很重要的喔！</p>
+
+		<p>萬一真的經過了自己的查詢，卻找不到相關的資訊，那麼就發問吧！不過，在發問之前建議您最好先看一下『
+		<a href="http://phorum.vbird.org/viewtopic.php?t=96" target="_blank">提問的智慧 http://phorum.vbird.org/viewtopic.php?t=96</a>』
+		這一篇討論！然後，你可以到底下幾個討論區發問看看：</p>
+
+		<ul style="margin-left: 50px;">
+		<li><a href="http://phorum.study-area.org/" target="_blank">酷學園討論區 http://phorum.study-area.org</a></li>
+		<li><a href="http://phorum.vbird.org/">鳥哥的私房菜館討論區 http://phorum.vbird.org</a></li>
+		</ul>
+
+		<p>不過，基本上去每一個討論區回答問題的熟手，其實都差不多是那幾個，
+		所以，您的問題『<span class="text_import2">不要重複發表在各個主要的討論區！</span>』
+		舉例來說，鳥園與酷學園討論區上的朋友重複性很高，如果您兩邊都發問，
+		可能會得到反效果，因為大家都覺得，另外一邊已經回答您的問題了呢～～</p>
+
+		<ol class="text_import1" start="4"><li>Netman大大給的建議：</li></ol>
+
+		<p>此外，Netman 兄提供的一些學習的基本方針，提供給大家參考：</p>
+
+		<ul style="margin-left: 50px;">
+		<li style="color: #000000;">在Windows裡面，程式有問題時，如果可能的話先將所有其它程式保存並結束，然後嘗試按救命三鍵
+		(Ctrl+Alt+Delete)，將有問題的程式(不要選錯了程式哦)『結束工作』，看看能不能恢復系統。<span class="text_import2">不要動不動就直接關機或reset</span>。</li>
+		<li style="color: #000000;"><span class="text_import2">有系統地設計檔案目錄</span>，不要隨便到處保存檔案以至以後不知道放哪裡了，
+		或找到檔案也不知道為何物。</li>
+		<li style="color: #000000;"><span class="text_import2">養成一個做記錄的習慣</span>。尤其是發現問題的時候，
+		把錯誤信息和引發狀況以及解決方法記錄清楚，同時最後歸類及定期整理。別以為您還年輕，等你再弄多幾年電腦了，
+		您將會非常慶幸您有此一習慣。</li>
+		<li style="color: #000000;">如果看在網路上看到任何好文章，可以為自己留一份copy，同時定好題目，歸類存檔。(鳥哥註：需要注意智慧財產權！)</li>
+		<li style="color: #000000;">作為一個使用者，人要遷就機器；做為一個開發者，要機器遷就人。</li>
+		<li style="color: #000000;">學寫 script 的確沒設定 server 那麼好玩，不過以我自己的感覺是：關鍵是會得『偷』，
+		偷了會得改，改了會得變，變則通矣。</li>
+		<li style="color: #000000;">在Windows裡面，設定不好設備，您可以罵它；在Linux裡面，如果設定好設備了，您得要感激它﹗</li>
+		</ul>
+		</div>
+
+	<br></div><br>
+
+	<a id="learn_vbird"></a>
+	<div class="block2"><div class="gototop"><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top">Top</a></div>
+	<h2>1.4.5 鳥哥的建議(重點在solution的學習)</h2>
+
+	<p>除了上面的學習建議之外，還有其他的建議嗎？確實是有的！其實，
+	無論作什麼事情，對人類而言，兩個重要的因素是造成我們學習的原動力：</p>
+
+	<ul class="text_import2">
+	<li>成就感</li>
+	<li>興趣</li>
+	</ul>
+
+	<p>很多人問過我，鳥哥是怎麼學習Linux的？由上面鳥哥的悲慘Linux學習之路你會發現，
+	原來我本人對於電腦就蠻有興趣的，加上工作的需要，而鳥哥又從中得到了相當多的成就感，
+	所以囉，就一發不可收拾的愛上Linux囉！因此，鳥哥個人認為，<span class="text_import2">學習Linux如果玩不出興趣，
+	他對你也不是什麼重要的生財工具，那麼就不要再玩下去了！</span>
+	因為很累人ㄋㄟ～而如果你真的想要玩這麼一套優良的作業系統，
+	除了前面提到的一些建議之外，說真的，得要培養出興趣與成就感才行！
+	那麼如何培養出興趣與成就感呢？可能有幾個方向可以提供給你參考：</p>
+
+	<ul>
+	<li><span class="text_import2">建立興趣</span>：<br>
+		Linux上面可以玩的東西真的太多了，你可以選擇一個有趣的課題來深入的玩一玩！不論是Shell還是圖形介面等等，
+		只要能夠玩出興趣，那麼再怎麼苦你都會不覺得喔！<br><br></li>
+
+	<li><span class="text_import2">成就感</span>：<br>
+		成就感是怎麼來的？說實在話，就是『被認同』來的！怎麼被認同呢？寫心得分享啊！當你寫了心得分享，並且公告在
+		BBS 上面，自然有朋友會到你的網頁去瞧一瞧，當大家覺得你的網頁內容很棒的時候，
+		哈哈！你肯定會加油繼續的分享下去而無法自拔的！那就是我啦...... ^_^！<br><br>
+		就鳥哥的經驗來說，你『<span class="text_import2">學會一樣東西</span>』與
+		『<span class="text_import2">要教人家會一樣東西</span>』思考的紋路是不太一樣的！
+		學會一樣東西可能學一學會了就算了！但是要『教會』別人，那可就不是鬧著玩的！
+		得要思考相當多的理論性與實務性方面的咚咚，這個時候，你所能學到的東西就更深入了！
+		鳥哥常常說，我這個網站對我在Linux的瞭解上面真的的幫助很大！<br><br></li>
+
+	<li><span class="text_import2">協助回答問題</span>：<br>
+		另一個創造成就感與滿足感的方法就是『助人為快樂之本！』當你在
+		BBS 上面告訴一些新手，回答他們的問題，你可以獲得的可能只是一句『謝謝！感恩吶！』
+		但是那句話真的會讓人很有快樂的氣氛！很多的老手都是因為有這樣的滿足感，
+		才會不斷的協助新來的朋友的呢！此外，回答別人問題的時候，就如同上面的說明一般，
+		你會更深入的去瞭解每個項目，哈哈！又多學會了好多東西呢！<br><br></li>
+
+	<li><span class="text_import2">參與討論</span>：<br>
+		參與大家的技術討論一直是一件提昇自己能力的快速道路！因為有這些技術討論，
+		你提出了意見，不論討論的結果你的意見是對是錯，對你而言，都是一次次的知識成長！這很重要喔！
+		目前台灣地區辦活動的能力是數一數二的Linux社群『酷學園(Study Area, SA)』，每個月不定期的在北/中/南舉辦自由軟體相關活動，
+		有興趣的朋友可以看看：<br>
+		<a href="http://phorum.study-area.org/index.php/board,22.0.html" target="_blank">http://phorum.study-area.org/index.php/board,22.0.html</a></li>
+	</ul>
+
+	<p>除了這些基本的初學者建議外，其實，對於未來的學習，這裡建議大家要『眼光看遠！』一般來說，公司行號會發生問題時，
+	他們絕不會只要求各位『單獨解決一部主機的問題』而已，他們需要的是整體環境的總體解決『<span class="text_import2">Total Solution</span>』。
+	而我們目前學習的Linux其實僅是在一部主機上面進行各項設定而已，
+	還沒有到達解決整體公司所有問題的狀態。當然啦，得要先學會Linux相關技巧後，
+	才有辦法將這些技巧用之於其他的solution上面！</p>
+
+	<p>所以，大家在學習Linux的時候，千萬不要有『門戶之見』，認為MS的東西就比較不好～
+	否則，未來在職場上，競爭力會比人家弱的！有辦法的話，多接觸，不排斥任何學習的機會！都會帶給自己很多的成長！
+	而且要謹記：『<span class="text_import2">不同的環境下，解決問題的方法有很多種，只要行的通，就是好方法！</span>』</p>
+
+	<fieldset class="vbirdface"><legend style="font-family: serif; font-size:12pt; color: darkblue;">Tips</legend><img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/vbird_face.gif" alt="鳥哥的圖示" title="鳥哥的圖示" style="float: right;">	另外，不要再說沒興趣了！沒有花時間去了解一下，不要跟人家說你沒興趣！而且，興趣也是靠培養來的！除了某些特殊人物之外，
+	沒有花時間趣培養興趣，怎麼可能會有興趣！？
+	</fieldset><br>
+	<br></div><br>
+
+</div>
+
+
+<a id="hint"></a>
+<div class="block1">
+<h2>1.5 重點回顧</h2>
+<ul class="text_import2">
+	<li>作業系統(Operation System)主要在管理與驅動硬體，因此必須要能夠管理記憶體、管理裝置、
+		負責行程管理以及系統呼叫等等。因此，只要能夠讓硬體準備妥當(Ready)的情況，
+		就是一個陽春的作業系統了。</li>
+	<li>Unix的前身是由貝爾實驗室(Bell lab.)的Ken Thompson利用組合語言寫成的，
+		後來在1971-1973年間由Dennis Ritchie以C程式語言進行改寫，才稱為Unix。</li>
+	<li>1977年由Bill Joy釋出BSD (Berkeley Software Distribution)，這些稱為Unix-like的作業系統。</li>
+	<li>1984年由Andrew Tanenbaum開始製作Minix作業系統，該系統可以提供原始碼以及軟體；</li>
+	<li>1984年由Richard Stallman提倡GNU計畫，倡導自由軟體(Free software)，
+		強調其軟體可以『自由的取得、複製、修改與再發行』，並規範出GPL授權模式，
+		任何GPL(General Public License)軟體均不可單純僅販賣其軟體，也不可修改軟體授權。</li>
+	<li>1991年由芬蘭人Linus Torvalds開發出Linux作業系統。簡而言之，Linux成功的地方主要在於：
+		Minix(Unix), GNU, Internet, POSIX 及虛擬團隊的產生。</li>
+	<li>符合 Open source 理念的授權相當多，比較知名的如 Apache / BSD / GPL / MIT 等。</li>
+	<li>Linux本身就是個最陽春的作業系統，其開發網站設立在<a href="http://www.kernel.org/" target="_blank">http://www.kernel.org</a>，我們亦稱Linux作業系統最底層的資料為『核心(Kernel)』。</li>
+	<li>從 Linux kernel 3.0 開始，已經捨棄奇數、偶數的核心版本規劃，新的規劃使用主線版本 (MainLine) 為依據，
+		並提供長期支援版本 (longterm) 來加強某些功能的持續維護。</li>
+	<li>Linux distributions的組成含有：『Linux Kernel + Free Software + Documentations(Tools) +
+		可完整安裝的程序』所製成的一套完整的系統。</li>
+	<li>常見的 Linux distributions 分類有『商業、社群』分類法，或『RPM、DPKG』分類法</li>
+	<li>學習 Linux 最好從頭由基礎開始學習，找到一本適合自己的書籍，加強實作才能學會</li>
+</ul>
+</div>
+
+
+<a id="ex"></a>
+<div class="block1">
+<h2>1.6 本章習題</h2>
+(要看答案請將滑鼠移動到『答：』底下的空白處，按下左鍵圈選空白處即可察看)
+<br>實作題部分：
+<ul>
+	<li>請上網找出目前 Linux 核心的最新穩定版與發展中版本的版本號碼，請註明查詢的日期與版本的對應。<br><br></li>
+	<li>請上網找出 Linux 的吉祥物企鵝的名字，以及最原始的圖檔畫面。(提示：請前往 http://www.linux.org 查閱)<br><br></li>
+	<li>請上網找出 Andriod 與 Linux 核心版本間的關係。(提示：請前往 https://zh.wikipedia.org/wiki/Android 查閱)<br><br></li>
+</ul>
+簡答題部分：
+<ul>
+	<li>你在你的主機上面安裝了一張網路卡，但是開機之後，系統卻無法使用，你確定網路卡是好的，那麼可能的問題出在哪裡？該如何解決？
+	<div class="blockex">
+		因為所有的硬體都沒有問題，所以，可能出問題的地方在於系統的核心(kernel)
+		不支援這張網路卡。解決的方法，(1)到網路卡的開發商網站，(2)下載支援你主機作業系統的驅動程式，
+		(3)安裝網路卡驅動程式後，就可以使用了。
+	</div></li>
+
+	<li>一個作業系統至少要能夠完整的控制整個硬體，請問，作業系統應該要控制硬體的哪些單元？
+	<div class="blockex">
+		根據硬體的運作，以及資料在主機上面的運算情況與寫入/讀取情況，我們知道至少要能夠控制：
+		(1)input/output control, (2)device control, (3)process management, (4)file management. 等等！
+	</div></li>
+
+	<li>我在Windows上面玩的遊戲，可不可以拿到Linux去玩？
+	<div class="blockex">
+		當然不行！因為遊戲也是一個應用程式 (application)，他必須要使用到核心所提供的工具來開發他的遊戲，
+		所以這個遊戲是不可在不同的平台間運作的。除非這個遊戲已經進行了移植。
+	</div></li>
+
+	<li>Linux本身僅是一個核心與相關的核心工具而已，不過，他已經可以驅動所有的硬體，
+	所以，可以算是一個很陽春的作業系統了。經過其他應用程式的開發之後，被整合成為Linux 
+	distribitions。請問眾多的distributions之間，有何異同？
+	<div class="blockex">
+		相同：(1)同樣使用 http://www.kernel.org 所釋出的核心； (2)支援同樣的標準，如 FHS、LSB 等；
+		(3)使用幾乎相同的自由軟體 (例如 GNU 裡面的 gcc/glibc/vi/apache/bind/sendmail... )； 
+		(4)幾乎相同的操作介面 (例如均使用 bash/KDE/GNOME 等等)。<br>
+		不同：使用的 kernel 與各軟體的版本可能會不同；各開發商加入的應用工具不同，使用的套件管理模式不同(dpkg 與 RPM) 
+	</div></li>
+
+	<li>Unix 是誰寫出來的？ GNU 計畫是誰發起的？
+	<div class="blockex">
+		Unix 是 Ken Thompson 寫的，1973 年再由 Dennis Ritchie 以 C 語言改寫成功。
+		至於 GNU 與 FSF 則是 Richard Stallman 發起的。
+	</div></li>
+
+	<li>GNU 的全名為何？他主要由那個基金會支持？
+	<div class="blockex">
+		GNU 是 GNU is Not Unix 的簡寫，是個無窮迴圈！
+		另外，這個計畫是由自由軟體基金會 (Free Software Foundation, FSF) 所支持的！
+		兩者都是由 Stallman 先生所發起的！
+	</div></li>
+
+	<li>何謂多人 ( Multi-user ) 多工 ( Multitask )？
+	<div class="blockex">
+		Multiuser 指的是 Linux 允許多人同時連上主機之外，每個使用者皆有其各人的使用環境，並且可以同時使用系統的資源！<br>
+		Multitask 指的是多工環境，在 Linux 系統下， CPU 與其他例如網路資源可以同時進行多項工作， 
+		Linux 最大的特色之一即在於其多工時，資源分配較為平均！
+	</div></li>
+
+	<li>簡單說明 GNU General Public License ( GPL ) 與 Open Source 的精神：
+	<div class="blockex">
+		   1. GPL 的授權之軟體，乃為自由軟體（Free software），任何人皆可擁有他；
+		   2. 開發 GPL 的團體(或商業企業)可以經由該軟體的服務來取得服務的費用；
+		   3. 經過 GPL 授權的軟體，其屬於 Open source 的情況，所以應該公布其原始碼；
+		   4. 任何人皆可修改經由 GPL 授權過的軟體，使符合自己的需求；
+		   5. 經過修改過後 Open source 應該回饋給 Linux 社群。
+	</div></li>
+
+	<li>什麼是 POSIX ?為何說 Linux 使用 POSIX 對於發展有很好的影響？
+	<div class="blockex">
+		POSIX 是一種標準規範，主要針對在 Unix 作業系統上面跑的程式來進行規範。
+		若你的作業系統符合 POSIX ，則符合 POSIX 的程式就可以在你的作業系統上面運作。
+		Linux 由於支援 POSIX ，因此很多 Unix 上的程式可以直接在 Linux 上運作，
+		因此程式的移植相當簡易！也讓大家容易轉換平台，提升 Linux 的使用率。
+	</div></li>
+
+	<li>簡單說明 Linux 成功的因素？
+	<div class="blockex">
+		1. 藉由 Minix 作業系統開發的 Unix like ，沒有版權的糾紛；<br>
+		2. 藉助於 GNU 計畫所提供的各項工具軟體， gcc/bash 等；<br>
+		3. 藉由 Internet 廣為流傳；<br>
+		4. 藉由支持 POSIX 標準，讓核心能夠適合所有軟體的開發；<br>
+		5. 托瓦茲強調務實，虛擬團隊的自然形成！
+	</div></li>
+</ul>
+</div>
+
+<a id="reference"></a>
+<div class="block1">
+<h2>1.7 參考資料與延伸閱讀</h2>
+
+	<ul>
+	<li><a id="ps1"></a>註1：Multics計畫網站：<a href="http://www.multicians.org/" target="_blank">http://www.multicians.org/</a>。</li>
+	<li><a id="ps2"></a>註2：Ken Thompson 的 wiki 簡介：<a href="http://en.wikipedia.org/wiki/Ken_Thompson" target="_blank">http://en.wikipedia.org/wiki/Ken_Thompson</a></li>
+	<li><a id="ps3"></a>註3：Dennis Ritchie 的 wiki 簡介： <a href="http://en.wikipedia.org/wiki/Dennis_Ritchie" target="_blank">http://en.wikipedia.org/wiki/Dennis_Ritchie</a></li>
+	<li><a id="ps4"></a>註4：Bill joy 的 wiki 簡介： <a href="http://en.wikipedia.org/wiki/Bill_Joy" target="_blank">http://en.wikipedia.org/wiki/Bill_Joy</a></li>
+	<li><a id="ps5"></a>註5：Andrew Tanenbaum 的 wiki 簡介： <a href="http://en.wikipedia.org/wiki/Andrew_S._Tanenbaum" target="_blank">http://en.wikipedia.org/wiki/Andrew_S._Tanenbaum</a></li>
+	<li><a id="ps6"></a>註6：Richard Stallman的個人網站： <a href="http://www.stallman.org/" target="_blank">http://www.stallman.org/</a></li>
+	<li><a id="ps7"></a>註7：GNU 計畫的官網： <a href="http://www.gnu.org/" target="_blank">http://www.gnu.org/</a></li>
+	<li><a id="ps8"></a>註8：開放原始碼促進會針對 open source 的解釋： <a href="http://opensource.org/definition" target="_blank">http://opensource.org/definition</a><br>
+		以及 Open source 與 free software 的差異：<a href="http://opensource.org/faq#free-software" target="_blank">http://opensource.org/faq#free-software</a></li>
+	<li><a id="ps9"></a>註9：開放原始碼促進會針對 Open source 授權的彙整介紹： <a href="http://opensource.org/licenses" target="_blank">http://opensource.org/licenses</a></li>
+	<li><a id="ps10"></a>註10：Linus Torvalds 在 Wiki 的介紹： <a href="http://en.wikipedia.org/wiki/Linus_Torvalds" target="_blank">http://en.wikipedia.org/wiki/Linus_Torvalds</a></li>
+	<li><a id="ps11"></a>註11：Cluster Computer 在 Wiki 的介紹： <a href="http://en.wikipedia.org/wiki/Computer_cluster" target="_blank">http://en.wikipedia.org/wiki/Computer_cluster</a></li>
+	<li><a id="ps12"></a>註12：Android 在 Wiki 的介紹： <a href="http://zh.wikipedia.org/wiki/Android" target="_blank">http://zh.wikipedia.org/wiki/Android</a></li>
+	<li>洪朝貴老師的GNU/FSF介紹： <a href="http://people.ofset.org/~ckhung/a/c_83.php" target="_blank">http://people.ofset.org/~ckhung/a/c_83.php</a></li>
+	<li>葛林穆迪著，杜默譯，『Linux傳奇』，時報文化出版企業。<br>
+		書本介紹：<a href="http://findbook.tw/book/9789571333632/basic" target="_blank">http://findbook.tw/book/9789571333632/basic</a></li>
+	<li>XFree86的網站：<a href="http://www.xfree86.org/" target="_blank">http://www.xfree86.org/</a></li>
+	<li>POSIX的相關說明：<br>
+		維基百科：<a href="http://en.wikipedia.org/wiki/POSIX" target="_blank">http://en.wikipedia.org/wiki/POSIX</a><br>
+		IEEE POSIX標準：<a href="http://standards.ieee.org/regauth/posix/" target="_blank">http://standards.ieee.org/regauth/posix/</a></li>
+	</ul>
+</div>
+
+<div class="block1" style="margin-bottom: 32px; padding-left: 10px; line-height: 1">
+<span class="text_history">
+2002/06/25：第一次完成<br>
+2003/01/26：重新修訂，加入一些歷史事件、重新編排與加入 FAQ<br>
+2003/02/28：加入百資以及 distrowatch 兩個網站的推薦！<br>
+2005/05/31：舊有的資料放於 <a href="http://linux.vbird.org/linux_basic/0110whatislinux/0110whatislinux.php">此處</a><br>
+2005/06/02：做了大幅度的改版，很多資料參考了網路農夫及 Linux 傳奇等書籍，建議大家要多看看網路農夫的大作喔！<br>
+2005/06/08：將原本的 binary / compiler / Emacs 的地方再說明一下！比較容易瞭解那是什麼！順便加入習題<br>
+2005/07/21：網路農夫的網站結束了～真傷心～只好提供網路農夫之前發表的文章連結了！<br>
+2005/08/03：感謝網友 babab 的來信告知，修訂了國家高速網路中心網址：http://www.nchc.org.tw<br>
+2005/10/24：經由網友的回報，洪朝貴老師已經調職到樹德大學，因此整個連結內容已作修訂。<br>
+2006/05/31：加入了重點回顧的項目啦！<br>
+2006/06/06：感謝網友 "Warren Hsieh" 兄的提醒，由於麥金塔在 2006 年後使用 Intel 的 x86 硬體架構，故 
+	Windows 是可能可以在上面安裝的！<br>
+2008/07/23：因為加入了計算機概論的章節，所以本文做了挺大幅度的修改！原本針對FC4的版本請點選<a href="http://linux.vbird.org/linux_basic/0110whatislinux/0110whatislinux-fc4.php">這裡</a>。<br>
+2007/07/26：將整份文章重新校閱過，修訂一些文辭，也將格式調整為適合的XHTML了！<br>
+2007/07/29：將主、次核心版本加強說明！<br>
+2009/08/05：移除最後一小節的標準，將FHS與LSB向前挪到distribution解釋中。拿掉伺服器、工作站、終端機的說明。<br>
+2012/02/20：更新了 <a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#20120220">Linux 在台灣</a>的相關連結資訊<br>
+2015/04/17：舊的基於 CentOS 5 的資料放置在<a href="http://linux.vbird.org/linux_basic/0110whatislinux/0110whatislinux-centos5.php">這裡喔！</a><br>
+2015/04/23：同時整合了<a href="http://linux.vbird.org/linux_basic/0120howtolinux.php">Linux 如何學習</a>這一章的內容！減少一些不必要的碎碎唸<br>
+</span>
+<span class="text_date">2002/02/03以來統計人數</span><br>
+<img src="./鳥哥的 Linux 私房菜 -- 第01章、Linux是什麼與如何學習_files/Count(3).cgi" style="height: 15px; width: 60px; " alt="計數器" title="計數器"><br>
+</div>
+
+<div class="rightarea">
+<a href="http://linux.vbird.org/linux_basic/0130designlinux.php">&gt;&gt;</a>
+</div>
+
+<div style="position: relative; text-align:center; margin-top: -20px; margin-bottom: 40px; width: 100%;">
+	<div style="width: 100px; text-align:center; display: inline-block;">
+		<a href="http://linux.vbird.org/linux_basic/index.php">HOME</a>
+	</div>
+		<div style="width: 100px; float: left;">
+		<a href="http://linux.vbird.org/linux_basic/0105computers.php">PrePage</a>
+	</div>
+			<div style="width: 100px; float: right;">
+		<a href="http://linux.vbird.org/linux_basic/0130designlinux.php">NextPage</a>
+	</div>
+	</div>
+
+</div>	<!-- mainarea -->
+</div>  <!-- tablearea -->
+
+<div class="bottomarea">
+<ul>
+	<li><a href="http://linux.vbird.org/linux_basic/0110whatislinux.php#top" title="Top">Top</a></li>
+	<li><a href="http://linux.vbird.org/index_old.php" title="前往鳥哥的 Linux 私房菜首頁">前往舊站</a></li>
+	<!--li><a href="http://vbird.dic.ksu.edu.tw" target="_blank" title="前往鳥哥的 Linux 私房菜首頁">簡體主站</a></li-->
+	<li><a href="http://phorum.vbird.org/" target="_blank" title="鳥站新手討論板">討論板</a></li>
+	<li><a href="http://phorum.study-area.org/" target="_blank" title="酷！學園討論板">酷學園</a></li>
+	<li><a href="http://www.dic.ksu.edu.tw/" target="_blank" title="崑山資傳">崑山資傳</a></li>
+</ul>
+&nbsp;&nbsp; <a href="http://linux.vbird.org/" target="_top" title="前往鳥哥的首頁">http://linux.vbird.org</a>
+	is designed by <a href="mailto:vbird@mail.vbird.idv.tw" title="聯絡鳥哥(我不要廣告信！)">VBird</a>
+		during 2001-2017. <!--a href="http://www.ksu.edu.tw" target="_blank">ksu.edu</a-->
+
+</div>
+
+
+
+</body></html>
