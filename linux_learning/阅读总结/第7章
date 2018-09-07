@@ -2,3 +2,6 @@
 		1） 首先通过lsblk或者blkid找到磁盘;
 		2） 再使用parted /dev/xxx  print 来找出内部的分区表类型，是MBR还是GPT类型;
 		3） 在使用gdisk或者fdisk来操作系统进行分盘，GPT使用gdisk分盘，MBR使用fdisk分盘
+		4)	建置文件系统(即格式化)，使用mkfs.xfs /dev/sda4 类似这样的命令建立xfs，或者以mkfs.ext4 /dev/sda4建立ext4;(可能还需要检查一下文件系统)
+		5）	系统文件挂载到一个目录，使用mount UUID='' 挂载点，其中UUID可以使用blkid来查询，如果卸载则使用umount 装置名或者挂载名 卸载
+		6）	如果使用手动挂载不方便，则使用自动挂载功能，修改 /etc/fstab 里面的自动挂载参数。
